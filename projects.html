@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — [YOUR STUDIO NAME]</title>
+  <meta name="description" content="Real client projects — Sudaangeo.in (custom website + backend software) and Khelshiksha.com (website development). See what we've built." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://[YOUR-DOMAIN].com/projects.html" />
+  <meta property="og:title" content="Projects — [YOUR STUDIO NAME]" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236366f1'/><text y='.9em' font-size='60' x='20'>S</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="page-transitions.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#080C14', surface: '#0D1117', elevated: '#111827',
+            accent: '#6366f1', 'accent-light': '#818cf8',
+            primary: '#F8FAFC', secondary: '#94A3B8', muted: '#475569',
+          },
+          fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Manrope','Inter','sans-serif'] },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-bg text-primary">
+
+<!-- NAVBAR -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0" style="box-shadow:0 0 16px rgba(99,102,241,0.45);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="font-display font-extrabold text-primary text-[15px] tracking-tight">[YOUR STUDIO NAME]</span>
+      </a>
+      <div class="hidden md:flex items-center gap-7">
+        <a href="services.html"    class="nav-link">Services</a>
+        <a href="projects.html"    class="nav-link active">Projects</a>
+        <a href="process.html"     class="nav-link">Process</a>
+        <a href="technology.html"  class="nav-link">Technology</a>
+        <a href="contact.html"     class="nav-link">Contact</a>
+      </div>
+      <a href="contact.html" class="hidden md:inline-flex btn-primary px-5 py-2.5 text-sm gap-2">Start Your Project</a>
+      <button id="hamburger" aria-label="Toggle menu" aria-expanded="false" class="md:hidden flex flex-col gap-1.5 p-2">
+        <span class="hamburger-line line-1"></span><span class="hamburger-line line-2"></span><span class="hamburger-line line-3"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="md:hidden absolute inset-x-0 top-16 glass border-b border-white/5">
+    <div class="px-6 py-7 flex flex-col gap-5">
+      <a href="services.html"   class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Services</a>
+      <a href="projects.html"   class="mobile-link text-accent-light font-medium">Projects</a>
+      <a href="process.html"    class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Process</a>
+      <a href="technology.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Technology</a>
+      <a href="contact.html"    class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Contact</a>
+      <a href="contact.html"    class="mobile-link btn-primary px-5 py-3 text-sm text-center mt-1">Start Your Project</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero grid-bg relative overflow-hidden">
+  <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 70%);top:-200px;right:-200px;"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="breadcrumb reveal">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span style="color:#818cf8;">Projects</span>
+    </div>
+    <p class="page-hero-label reveal">Case Studies</p>
+    <h1 class="page-hero-title reveal rd1">Work that speaks<br /><span class="gradient-text">for itself.</span></h1>
+    <p class="page-hero-sub reveal rd2">
+      Real projects. Real clients. We only show work we've actually built — no inflated portfolios, no fabricated results.
+    </p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="py-20 lg:py-24" aria-label="Project case studies">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 space-y-16">
+
+    <!-- Project 01: Sudaangeo.in -->
+    <article class="reveal">
+      <div class="project-card">
+        <div class="grid lg:grid-cols-2">
+          <!-- Screenshot placeholder -->
+          <!-- Interactive Device Mockup -->
+          <!-- *** REPLACE: Insert your actual screenshots into the device-content div *** -->
+          <div class="proj-img relative flex items-center justify-center p-6 bg-surface/50 border-r border-white/5" style="min-height:400px;">
+            <div class="absolute top-4 right-4 z-20 flex gap-2 glass px-2 py-1.5 rounded-xl border border-white/10" style="box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+              <button type="button" class="device-btn active p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'desktop', 'device-sudaangeo')" aria-label="Desktop view" title="Desktop">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </button>
+              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'tablet', 'device-sudaangeo')" aria-label="Tablet view" title="Tablet">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </button>
+              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'mobile', 'device-sudaangeo')" aria-label="Mobile view" title="Mobile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </button>
+            </div>
+            
+            <div id="device-sudaangeo" class="device-frame desktop relative overflow-hidden bg-bg border-2 border-white/10" style="box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+              <div class="device-top-bar bg-white/5 border-b border-white/10 px-3 flex gap-1.5 items-center">
+                <div class="w-2 h-2 rounded-full bg-rose-500/80"></div>
+                <div class="w-2 h-2 rounded-full bg-amber-500/80"></div>
+                <div class="w-2 h-2 rounded-full bg-emerald-500/80"></div>
+              </div>
+              <div class="device-content w-full bg-[#0D1117] flex items-center justify-center p-4 text-center group">
+                 <div class="transition-transform group-hover:scale-105">
+                   <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
+                     <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                   </div>
+                   <p class="text-sm font-medium text-white/80">Sudaangeo.in</p>
+                   <p class="text-[10px] text-white/50 mt-1 uppercase tracking-wider">Live Preview</p>
+                 </div>
+              </div>
+            </div>
+          </div>
+          <!-- Content -->
+          <div class="p-10 lg:p-12 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="num font-bold text-sm">Project 01</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-muted"></span>
+              <span class="badge-pill text-xs">Website + Backend Software</span>
+            </div>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-primary mb-4">
+              <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="hover:text-accent-light transition-colors">Sudaangeo.in</a>
+            </h2>
+            <p class="text-secondary text-base leading-relaxed mb-5">
+              A complete digital platform where the website is the visible layer — but the real work happens underneath. Custom backend software was designed and developed specifically for this business, handling the unique workflows, data, and logic the platform depends on.
+            </p>
+            <p class="text-secondary text-sm leading-relaxed mb-7">
+              Every layer — from the user-facing interface through to the data structures, API layer, and business logic — was built in-house. This is a clear example of a project that goes far beyond a website.
+            </p>
+
+            <!-- What was built -->
+            <div class="grid grid-cols-2 gap-3 mb-7">
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="8.5" rx="1.5" stroke="#818cf8" stroke-width="1.3"/><path d="M4 12h6M7 10.5V12" stroke="#818cf8" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Website</p>
+                <p class="text-muted text-xs leading-relaxed">Custom front-end interface</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-violet-500/12 border border-violet-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 6l-2 2.5 2 2.5M11 6l2 2.5-2 2.5M9 3.5l-4 7" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Backend Software</p>
+                <p class="text-muted text-xs leading-relaxed">Custom-built server logic</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="4.5" rx="5" ry="2.5" stroke="#34d399" stroke-width="1.3"/><path d="M2 4.5v5c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5v-5" stroke="#34d399" stroke-width="1.3"/><path d="M2 7c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5" stroke="#34d399" stroke-width="1.3"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Database</p>
+                <p class="text-muted text-xs leading-relaxed">Structured data layer</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/12 border border-amber-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5v2M7 10.5v2M1.5 7h2M10.5 7h2" stroke="#fbbf24" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="7" r="2.2" stroke="#fbbf24" stroke-width="1.3"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Business Logic</p>
+                <p class="text-muted text-xs leading-relaxed">Custom functionality</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-7">
+              <span class="badge-pill text-xs">Custom Website</span>
+              <span class="badge-pill text-xs">Backend Software</span>
+              <span class="badge-pill text-xs">Database</span>
+              <span class="badge-pill text-xs">API Layer</span>
+              <span class="badge-pill text-xs">Business Logic</span>
+              <span class="badge-pill text-xs">Custom Functionality</span>
+            </div>
+            <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="btn-primary px-6 py-3 text-sm gap-2 self-start">
+              Visit Sudaangeo.in
+              <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 02: Khelshiksha.com -->
+    <article class="reveal rd2">
+      <div class="project-card">
+        <div class="grid lg:grid-cols-2">
+          <!-- Content -->
+          <div class="p-10 lg:p-12 flex flex-col justify-center order-2 lg:order-1">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="num font-bold text-sm">Project 02</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-muted"></span>
+              <span class="badge-pill text-xs" style="border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);color:#34d399;">Website Development</span>
+            </div>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-primary mb-4">
+              <a href="https://khelshiksha.com" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">Khelshiksha.com</a>
+            </h2>
+            <p class="text-secondary text-base leading-relaxed mb-5">
+              A professional digital presence built for an organization in the sports and education space. The website was designed to clearly communicate the organization's mission, programs, and services to parents, students, and partners.
+            </p>
+            <p class="text-secondary text-sm leading-relaxed mb-7">
+              Clean navigation, mobile-responsive layout, and a structure that makes the organization's offerings easy to discover and engage with across all devices.
+            </p>
+
+            <!-- What was built -->
+            <div class="grid grid-cols-2 gap-3 mb-7">
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="8.5" rx="1.5" stroke="#34d399" stroke-width="1.3"/><path d="M4 12h6M7 10.5V12" stroke="#34d399" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Website</p>
+                <p class="text-muted text-xs leading-relaxed">Professional digital presence</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/12 border border-blue-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="4" height="4" rx="1" stroke="#60a5fa" stroke-width="1.3"/><rect x="8" y="2" width="4" height="4" rx="1" stroke="#60a5fa" stroke-width="1.3"/><rect x="2" y="8" width="4" height="4" rx="1" stroke="#60a5fa" stroke-width="1.3"/><rect x="8" y="8" width="4" height="4" rx="1" stroke="#60a5fa" stroke-width="1.3"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Responsive Design</p>
+                <p class="text-muted text-xs leading-relaxed">Mobile-first layout</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-violet-500/12 border border-violet-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11z" stroke="#a78bfa" stroke-width="1.3"/><path d="M1.5 7h11" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round"/><path d="M7 1.5c-1.5 1.8-2.5 3.6-2.5 5.5s1 3.7 2.5 5.5M7 1.5c1.5 1.8 2.5 3.6 2.5 5.5s-1 3.7-2.5 5.5" stroke="#a78bfa" stroke-width="1.3"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">SEO-ready</p>
+                <p class="text-muted text-xs leading-relaxed">Search optimized structure</p>
+              </div>
+              <div class="info-card">
+                <div class="w-8 h-8 rounded-lg bg-rose-500/12 border border-rose-500/20 flex items-center justify-center mb-3">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 9.5l4-4 2.5 2.5 3.5-5" stroke="#fb7185" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <p class="text-primary text-xs font-semibold mb-1">Performance</p>
+                <p class="text-muted text-xs leading-relaxed">Fast, optimized build</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-7">
+              <span class="badge-pill text-xs" style="border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);color:#34d399;">Website Development</span>
+              <span class="badge-pill text-xs" style="border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);color:#34d399;">Mobile Responsive</span>
+              <span class="badge-pill text-xs" style="border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);color:#34d399;">SEO-ready</span>
+            </div>
+            <a href="https://khelshiksha.com" target="_blank" rel="noopener noreferrer" class="btn-primary px-6 py-3 text-sm gap-2 self-start" style="background:linear-gradient(135deg,#34d399 0%,#059669 100%);">
+              Visit Khelshiksha.com
+              <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <!-- Screenshot placeholder -->
+          <!-- Interactive Device Mockup -->
+          <div class="proj-img relative flex items-center justify-center p-6 bg-surface/50 border-l border-white/5 order-1 lg:order-2" style="min-height:400px;">
+            <div class="absolute top-4 right-4 z-20 flex gap-2 glass px-2 py-1.5 rounded-xl border border-white/10" style="box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+              <button type="button" class="device-btn active p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'desktop', 'device-khel')" aria-label="Desktop view" title="Desktop">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </button>
+              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'tablet', 'device-khel')" aria-label="Tablet view" title="Tablet">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </button>
+              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'mobile', 'device-khel')" aria-label="Mobile view" title="Mobile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </button>
+            </div>
+            
+            <div id="device-khel" class="device-frame desktop relative overflow-hidden bg-bg border-2 border-white/10" style="box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+              <div class="device-top-bar bg-white/5 border-b border-white/10 px-3 flex gap-1.5 items-center">
+                <div class="w-2 h-2 rounded-full bg-rose-500/80"></div>
+                <div class="w-2 h-2 rounded-full bg-amber-500/80"></div>
+                <div class="w-2 h-2 rounded-full bg-emerald-500/80"></div>
+              </div>
+              <div class="device-content w-full bg-[#0D1117] flex items-center justify-center p-4 text-center group">
+                 <div class="transition-transform group-hover:scale-105">
+                   <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                     <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke-width="2"/><path d="M2 12h20" stroke-width="2"/></svg>
+                   </div>
+                   <p class="text-sm font-medium text-white/80">Khelshiksha.com</p>
+                   <p class="text-[10px] text-white/50 mt-1 uppercase tracking-wider">Live Preview</p>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- CTA -->
+    <div class="cta-section reveal">
+      <div class="relative z-10">
+        <p class="text-muted text-xs font-bold uppercase tracking-widest mb-4">Your project could be next</p>
+        <h2 class="font-display font-extrabold text-primary mb-4" style="font-size:clamp(1.7rem,3vw,2.5rem);">
+          Ready to build something real?
+        </h2>
+        <p class="text-secondary text-base leading-relaxed max-w-md mx-auto mb-8">
+          Whether it's a professional website or a complete full-stack system — let's have a conversation about what you need.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="contact.html" class="btn-primary px-8 py-4 text-base gap-2">
+            Start Your Project
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="services.html" class="btn-secondary px-8 py-4 text-base gap-2">View All Services</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t py-12 mt-4" style="border-color:rgba(255,255,255,0.05);">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-accent flex items-center justify-center" style="box-shadow:0 0 12px rgba(99,102,241,0.4);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="font-display font-extrabold text-primary text-sm">[YOUR STUDIO NAME]</span>
+      </a>
+      <div class="flex items-center gap-6 flex-wrap justify-center">
+        <a href="services.html"   class="text-muted text-xs hover:text-primary transition-colors">Services</a>
+        <a href="projects.html"   class="text-muted text-xs hover:text-primary transition-colors">Projects</a>
+        <a href="process.html"    class="text-muted text-xs hover:text-primary transition-colors">Process</a>
+        <a href="technology.html" class="text-muted text-xs hover:text-primary transition-colors">Technology</a>
+        <a href="contact.html"    class="text-muted text-xs hover:text-primary transition-colors">Contact</a>
+      </div>
+      <p class="text-muted text-xs">© 2025 [YOUR STUDIO NAME]</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
+    hamburger.classList.remove('open'); mobileMenu.classList.remove('open');
+  }));
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
