@@ -51,6 +51,8 @@ Fixed along the way: `Approval.gate`'s allowed values (`src/lib/db/enums.ts`) ha
 
 The Approvals dashboard (`src/lib/actions/approvals.ts`, Phase 3) now calls `tryAdvanceAfterApproval` after every APPROVED decision — approving a gate through the UI actually advances the project. Manually verified against the real seeded `demo-project` (approved its pending REQUIREMENTS gate, confirmed `stage` moved from `REQUIREMENTS` to `PLANNING`, then re-seeded to reset the fixture).
 
+Every other stage transition (`LEAD`→`DISCOVERY`, `ESTIMATION`→`PROPOSAL`, etc.) has no gate in this system — that's a deliberate reading of the architecture plan, not a gap to fill later.
+
 ## Tool integrations (Phase 7)
 
 `src/lib/tools/` gives agents scoped, concrete capabilities instead of the free-text permission strings in `agent.md` frontmatter being purely aspirational. Deliberately conservative, given the real security stakes of "let an LLM's output trigger actions":
@@ -64,7 +66,13 @@ The Approvals dashboard (`src/lib/actions/approvals.ts`, Phase 3) now calls `try
 
 No live model has ever actually called one of these tools yet (that needs real tool-use wiring into `runAgent()`, plus API credits — neither exists). This is the capability layer a future live agent run would call into; today it's exercised entirely by direct import and `npm test`.
 
-Every other stage transition (`LEAD`→`DISCOVERY`, `ESTIMATION`→`PROPOSAL`, etc.) has no gate in this system — that's a deliberate reading of the architecture plan, not a gap to fill later.
+## AI evaluation (Phase 8)
+
+`src/lib/evaluation/` implements the capability/regression/hallucination/adversarial eval framework from the architecture plan's Section 37, with real eval cases matching its named examples: Security Engineer catching a seeded SQL injection and a hardcoded secret, QA Engineer catching a seeded off-by-one bug, Principal Architect catching a seeded single-point-of-failure, Technical Writer not fabricating customer names/stats, and both Product Manager and Business Analyst being tested on when to proceed confidently vs. honestly flag a gap (`evalCases.ts`).
+
+**The honest limitation, stated plainly**: `checkers.ts`'s checkers are structural/keyword heuristics (does the output mention "injection," is the structured `risks` list non-empty, is confidence honestly LOW on an ambiguous input) — not a second model grading the first's reasoning. A checker can confirm an agent *mentioned* a planted issue; it can't confirm the agent's reasoning about it was actually good. Real evaluation of agent quality needs a live model and, likely, human or LLM-judge review — this framework is the harness that would run those cases, not a replacement for actually looking at real output.
+
+What's actually proven, without a live model: the harness correctly wires input → `runAgent()` → checker → a durable `Evaluation` record (`runEval.ts`, tested against the real Prisma DB), and — the part worth trusting most — every checker was proven to actually discriminate: each of the 7 eval cases was run through `runEvalCase` twice, once with a hand-written response that plausibly caught the planted issue (must pass) and once with one that plausibly missed it (must fail) (`evalCases.test.ts`). A checker that always returned true regardless of input would pass a naive "does it run" test; it fails this one. Building this test caught two real bugs along the way (a `rawOutput`/`rawResponse` property typo, and invalid YAML generated for empty frontmatter arrays) — exactly the kind of thing "prefer testing over confidence" is for.
 
 ## Learn more (Next.js)
 
