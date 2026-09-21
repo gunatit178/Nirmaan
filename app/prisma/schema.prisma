@@ -1,0 +1,165 @@
+// Data model per /docs/architecture-plan.md Section E.
+//
+// SQLite for now (Phase 3 — zero infra, single-founder scale). See the
+// architecture plan's Technology Decisions for the migration trigger to
+// Postgres. Two SQLite-specific simplifications, both called out inline:
+//   - No native enum type: status/stage/gate fields are plain String
+//     columns. The allowed values are enforced in the TypeScript layer
+//     (src/lib/db/enums.ts), not the database.
+//   - No native scalar list type: list fields (dependencies, blockers,
+//     assumptions, tags, ...) are stored as JSON-encoded TEXT and
+//     parsed/serialized in application code (src/lib/db/json.ts).
+//
+// Artifact CONTENT is never stored here — only a pointer (filePath) into
+// /projects/{id}/... on disk. That's the whole point of the file-based
+// artifact convention (versioning for free via git).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  contact   String? // free-text for now; not enough client volume yet to justify structured fields
+  projects  Project[]
+  createdAt DateTime  @default(now())
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  name          String
+  clientId      String?
+  client        Client?  @relation(fields: [clientId], references: [id])
+  // LEAD|DISCOVERY|REQUIREMENTS|ESTIMATION|PROPOSAL|APPROVED|PLANNING|
+  // DESIGN|ARCHITECTURE|IMPLEMENTATION|QA|SECURITY_REVIEW|DEPLOYMENT|
+  // MONITORING|MAINTENANCE — see src/lib/db/enums.ts#PROJECT_STAGES
+  stage         String   @default("LEAD")
+  // Directory name under /projects/ at the repo root, e.g. "demo-project"
+  artifactsPath String
+  tasks         Task[]
+  artifacts     Artifact[]
+  approvals     Approval[]
+  events        Event[]
+  deployments   Deployment[]
+  knowledge     Knowledge[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  projectId   String
+  project     Project    @relation(fields: [projectId], references: [id])
+  ownerAgent  String? // agent slug, matches /agents/<slug>
+  // BACKLOG|READY|IN_PROGRESS|BLOCKED|REVIEW|APPROVED|DONE
+  status      String     @default("BACKLOG")
+  // LOW|MEDIUM|HIGH
+  priority    String     @default("MEDIUM")
+  dependencies String    @default("[]") // JSON array of Task ids
+  estimate    String?
+  actual      String?
+  blockers    String     @default("[]") // JSON array of strings
+  artifacts   Artifact[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Agent {
+  id          String       @id @default(cuid())
+  slug        String       @unique // matches /agents/<slug>/agent.md
+  role        String
+  // ACTIVE|DRAFT|DISABLED
+  status      String       @default("DRAFT")
+  permissions String       @default("{}") // JSON-encoded AgentPermissions
+  artifacts   Artifact[]
+  evaluations Evaluation[]
+  createdAt   DateTime     @default(now())
+}
+
+model Artifact {
+  id               String       @id @default(cuid())
+  projectId        String
+  project          Project      @relation(fields: [projectId], references: [id])
+  taskId           String?
+  task             Task?        @relation(fields: [taskId], references: [id])
+  // PRD|ADR|UX_SPEC|DESIGN_SPEC|API_SPEC|SCHEMA|TEST_REPORT|SECURITY_REPORT|
+  // DEPLOYMENT_PLAN|... — open-ended by design, agents keep adding types
+  type             String
+  // Path relative to /projects/{projectId}/, e.g. "requirements/prd.md".
+  // Content lives on disk, never duplicated here.
+  filePath         String
+  version          Int          @default(1)
+  createdByAgentId String?
+  createdByAgent   Agent?       @relation(fields: [createdByAgentId], references: [id])
+  deployments      Deployment[]
+  createdAt        DateTime     @default(now())
+}
+
+model Approval {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+  // REQUIREMENTS|DESIGN|ARCHITECTURE|IMPLEMENTATION_PLAN|DEPLOYMENT
+  gate        String
+  // PENDING|APPROVED|REJECTED
+  status      String    @default("PENDING")
+  requestedBy String // agent slug, or "human"
+  decidedBy   String?
+  decidedAt   DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  agentSlug String?
+  taskId    String?
+  message   String
+  timestamp DateTime @default(now())
+}
+
+model Knowledge {
+  id        String   @id @default(cuid())
+  // GLOBAL|PROJECT|AGENT
+  scope     String
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+  agentSlug String?
+  title     String
+  content   String
+  tags      String   @default("[]") // JSON array of strings
+  createdAt DateTime @default(now())
+}
+
+model Evaluation {
+  id              String    @id @default(cuid())
+  agentId         String
+  agent           Agent     @relation(fields: [agentId], references: [id])
+  testCase        String
+  expectedOutcome String
+  actualOutcome   String?
+  passed          Boolean?
+  runAt           DateTime  @default(now())
+}
+
+model Deployment {
+  id           String    @id @default(cuid())
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id])
+  environment  String // e.g. "production", "staging"
+  // PENDING|IN_PROGRESS|SUCCEEDED|FAILED|ROLLED_BACK
+  status       String    @default("PENDING")
+  deployedAt   DateTime?
+  rollbackPlan String?
+  artifactId   String?
+  artifact     Artifact? @relation(fields: [artifactId], references: [id])
+}
