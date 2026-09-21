@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import matter from "gray-matter";
 import { loadAgent } from "./loadAgent";
 import { resolveModel, type TaskType } from "../model-router";
@@ -7,6 +5,7 @@ import { AnthropicProvider } from "../providers/anthropic";
 import { MockProvider } from "../providers/mock";
 import type { ModelProvider } from "../providers/types";
 import type { HandoffMetadata } from "./types";
+import { writeVersionedArtifact, projectsRoot, stripUndefined } from "./artifactWriter";
 
 export interface RunAgentInput {
   agentSlug: string;
@@ -26,9 +25,7 @@ export interface RunAgentResult {
   rawResponse: string;
 }
 
-export function projectsRoot(): string {
-  return process.env.PROJECTS_ROOT ?? path.join(process.cwd(), "..", "projects");
-}
+export { projectsRoot };
 
 function buildSystemPrompt(role: string, body: string): string {
   return [
@@ -103,7 +100,8 @@ function parseAgentResponse(
  * model router, and write the resulting artifact (with handoff metadata
  * frontmatter) into /projects/{projectId}/{outputRelativePath}.
  *
- * This never overwrites an existing artifact in place — see writeArtifact.
+ * This never overwrites an existing artifact in place — see
+ * writeVersionedArtifact in artifactWriter.ts.
  */
 export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   const agent = loadAgent(input.agentSlug);
@@ -120,45 +118,7 @@ export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   });
 
   const { metadata, body } = parseAgentResponse(completion.text, input, agent.slug);
-  const filePath = writeArtifact(input.projectId, input.outputRelativePath, metadata, body);
+  const filePath = writeVersionedArtifact(input.projectId, input.outputRelativePath, stripUndefined(metadata), body);
 
   return { filePath, metadata, rawResponse: completion.text };
-}
-
-/**
- * Never silently overwrite important decisions (Section 39 / 3): if the
- * target path already exists, write a new numbered version instead and
- * leave the existing file untouched.
- */
-function writeArtifact(
-  projectId: string,
-  relativePath: string,
-  metadata: HandoffMetadata,
-  body: string
-): string {
-  const dir = path.join(projectsRoot(), projectId, path.dirname(relativePath));
-  fs.mkdirSync(dir, { recursive: true });
-
-  let target = path.join(projectsRoot(), projectId, relativePath);
-  if (fs.existsSync(target)) {
-    const ext = path.extname(relativePath);
-    const base = relativePath.slice(0, -ext.length);
-    let version = 2;
-    while (fs.existsSync(path.join(projectsRoot(), projectId, `${base}-v${version}${ext}`))) {
-      version += 1;
-    }
-    target = path.join(projectsRoot(), projectId, `${base}-v${version}${ext}`);
-  }
-
-  fs.writeFileSync(target, matter.stringify(body, stripUndefined(metadata)));
-  return target;
-}
-
-/** js-yaml (used by gray-matter.stringify) can't dump literal `undefined` values — drop them so optional fields are simply absent from the frontmatter instead. */
-function stripUndefined<T extends object>(obj: T): Partial<T> {
-  const out: Partial<T> = {};
-  for (const [key, value] of Object.entries(obj) as [keyof T, T[keyof T]][]) {
-    if (value !== undefined) out[key] = value;
-  }
-  return out;
 }
