@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "../db/client";
 import { tryAdvanceAfterApproval } from "../orchestrator/qualityGates";
+import { logEvent } from "../db/logEvent";
 import type { ApprovalGate } from "../db/enums";
 
 /**
@@ -20,13 +21,12 @@ async function decide(approvalId: string, status: "APPROVED" | "REJECTED") {
     data: { status, decidedBy: DECIDER, decidedAt: new Date() },
   });
 
-  await prisma.event.create({
-    data: {
-      projectId: approval.projectId,
-      agentSlug: null,
-      message: `${DECIDER} ${status === "APPROVED" ? "approved" : "rejected"} the ${approval.gate} gate.`,
-    },
-  });
+  await logEvent(
+    approval.projectId,
+    null,
+    null,
+    `${DECIDER} ${status === "APPROVED" ? "approved" : "rejected"} the ${approval.gate} gate.`
+  );
 
   // Approving a gate should actually move the project forward if this is
   // the gate currently blocking it (Phase 6's quality-gate enforcement).

@@ -57,6 +57,7 @@ test("dispatchTask runs the owner agent, writes an artifact, and advances task s
     assert.equal(result.status, "ready-for-handoff");
     assert.equal(result.confidence, "HIGH");
     assert.ok(fs.existsSync(result.filePath));
+    assert.equal(result.costUsd, null, "MockProvider reports no usage, so cost must be null, not a guessed number");
 
     const updatedTask = await prisma.task.findUniqueOrThrow({ where: { id: task.id } });
     assert.equal(updatedTask.status, "REVIEW");
@@ -80,6 +81,52 @@ test("dispatchTask runs the owner agent, writes an artifact, and advances task s
     const events = await prisma.event.findMany({ where: { projectId: project.id }, orderBy: { timestamp: "asc" } });
     assert.ok(events.some((e) => e.message.includes("Dispatched task")));
     assert.ok(events.some((e) => e.message.includes("Requested review from")));
+    assert.ok(events.some((e) => e.message.includes("cost unknown (provider reported no usage)")));
+  } finally {
+    await cleanupTestProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
+test("dispatchTask computes a real cost estimate and logs it when the provider reports usage for a priced model", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+
+  const { project, task } = await seedTestProject("business-analyst");
+  try {
+    const provider = new MockProvider(READY_RESPONSE, { inputTokens: 1_000_000, outputTokens: 1_000_000 }, "claude-sonnet-5");
+    const result = await dispatchTask(task.id, { provider });
+
+    // claude-sonnet-5: $3/M in + $15/M out = $18 at 1M/1M tokens
+    assert.equal(result.costUsd, 18);
+
+    const events = await prisma.event.findMany({ where: { projectId: project.id } });
+    assert.ok(events.some((e) => e.message.includes("~$18.0000") && e.message.includes("claude-sonnet-5")));
+  } finally {
+    await cleanupTestProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
+test("dispatchTask reports costUsd null and logs 'unknown model' when usage exists but the model has no pricing entry", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+
+  const { project, task } = await seedTestProject("business-analyst");
+  try {
+    const provider = new MockProvider(READY_RESPONSE, { inputTokens: 100, outputTokens: 100 }, "some-future-model");
+    const result = await dispatchTask(task.id, { provider });
+
+    assert.equal(result.costUsd, null);
+
+    const events = await prisma.event.findMany({ where: { projectId: project.id } });
+    assert.ok(events.some((e) => e.message.includes('no pricing entry for model "some-future-model"')));
   } finally {
     await cleanupTestProject(project.id);
     fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });

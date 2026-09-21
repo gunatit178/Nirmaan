@@ -3,7 +3,7 @@ import { loadAgent } from "./loadAgent";
 import { resolveModel, type TaskType } from "../model-router";
 import { AnthropicProvider } from "../providers/anthropic";
 import { MockProvider } from "../providers/mock";
-import type { ModelProvider } from "../providers/types";
+import type { ModelProvider, TokenUsage } from "../providers/types";
 import type { HandoffMetadata } from "./types";
 import { writeVersionedArtifact, projectsRoot, stripUndefined } from "./artifactWriter";
 
@@ -23,6 +23,11 @@ export interface RunAgentResult {
   filePath: string;
   metadata: HandoffMetadata;
   rawResponse: string;
+  /** Which model actually answered — for cost estimation and observability. */
+  model: string;
+  provider: string;
+  /** Real usage when the provider reports one (Anthropic does; MockProvider doesn't). Never a guess — see src/lib/costs/. */
+  usage?: TokenUsage;
 }
 
 export { projectsRoot };
@@ -120,5 +125,12 @@ export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   const { metadata, body } = parseAgentResponse(completion.text, input, agent.slug);
   const filePath = writeVersionedArtifact(input.projectId, input.outputRelativePath, stripUndefined(metadata), body);
 
-  return { filePath, metadata, rawResponse: completion.text };
+  return {
+    filePath,
+    metadata,
+    rawResponse: completion.text,
+    model: completion.model,
+    provider: completion.provider,
+    usage: completion.usage,
+  };
 }
