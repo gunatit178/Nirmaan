@@ -41,12 +41,19 @@ export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 export const AGENT_STATUSES = ["ACTIVE", "DRAFT", "DISABLED"] as const;
 export type AgentStatus = (typeof AGENT_STATUSES)[number];
 
+// Matches the six Quality Gates in /docs/architecture-plan.md Section H
+// exactly (Requirements, Design, Architecture, Implementation, QA,
+// Production) — an earlier version of this list had 5 values
+// (IMPLEMENTATION_PLAN/DEPLOYMENT instead of IMPLEMENTATION/QA/PRODUCTION)
+// that didn't line up with Section H. Fixed in Phase 6, which needed the
+// two to actually match to write gate-enforcement code.
 export const APPROVAL_GATES = [
   "REQUIREMENTS",
   "DESIGN",
   "ARCHITECTURE",
-  "IMPLEMENTATION_PLAN",
-  "DEPLOYMENT",
+  "IMPLEMENTATION",
+  "QA",
+  "PRODUCTION",
 ] as const;
 export type ApprovalGate = (typeof APPROVAL_GATES)[number];
 

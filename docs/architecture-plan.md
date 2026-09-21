@@ -150,7 +150,7 @@ Metadata lives in the DB; document *content* lives in `/projects/{id}/...` files
 - **Task**: id, title, description, projectId, ownerAgent, status (`BACKLOG|READY|IN_PROGRESS|BLOCKED|REVIEW|APPROVED|DONE`), priority, dependencies[], estimate, actual, blockers[], artifacts[], createdAt, updatedAt
 - **Agent**: id, slug (matches `/agents/<slug>`), role, permissions (see Permission Model), status
 - **Artifact**: id, projectId, taskId?, type (PRD, ADR, spec, report...), filePath (points into `/projects/{id}/...`), version, createdBy (agentId), createdAt — content is NOT duplicated in the DB
-- **Approval**: id, projectId, gate (`REQUIREMENTS|DESIGN|ARCHITECTURE|IMPLEMENTATION_PLAN|DEPLOYMENT`), status (`PENDING|APPROVED|REJECTED`), requestedBy, decidedBy, decidedAt
+- **Approval**: id, projectId, gate (`REQUIREMENTS|DESIGN|ARCHITECTURE|IMPLEMENTATION|QA|PRODUCTION` — matches Section H's six Quality Gates exactly; an earlier draft of this doc had 5 values here that didn't line up with Section H, fixed in Phase 6), status (`PENDING|APPROVED|REJECTED`), requestedBy, decidedBy, decidedAt
 - **Event**: id, projectId, agentId, taskId?, message, timestamp — the persistent activity log
 - **Knowledge**: id, scope (`GLOBAL|PROJECT|AGENT`), title, content/pointer, tags
 - **Evaluation**: id, agentId, testCase, expectedOutcome, actualOutcome, passed, runAt
