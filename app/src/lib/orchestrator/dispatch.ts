@@ -105,15 +105,20 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
   await prisma.task.update({ where: { id: task.id }, data: { status: newTaskStatus } });
 
   // Cost is reported honestly, not guessed: null (not 0) when the
-  // provider gave no real usage figures. A MockProvider run must never
-  // look like a free real run in the log.
+  // provider gave no real figures. A MockProvider run must never look
+  // like a free real run in the log. Real provider-reported cost
+  // (claude-code-cli's total_cost_usd) is preferred over our own
+  // pricing-table estimate when available — it's simply more accurate.
   let costUsd: number | null = null;
   let costNote = "cost unknown (provider reported no usage)";
-  if (result.usage) {
+  if (result.costUsd !== undefined) {
+    costUsd = result.costUsd;
+    costNote = `~$${result.costUsd.toFixed(4)} (real, reported by ${result.provider})`;
+  } else if (result.usage) {
     const estimate = estimateCostUsd(result.model, result.usage);
     costUsd = estimate.priced ? estimate.usd : null;
     costNote = estimate.priced
-      ? `~$${estimate.usd.toFixed(4)} (${result.usage.inputTokens} in / ${result.usage.outputTokens} out tokens, ${result.model})`
+      ? `~$${estimate.usd.toFixed(4)} (estimated, ${result.usage.inputTokens} in / ${result.usage.outputTokens} out tokens, ${result.model})`
       : `cost unknown (no pricing entry for model "${result.model}")`;
   }
 

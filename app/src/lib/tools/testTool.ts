@@ -1,5 +1,5 @@
 import path from "node:path";
-import { runCommand, type RunCommandResult } from "./commandRunner";
+import { runCommand, type RunCommandResult } from "../process/commandRunner";
 import type { ToolDefinition } from "./types";
 
 /**

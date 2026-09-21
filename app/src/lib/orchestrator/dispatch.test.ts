@@ -7,6 +7,16 @@ import { prisma } from "../db/client";
 import { MockProvider } from "../providers/mock";
 import { dispatchTask } from "./dispatch";
 import { seedFixtureProject, seedFixtureTask, cleanupFixtureProject } from "../testHelpers/fixtureProject";
+import type { ModelProvider, CompletionResult } from "../providers/types";
+
+/** A provider reporting real costUsd directly (like ClaudeCodeCliProvider does) — MockProvider deliberately never sets this field, so this stands in for it here. */
+function realCostProvider(text: string, costUsd: number): ModelProvider {
+  return {
+    async complete(): Promise<CompletionResult> {
+      return { text, provider: "fake-real-cost-provider", model: "claude-sonnet-5", costUsd };
+    },
+  };
+}
 
 const READY_RESPONSE = [
   "---",
@@ -127,6 +137,28 @@ test("dispatchTask reports costUsd null and logs 'unknown model' when usage exis
 
     const events = await prisma.event.findMany({ where: { projectId: project.id } });
     assert.ok(events.some((e) => e.message.includes('no pricing entry for model "some-future-model"')));
+  } finally {
+    await cleanupTestProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
+test("dispatchTask prefers a provider's real reported costUsd over the estimated one when both could apply", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+
+  const { project, task } = await seedTestProject("business-analyst");
+  try {
+    const provider = realCostProvider(READY_RESPONSE, 0.4242);
+    const result = await dispatchTask(task.id, { provider });
+
+    assert.equal(result.costUsd, 0.4242);
+
+    const events = await prisma.event.findMany({ where: { projectId: project.id } });
+    assert.ok(events.some((e) => e.message.includes("~$0.4242 (real, reported by fake-real-cost-provider)")));
   } finally {
     await cleanupTestProject(project.id);
     fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
