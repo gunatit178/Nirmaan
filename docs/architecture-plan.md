@@ -202,19 +202,19 @@ Each stage has entry/exit criteria; the six quality gates (Section H) map onto t
 
 ## I. Implementation Roadmap
 
-- **Phase 0 — Repository audit** — done.
-- **Phase 1 — Foundational architecture** — scaffold `/app` (Next.js + TS), `/agents` (1-2 real agent.md files as the pattern), `/projects` directory convention. No orchestration logic yet. Goal: prove the boundary between public site and Agency OS works end-to-end.
-- **Phase 2 — Agent framework** — the markdown-agent runtime (`src/lib/agents/`): load an `agent.md`, run it against structured input, produce a structured artifact with handoff metadata. Prove this on exactly one agent (Product Manager).
-- **Phase 3 — Project/task/artifact system** — Prisma schema for the Data Model above (SQLite to start), the dashboard's Projects/Tasks/Artifacts views, and the approval-gate UI.
-- **Phase 4 — Core agents** — flesh out the remaining agent.md files roster-by-roster, each with real constraints and escalation rules, each tested against at least one real or realistic input before being trusted.
-- **Phase 5 — Agent orchestration** — the Orchestrator's dispatch/review logic wiring agents together per the dependency graph.
-- **Phase 6 — Quality gates** — enforce Section H programmatically.
-- **Phase 7 — Tool integrations** — filesystem/Git/GitHub/terminal/test-runner access per the Permission Model, least-privilege enforced.
-- **Phase 8 — AI evaluation** — capability/regression/adversarial tests per agent.
-- **Phase 9 — Production hardening** — cost control, observability, secrets handling.
-- **Phase 10 — Public website refinement** — only after the above, and only if the Design System Engineer identifies real improvements — not a redesign for its own sake.
+- **Phase 0 — Repository audit** — ✅ done (this document).
+- **Phase 1 — Foundational architecture** — ✅ done (PR #1). `/app` (Next.js + TS), `/agents`, `/projects` scaffolded; public site untouched.
+- **Phase 2 — Agent framework** — ✅ done (PR #2). `runAgent()` proven against Product Manager, using a mock provider — no live model has ever actually been called (no API credits in this environment; see app/README.md).
+- **Phase 3 — Project/task/artifact system** — ✅ done (PR #3). Prisma/SQLite, the Projects/Tasks/Artifacts dashboard, the Approvals UI.
+- **Phase 4 — Core agents** — ✅ done (PR #4). All 25 agents (not 23 — see Section C's note) written, each structurally validated against the real `loadAgent()` runtime. None run against a live model yet.
+- **Phase 5 — Agent orchestration** — ✅ done (PR #5). `dispatchTask()` wires Phases 2–4 together; doesn't yet decide which agent a task goes to, and doesn't enforce gates (that's Phase 6).
+- **Phase 6 — Quality gates** — ✅ done (PR #6). `advanceProjectStage()` enforces the six gates against real `Approval` records; found and fixed a drift between this section's gate names and the Data Model's `Approval.gate` enum along the way.
+- **Phase 7 — Tool integrations** — ✅ done (PR #7). Scoped filesystem read/list/write + a fixed test-runner tool. Deliberately no deploy tool, git-write tool, or arbitrary-command tool — enforced by absence, backed by a standing test.
+- **Phase 8 — AI evaluation** — ✅ done (PR #8). Real eval cases matching this section's named examples; checkers are structural/keyword heuristics, proven to actually discriminate via mock-provider fixtures — not a substitute for live-model evaluation.
+- **Phase 9 — Production hardening** — ✅ done (PR #9). Real cost estimation (from actual token usage, never guessed), a project activity/cost summary utility, and secret redaction on every durable log write.
+- **Phase 10 — Public website refinement** — ⛔ blocked. This phase is explicitly gated on the Design System Engineer agent identifying real improvements — which requires an actual live run of that agent against the current site, and this environment has no Anthropic API credits (the same limitation Phases 2 and 8 hit). Per this section's own rule — "not a redesign for its own sake" — nobody should freelance UI changes here standing in for what's supposed to be the agent's own, reviewable recommendation. Unblocks once a live API key with credits is available: run `design-system-engineer` (Phase 4) against the real site content, get its structured, versioned recommendation as a normal artifact, then route it through the Phase 6 gates like any other agent output.
 
-Each phase ships independently: inspect current state → implement → test → verify build → review architecture/security → update docs → report exactly what changed → identify remaining work. No phase claims done without verification.
+Each phase shipped independently: inspect current state → implement → test → verify build → review architecture/security → update docs → report exactly what changed → identify remaining work. No phase claimed done without verification — see each PR's description for the specific verification performed.
 
 ---
 
