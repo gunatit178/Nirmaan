@@ -127,20 +127,20 @@ body {
 /* ---- PAGE HERO ---- */
 .page-hero {
   position: relative; overflow: hidden;
-  padding: 120px 0 80px;
+  padding: 86px 0 42px;
 }
 .page-hero-label {
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #6366f1; margin-bottom: 16px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #6366f1; margin-bottom: 10px;
 }
 .page-hero-title {
   font-family: 'Manrope', sans-serif; font-weight: 800;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 1.07; letter-spacing: -0.02em; color: #F8FAFC;
-  margin-bottom: 20px;
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  line-height: 1.08; letter-spacing: -0.02em; color: #F8FAFC;
+  margin-bottom: 12px;
 }
 .page-hero-sub {
-  color: #94A3B8; font-size: 1.125rem; line-height: 1.7;
+  color: #94A3B8; font-size: 1.05rem; line-height: 1.6;
   max-width: 560px;
 }
 
@@ -148,7 +148,7 @@ body {
 .service-card {
   border: 1px solid rgba(255,255,255,0.06);
   background: rgba(13,17,23,0.85);
-  border-radius: 20px; padding: 32px;
+  border-radius: 16px; padding: 22px;
   transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
   position: relative; overflow: hidden;
   text-decoration: none; display: block;
@@ -161,14 +161,14 @@ body {
 .service-card:hover::before { opacity: 1; }
 .service-card:hover {
   border-color: rgba(99,102,241,0.28);
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(99,102,241,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(99,102,241,0.1);
 }
 .svc-icon {
-  width: 48px; height: 48px; border-radius: 12px;
+  width: 42px; height: 42px; border-radius: 10px;
   background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s; margin-bottom: 20px; flex-shrink: 0;
+  transition: all 0.3s; margin-bottom: 14px; flex-shrink: 0;
 }
 .service-card:hover .svc-icon {
   background: rgba(99,102,241,0.2);
@@ -178,10 +178,10 @@ body {
 /* ---- PROJECT CARDS ---- */
 .project-card {
   border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(13,17,23,0.85); border-radius: 20px;
+  background: rgba(13,17,23,0.85); border-radius: 16px;
   overflow: hidden; transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
 }
-.project-card:hover { border-color: rgba(99,102,241,0.22); transform: translateY(-6px); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+.project-card:hover { border-color: rgba(99,102,241,0.22); transform: translateY(-4px); box-shadow: 0 24px 48px rgba(0,0,0,0.45); }
 .proj-img {
   background: linear-gradient(135deg, #0D1117 0%, #111827 100%);
   position: relative; overflow: hidden;
@@ -193,72 +193,72 @@ body {
 
 /* ---- STACK / ARCH NODES ---- */
 .stack-node {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 18px; border-radius: 14px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: 12px;
   background: rgba(13,17,23,0.8);
   border: 1px solid rgba(255,255,255,0.07);
   transition: all 0.3s; cursor: default;
 }
 .stack-node:hover {
-  transform: translateX(8px);
-  box-shadow: 0 0 20px rgba(99,102,241,0.15);
+  transform: translateX(6px);
+  box-shadow: 0 0 16px rgba(99,102,241,0.15);
 }
 
 /* ---- PROCESS STEPS ---- */
 .step-circle {
-  width: 56px; height: 56px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   border: 2px solid rgba(99,102,241,0.3);
   background: rgba(99,102,241,0.08);
   display: flex; align-items: center; justify-content: center;
   transition: all 0.3s; position: relative; z-index: 1; flex-shrink: 0;
 }
 .process-step:hover .step-circle {
-  background: #6366f1; box-shadow: 0 0 20px rgba(99,102,241,0.5); border-color: #6366f1;
+  background: #6366f1; box-shadow: 0 0 16px rgba(99,102,241,0.5); border-color: #6366f1;
 }
 
 /* ---- WHY CARDS ---- */
 .why-card {
   border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(13,17,23,0.85); border-radius: 16px; padding: 26px;
+  background: rgba(13,17,23,0.85); border-radius: 14px; padding: 18px;
   transition: all 0.3s;
 }
-.why-card:hover { border-color: rgba(99,102,241,0.25); transform: translateY(-3px); background: rgba(99,102,241,0.03); }
+.why-card:hover { border-color: rgba(99,102,241,0.25); transform: translateY(-2px); background: rgba(99,102,241,0.03); }
 
 /* ---- TECH BADGES ---- */
 .tech-badge {
   border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(13,17,23,0.85); border-radius: 12px;
-  padding: 12px 20px; display: flex; align-items: center; gap: 10px;
+  background: rgba(13,17,23,0.85); border-radius: 10px;
+  padding: 8px 14px; display: flex; align-items: center; gap: 8px;
   transition: all 0.25s;
 }
 .tech-badge:hover {
   border-color: rgba(99,102,241,0.4);
   background: rgba(99,102,241,0.07);
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
 
 /* ---- PRICING ---- */
 .pricing-card {
   border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(13,17,23,0.85); border-radius: 20px; padding: 36px;
+  background: rgba(13,17,23,0.85); border-radius: 16px; padding: 26px 24px;
   transition: all 0.35s;
 }
-.pricing-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-4px); }
-.pricing-card.featured { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.04); box-shadow: 0 0 40px rgba(99,102,241,0.08); }
+.pricing-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-3px); }
+.pricing-card.featured { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.04); box-shadow: 0 0 35px rgba(99,102,241,0.08); }
 
 /* ---- CLIENT CARDS ---- */
 .client-card {
-  border: 1px solid rgba(255,255,255,0.07); border-radius: 20px;
-  background: rgba(13,17,23,0.9); padding: 32px; transition: all 0.3s;
+  border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+  background: rgba(13,17,23,0.9); padding: 22px 24px; transition: all 0.3s;
 }
-.client-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.client-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
 
 /* ---- FORM FIELDS ---- */
 .form-field {
   background: rgba(13,17,23,0.95); border: 1px solid rgba(255,255,255,0.08);
-  color: #F8FAFC; border-radius: 8px; padding: 13px 15px; width: 100%;
-  font-family: 'Inter', sans-serif; font-size: 0.9375rem;
+  color: #F8FAFC; border-radius: 8px; padding: 10px 13px; width: 100%;
+  font-family: 'Inter', sans-serif; font-size: 0.875rem;
   transition: border-color 0.2s, box-shadow 0.2s; outline: none;
 }
 .form-field::placeholder { color: #475569; }
@@ -338,8 +338,8 @@ select.form-field option { background: #0D1117; color: #F8FAFC; }
 /* ---- CTA SECTION ---- */
 .cta-section {
   background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(99,102,241,0.03) 100%);
-  border: 1px solid rgba(99,102,241,0.15); border-radius: 24px;
-  padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  border: 1px solid rgba(99,102,241,0.15); border-radius: 20px;
+  padding: 38px 24px; text-align: center; position: relative; overflow: hidden;
 }
 .cta-section::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
@@ -349,20 +349,20 @@ select.form-field option { background: #0D1117; color: #F8FAFC; }
 /* ---- INFO CARD ---- */
 .info-card {
   border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(13,17,23,0.85); border-radius: 16px; padding: 24px;
+  background: rgba(13,17,23,0.85); border-radius: 14px; padding: 14px 16px;
   transition: all 0.3s;
 }
 .info-card:hover { border-color: rgba(99,102,241,0.2); transform: translateY(-2px); }
 
 /* ---- PAGE BREADCRUMB ---- */
-.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #475569; margin-bottom: 16px; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #475569; margin-bottom: 10px; }
 .breadcrumb a { color: #475569; text-decoration: none; transition: color 0.2s; }
 .breadcrumb a:hover { color: #818cf8; }
 .breadcrumb-sep { opacity: 0.4; }
 
 /* Mobile nav */
 @media (max-width: 640px) {
-  .page-hero { padding: 100px 0 60px; }
+  .page-hero { padding: 76px 0 32px; }
 }
 
 /* ---- PAGE TRANSITIONS ---- */
@@ -381,6 +381,15 @@ select.form-field option { background: #0D1117; color: #F8FAFC; }
 }
 @keyframes vt-page-out { to   { opacity: 0; transform: translateY(-8px); } }
 @keyframes vt-page-in  { from { opacity: 0; transform: translateY(16px); } }
+/* Direction-aware: slide the way you are travelling through the menu order (set by page-transitions.js) */
+:root[data-vt-dir="forward"]::view-transition-old(root) { animation: 0.22s cubic-bezier(0.4, 0, 1, 1) both vt-out-left; }
+:root[data-vt-dir="forward"]::view-transition-new(root) { animation: 0.42s 0.04s cubic-bezier(0, 0, 0.2, 1) both vt-in-right; }
+:root[data-vt-dir="back"]::view-transition-old(root)    { animation: 0.22s cubic-bezier(0.4, 0, 1, 1) both vt-out-right; }
+:root[data-vt-dir="back"]::view-transition-new(root)    { animation: 0.42s 0.04s cubic-bezier(0, 0, 0.2, 1) both vt-in-left; }
+@keyframes vt-out-left  { to   { opacity: 0; transform: translateX(-40px); } }
+@keyframes vt-in-right  { from { opacity: 0; transform: translateX(40px); } }
+@keyframes vt-out-right { to   { opacity: 0; transform: translateX(40px); } }
+@keyframes vt-in-left   { from { opacity: 0; transform: translateX(-40px); } }
 
 /* Fallback: fade only (transform on body would break the fixed navbar) */
 html.pt-fallback body { animation: pt-fade-in 0.45s ease-out backwards; }
@@ -392,34 +401,109 @@ html.pt-fallback.pt-leaving body { opacity: 0; transition: opacity 0.22s ease-in
   html.pt-fallback body { animation: none; }
 }
 
-/* ---- HERO 3D (index.html) ---- */
-/* hero-3d.js injects .h3d-stage next to the 2D cards and adds .is-3d once the
+/* ---- LAYERED 3D SCENES (index.html: hero + architecture) ---- */
+/* layers-3d.js injects .h3d-stage next to the 2D markup and adds .is-3d once the
    first WebGL frame is drawn. Without it, the 2D cards simply stay visible. */
 .h3d-stage {
-  position: absolute; left: 0; right: 0; top: -60px; bottom: -60px;
+  position: absolute; left: 0; right: 0; top: -48px; bottom: -48px;
   pointer-events: none; opacity: 0; transition: opacity 0.8s ease;
 }
-.h3d-stage canvas { display: block; width: 100%; height: 100%; }
-#hero-3d.is-3d .h3d-stage { opacity: 1; }
-#hero-3d.is-3d > .hero-2d { opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0s 0.5s; }
+.h3d-stage canvas {
+  display: block; width: 100%; height: 100%;
+  pointer-events: auto; cursor: grab;
+  touch-action: pan-y;               /* horizontal drags rotate, vertical drags still scroll the page */
+  -webkit-tap-highlight-color: transparent;
+}
+[data-layers-3d].is-3d { -webkit-user-select: none; user-select: none; }
+[data-layers-3d].is-3d .h3d-stage { opacity: 1; }
+[data-layers-3d].is-3d > .l3d-fallback { opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0s 0.5s; }
 
+/* Labels are <button>s so every layer is reachable by keyboard */
 .h3d-label {
-  position: absolute; left: 0; top: 0; opacity: 0; white-space: nowrap;
-  padding: 7px 14px 7px 12px; border-radius: 10px;
+  position: absolute; left: 0; top: 0; opacity: 0; display: block; white-space: nowrap;
+  padding: 7px 14px 7px 12px; border-radius: 10px; text-align: left;
+  font: inherit; color: inherit; appearance: none; -webkit-appearance: none; cursor: pointer; pointer-events: auto;
   background: rgba(13,17,23,0.72);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.08); border-left: 2px solid var(--c);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease;
   will-change: transform, opacity;
 }
-/* leader line from the plate corner to the label */
+/* leader line and dot from the plate edge to the label */
 .h3d-label::before {
   content: ''; position: absolute; right: 100%; top: 50%; width: 28px; height: 1px;
-  background: linear-gradient(90deg, var(--c), transparent 0%, var(--c));
-  opacity: 0.55;
+  background: var(--c); opacity: 0.5; transition: opacity 0.2s ease;
 }
 .h3d-label::after {
   content: ''; position: absolute; right: calc(100% + 26px); top: 50%; width: 5px; height: 5px;
   margin-top: -2px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.h3d-title { margin: 0; font-size: 0.75rem; line-height: 1.3; font-weight: 600; color: #F8FAFC; }
-.h3d-sub   { margin: 0; font-size: 10px;  line-height: 1.3; color: #64748B; }
+.h3d-label.is-hover, .h3d-label:focus-visible {
+  background: rgba(17,24,39,0.92); border-color: rgba(255,255,255,0.2); border-left-color: var(--c);
+  box-shadow: 0 0 22px -8px var(--c);
+}
+.h3d-label.is-hover::before, .h3d-label:focus-visible::before, .h3d-label.is-sel::before { opacity: 1; }
+.h3d-label.is-hover::after, .h3d-label:focus-visible::after, .h3d-label.is-sel::after {
+  transform: scale(1.6); box-shadow: 0 0 14px var(--c);
+}
+.h3d-label:focus-visible { outline: 2px solid var(--c); outline-offset: 3px; }
+
+.h3d-title { display: block; font-size: 0.75rem; line-height: 1.3; font-weight: 600; color: #F8FAFC; }
+.h3d-sub   { display: block; font-size: 10px;  line-height: 1.3; color: #64748B; }
+.h3d-desc  {
+  display: block; font-size: 10px; line-height: 1.55; color: #94A3B8; white-space: normal;
+  width: 0; min-width: 100%;          /* adds nothing to the label's natural width; wraps to it instead */
+  max-height: 0; opacity: 0; margin-top: 0; overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+/* selected layer: label grows to show what it does */
+.h3d-label.is-sel {
+  width: var(--h3d-sel-w, 200px); white-space: normal;
+  background: rgba(17,24,39,0.95); border-color: rgba(255,255,255,0.16); border-left-color: var(--c);
+  box-shadow: 0 0 30px -6px var(--c);
+}
+.h3d-label.is-sel .h3d-desc { max-height: 96px; opacity: 1; margin-top: 6px; }
+
+/* one-line hint, dismissed on first interaction */
+.h3d-hint {
+  position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+  padding: 5px 12px; border-radius: 100px; white-space: nowrap;
+  font-size: 11px; letter-spacing: 0.02em; color: #64748B;
+  background: rgba(13,17,23,0.6); border: 1px solid rgba(255,255,255,0.07);
+  opacity: 0; transition: opacity 0.6s ease; pointer-events: none;
+}
+.h3d-hint.show { opacity: 1; }
+
+/* Phone layout: labels are replaced by one detail card under the scene */
+.h3d-detail {
+  display: none; position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+  width: min(calc(100% - 32px), 340px); min-height: 86px; box-sizing: border-box;
+  padding: 12px 16px; border-radius: 12px; text-align: left;
+  background: rgba(17,24,39,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1); border-left: 2px solid var(--c, #6366f1);
+  box-shadow: 0 0 30px -10px var(--c, #6366f1); pointer-events: none;
+}
+.h3d-detail.is-empty { display: none; border-left-color: rgba(255,255,255,0.1); box-shadow: none; }
+.h3d-detail .h3d-desc-static { display: block; margin-top: 6px; font-size: 11px; line-height: 1.55; color: #94A3B8; }
+.h3d-stage.is-compact .h3d-detail { display: block; }
+.h3d-stage.is-compact .h3d-detail.is-empty {
+  display: flex; align-items: center; justify-content: center; min-height: 0; padding: 8px 14px;
+  width: auto; border-radius: 100px; background: rgba(13,17,23,0.6); box-shadow: none; border-color: rgba(255,255,255,0.07);
+}
+.h3d-stage.is-compact .h3d-label { opacity: 0 !important; pointer-events: none; }   /* still focusable for keyboard / screen reader users */
+.h3d-stage.is-compact .h3d-hint { display: none; }
+
+/* ---- CARD TILT (tilt.js) ---- */
+.project-card { position: relative; }
+.tilt-glare {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.09), transparent 45%);
+}
+/* Same lift as the normal :hover rule, plus the lean. Later in the file, so it wins. */
+.service-card.is-tilting, .project-card.is-tilting {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+  transition: transform 0.12s ease-out, border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+  will-change: transform;
+}
+.is-tilting > .tilt-glare { opacity: 1; }

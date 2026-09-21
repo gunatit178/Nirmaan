@@ -1,0 +1,12 @@
+{
+  "name": "studio-website",
+  "private": true,
+  "description": "Static marketing site. Only the Tailwind stylesheet needs a build step.",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.css --minify",
+    "watch:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

@@ -9,37 +9,32 @@
   <link rel="canonical" href="https://[YOUR-DOMAIN].com/contact.html" />
   <meta property="og:title" content="Contact — [YOUR STUDIO NAME]" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://[YOUR-DOMAIN].com/contact.html" />
+  <meta property="og:description" content="Get in touch to discuss your project. Tell us what you want to build and we'll help you figure out the right approach and give you a project estimate." />
+  <meta property="og:image" content="https://[YOUR-DOMAIN].com/og-image.jpg" />
+  <meta property="og:site_name" content="[YOUR STUDIO NAME]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact — [YOUR STUDIO NAME]" />
+  <meta name="twitter:description" content="Get in touch to discuss your project. Tell us what you want to build and we'll help you figure out the right approach and give you a project estimate." />
+  <meta name="twitter:image" content="https://[YOUR-DOMAIN].com/og-image.jpg" />
+  <meta name="theme-color" content="#080C14" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236366f1'/><text y='.9em' font-size='60' x='20'>S</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="page-transitions.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg: '#080C14', surface: '#0D1117', elevated: '#111827',
-            accent: '#6366f1', 'accent-light': '#818cf8',
-            primary: '#F8FAFC', secondary: '#94A3B8', muted: '#475569',
-          },
-          fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Manrope','Inter','sans-serif'] },
-        },
-      },
-    };
-  </script>
+  <script src="contact-form.js" defer></script>
   <style>
     .contact-card {
       border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(13,17,23,0.85); border-radius: 16px; padding: 20px;
-      transition: all 0.3s; display: flex; align-items: center; gap: 14px;
+      background: rgba(13,17,23,0.85); border-radius: 14px; padding: 13px 16px;
+      transition: all 0.3s; display: flex; align-items: center; gap: 12px;
       text-decoration: none;
     }
     .contact-card:hover { border-color: rgba(99,102,241,0.28); transform: translateX(4px); }
     .contact-card-icon {
-      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center; border: 1px solid;
       transition: all 0.3s;
     }
@@ -47,11 +42,13 @@
 
     .reason-card {
       border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(13,17,23,0.85); border-radius: 14px; padding: 22px;
-      display: flex; align-items: flex-start; gap: 14px; transition: all 0.3s;
+      background: rgba(13,17,23,0.85); border-radius: 12px; padding: 13px 16px;
+      display: flex; align-items: flex-start; gap: 12px; transition: all 0.3s;
     }
     .reason-card:hover { border-color: rgba(99,102,241,0.2); transform: translateY(-2px); }
   </style>
+<!-- Built with the Tailwind CLI (see tailwind.config.js). Loaded last to keep the same cascade order the CDN build had. -->
+<link rel="stylesheet" href="tailwind.css" />
 </head>
 <body class="bg-bg text-primary">
 
@@ -65,20 +62,20 @@
         </div>
         <span class="font-display font-extrabold text-primary text-[15px] tracking-tight">[YOUR STUDIO NAME]</span>
       </a>
-      <div class="hidden md:flex items-center gap-7">
+      <div class="hidden lg:flex items-center gap-7">
         <a href="services.html"   class="nav-link">Services</a>
         <a href="projects.html"   class="nav-link">Projects</a>
         <a href="process.html"    class="nav-link">Process</a>
         <a href="technology.html" class="nav-link">Technology</a>
         <a href="contact.html"    class="nav-link active">Contact</a>
       </div>
-      <a href="#contact-form" class="hidden md:inline-flex btn-primary px-5 py-2.5 text-sm gap-2">Start Your Project</a>
-      <button id="hamburger" aria-label="Toggle menu" aria-expanded="false" class="md:hidden flex flex-col gap-1.5 p-2">
+      <a href="#contact-form" class="hidden lg:inline-flex btn-primary px-5 py-2.5 text-sm gap-2">Start Your Project</a>
+      <button id="hamburger" aria-label="Toggle menu" aria-expanded="false" class="lg:hidden flex flex-col gap-1.5 p-2">
         <span class="hamburger-line line-1"></span><span class="hamburger-line line-2"></span><span class="hamburger-line line-3"></span>
       </button>
     </div>
   </div>
-  <div id="mobile-menu" class="md:hidden absolute inset-x-0 top-16 glass border-b border-white/5">
+  <div id="mobile-menu" class="lg:hidden absolute inset-x-0 top-16 glass border-b border-white/5">
     <div class="px-6 py-7 flex flex-col gap-5">
       <a href="services.html"   class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Services</a>
       <a href="projects.html"   class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Projects</a>
@@ -109,17 +106,17 @@
 </section>
 
 <!-- MAIN CONTACT SECTION -->
-<section id="contact-form" class="py-16 lg:py-20" aria-label="Contact form and details">
+<section id="contact-form" class="py-10 lg:py-14" aria-label="Contact form and details">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="grid lg:grid-cols-5 gap-12 lg:gap-16">
+    <div class="grid lg:grid-cols-5 gap-8 lg:gap-12">
 
       <!-- LEFT: Details + Why contact -->
-      <div class="lg:col-span-2 space-y-6">
+      <div class="lg:col-span-2 space-y-4">
 
         <!-- Contact Methods -->
         <div>
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-5">Reach Us Directly</p>
-          <div class="space-y-3">
+          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-3">Reach Us Directly</p>
+          <div class="space-y-2">
 
             <!-- *** REPLACE: Add your actual email *** -->
             <a href="mailto:[YOUR-EMAIL@DOMAIN.COM]" class="contact-card">
@@ -162,8 +159,8 @@
 
         <!-- Why contact us -->
         <div>
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-5">What happens next</p>
-          <div class="space-y-3">
+          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-3">What happens next</p>
+          <div class="space-y-2">
             <div class="reason-card">
               <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span class="font-display font-bold text-accent text-xs">1</span>
@@ -204,12 +201,12 @@
         </div>
 
         <!-- Clients -->
-        <div class="glass rounded-2xl p-6" style="border-color:rgba(99,102,241,0.15);">
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-4">Trusted by</p>
-          <div class="space-y-3">
+        <div class="glass rounded-xl p-4 sm:p-5" style="border-color:rgba(99,102,241,0.15);">
+          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2.5">Trusted by</p>
+          <div class="space-y-2.5">
             <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
-              <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center flex-shrink-0">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L1.5 5v4.5L7 12.5l5.5-3V5L7 1.5z" stroke="#818cf8" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              <div class="w-7 h-7 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L1.5 5v4.5L7 12.5l5.5-3V5L7 1.5z" stroke="#818cf8" stroke-width="1.3" stroke-linejoin="round"/></svg>
               </div>
               <div>
                 <p class="text-primary text-sm font-semibold group-hover:text-accent-light transition-colors">Sudaangeo.in</p>
@@ -217,8 +214,8 @@
               </div>
             </a>
             <a href="https://khelshiksha.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#34d399" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="#34d399" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#34d399" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3" stroke="#34d399" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
               <div>
                 <p class="text-primary text-sm font-semibold group-hover:text-emerald-400 transition-colors">Khelshiksha.com</p>
@@ -231,23 +228,23 @@
       </div>
 
       <!-- RIGHT: Estimator + Contact Form -->
-      <div class="lg:col-span-3 space-y-8 reveal rd1">
+      <div class="lg:col-span-3 space-y-5 reveal rd1">
 
         <!-- INTERACTIVE ESTIMATOR WIDGET -->
-        <div class="glass rounded-2xl p-7 lg:p-9 border border-indigo-500/20" style="box-shadow:0 10px 40px -10px rgba(99,102,241,0.15); background: linear-gradient(180deg, rgba(13,17,23,0.9) 0%, rgba(13,17,23,0.7) 100%);">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-light"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+        <div class="glass rounded-xl p-5 sm:p-6 border border-indigo-500/20" style="box-shadow:0 10px 40px -10px rgba(99,102,241,0.15); background: linear-gradient(180deg, rgba(13,17,23,0.9) 0%, rgba(13,17,23,0.7) 100%);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-light"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
             </div>
             <div>
-              <h2 class="font-display font-bold text-primary text-xl">Project Estimator</h2>
+              <h2 class="font-display font-bold text-primary text-lg">Project Estimator</h2>
               <p class="text-secondary text-xs">Get a ballpark cost and timeline instantly.</p>
             </div>
           </div>
           
-          <div class="grid sm:grid-cols-2 gap-5 mb-5">
+          <div class="grid sm:grid-cols-2 gap-3.5 mb-3.5">
             <div>
-              <label class="block text-secondary text-xs font-medium mb-2">Base Project Type</label>
+              <label class="block text-secondary text-xs font-medium mb-1.5">Base Project Type</label>
               <select id="est-type" class="form-field" onchange="calculateEstimate()">
                 <option value="15000" data-time="1-2 weeks">Standard Business Website</option>
                 <option value="35000" data-time="3-4 weeks">E-Commerce Website</option>
@@ -265,39 +262,40 @@
             </div>
           </div>
 
-          <div class="mb-6">
-            <label class="block text-secondary text-xs font-medium mb-2">Optional Add-ons</label>
+          <div class="mb-4">
+            <label class="block text-secondary text-xs font-medium mb-1.5">Optional Add-ons</label>
             <div class="flex flex-wrap gap-2">
-              <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
                 <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="10000" data-time="1" onchange="calculateEstimate()" /> User Login / Auth
               </label>
-              <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
                 <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="15000" data-time="2" onchange="calculateEstimate()" /> Admin Dashboard
               </label>
-              <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
                 <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="8000" data-time="1" onchange="calculateEstimate()" /> Payment Integration
               </label>
             </div>
           </div>
 
-          <div class="bg-surface/80 rounded-xl p-5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="bg-surface/80 rounded-xl p-4 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <p class="text-secondary text-xs uppercase tracking-wider mb-1">Estimated Range</p>
-              <p class="font-display font-extrabold text-2xl text-accent-light" id="est-price">₹15,000 - ₹25,000</p>
-              <p class="text-muted text-xs mt-1">Timeline: <span id="est-timeline" class="text-primary font-medium">1-2 weeks</span></p>
+              <p class="text-secondary text-[11px] uppercase tracking-wider mb-0.5">Estimated Range</p>
+              <p class="font-display font-extrabold text-xl sm:text-2xl text-accent-light" id="est-price">₹15,000 - ₹25,000</p>
+              <p class="text-muted text-xs mt-0.5">Timeline: <span id="est-timeline" class="text-primary font-medium">1-2 weeks</span></p>
             </div>
-            <button type="button" onclick="applyEstimateToForm()" class="btn-secondary px-5 py-2.5 text-xs whitespace-nowrap gap-2 bg-white/5">
+            <button type="button" onclick="applyEstimateToForm()" class="btn-secondary px-4 py-2 text-xs whitespace-nowrap gap-1.5 bg-white/5">
               Prefill Form Below
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
         </div>
 
-        <form id="main-contact-form" class="glass rounded-2xl p-8 lg:p-10 space-y-5" style="border-color:rgba(255,255,255,0.07);" onsubmit="handleSubmit(event)" novalidate>
+        <form id="main-contact-form" class="glass rounded-xl p-6 sm:p-7 lg:p-8 space-y-4" style="border-color:rgba(255,255,255,0.07);" onsubmit="handleSubmit(event)" novalidate data-endpoint="">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" hidden />
 
           <div>
-            <h2 class="font-display font-bold text-primary text-xl mb-1">Start your project</h2>
-            <p class="text-secondary text-sm">Fill in the form and we'll get back to you within 24 hours.</p>
+            <h2 class="font-display font-bold text-primary text-lg sm:text-xl mb-1">Start your project</h2>
+            <p class="text-secondary text-xs sm:text-sm">Fill in the form and we'll get back to you within 24 hours.</p>
           </div>
 
           <div class="grid sm:grid-cols-2 gap-5">
@@ -372,7 +370,7 @@
             <textarea id="message" name="message" rows="4" class="form-field resize-none" placeholder="Any other details, requirements, or questions you'd like us to know..."></textarea>
           </div>
 
-          <!-- *** IMPORTANT: Wire this to your backend / Formspree / EmailJS before going live *** -->
+          <!-- Set data-endpoint on the <form> to your form service URL. See contact-form.js. -->
           <button type="submit" id="submit-btn" class="btn-primary w-full py-4 text-base font-semibold gap-2">
             <span id="submit-text">Send My Enquiry</span>
             <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -397,7 +395,7 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="border-t py-12 mt-4" style="border-color:rgba(255,255,255,0.05);">
+<footer class="border-t py-8" style="border-color:rgba(255,255,255,0.05);">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
     <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
       <a href="index.html" class="flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg bg-accent flex items-center justify-center" style="box-shadow:0 0 12px rgba(99,102,241,0.4);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="font-display font-extrabold text-primary text-sm">[YOUR STUDIO NAME]</span></a>
@@ -499,29 +497,6 @@
   // Initial calculation on load
   calculateEstimate();
 
-  // *** IMPORTANT: Replace the setTimeout below with a real fetch() to your backend / Formspree / EmailJS ***
-  function handleSubmit(e) {
-    e.preventDefault();
-    const name    = document.getElementById('name').value.trim();
-    const email   = document.getElementById('email').value.trim();
-    const project = document.getElementById('project').value.trim();
-    const errEl   = document.getElementById('form-error');
-    const okEl    = document.getElementById('form-success');
-    const btn     = document.getElementById('submit-btn');
-    const txt     = document.getElementById('submit-text');
-    errEl.classList.add('hidden');
-    okEl.classList.add('hidden');
-    if (!name || !email || !project) { errEl.classList.remove('hidden'); return; }
-    btn.disabled = true;
-    txt.textContent = 'Sending…';
-    // Replace with real fetch() call:
-    setTimeout(() => {
-      btn.disabled = false;
-      txt.textContent = 'Send My Enquiry';
-      okEl.classList.remove('hidden');
-      e.target.reset();
-    }, 1400);
-  }
 </script>
 </body>
 </html>

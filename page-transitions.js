@@ -1,9 +1,50 @@
 /*
-  Page-transition fallback for browsers without cross-document View Transitions
-  (e.g. Firefox). Supported browsers are animated purely by the
-  @view-transition rule in styles.css, so this script does nothing there.
-  Load it in <head>, after styles.css, so the fade-in starts before first paint.
+  Page transitions.
+
+  1. Browsers with cross-document View Transitions (Chrome / Edge 126+, Safari 18.2+)
+     animate purely through the @view-transition rule in styles.css. This file only
+     tells the CSS which way you are travelling, so pages slide forward or back in
+     the same order as the menu (see "PAGE TRANSITIONS" in styles.css).
+  2. Other browsers (e.g. Firefox) get a simple fade out / fade in from the second
+     block below.
+
+  Load it in <head>, after styles.css, so it is ready before first paint.
 */
+
+/* ---- 1. Direction for native view transitions ---- */
+(function () {
+  'use strict';
+  if (!('CSSViewTransitionRule' in window)) return;
+
+  var root = document.documentElement;
+  var ORDER = ['index', 'services', 'projects', 'process', 'technology', 'contact'];   // same as the nav
+
+  function indexOf(url) {
+    try {
+      var name = new URL(url, location.href).pathname.split('/').pop().replace(/\.html$/, '') || 'index';
+      return ORDER.indexOf(name);
+    } catch (err) { return -1; }
+  }
+  function setDirection(from, to) {
+    if (from < 0 || to < 0 || from === to) root.removeAttribute('data-vt-dir');
+    else root.setAttribute('data-vt-dir', to > from ? 'forward' : 'back');
+  }
+
+  // Outgoing page: fires just before the old page is captured.
+  window.addEventListener('pageswap', function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    setDirection(indexOf(location.href), indexOf(e.activation.entry.url));
+  });
+
+  // Incoming page: fires before its first paint, while the transition is being set up.
+  window.addEventListener('pagereveal', function (e) {
+    if (!e.viewTransition) return;
+    var nav = window.navigation, from = nav && nav.activation && nav.activation.from;
+    setDirection(indexOf(from ? from.url : document.referrer), indexOf(location.href));
+  });
+})();
+
+/* ---- 2. Fade fallback for browsers without View Transitions ---- */
 (function () {
   'use strict';
 
@@ -41,26 +82,3 @@
     if (e.persisted) root.classList.remove('pt-leaving');
   });
 })();
-
-// Interactive Device Switcher Logic
-window.switchDevice = function(btn, deviceType, frameId) {
-  // Update button classes
-  var container = btn.parentElement;
-  var buttons = container.querySelectorAll('.device-btn');
-  buttons.forEach(function(b) {
-    b.classList.remove('active');
-    b.querySelector('svg').classList.remove('text-accent');
-    b.querySelector('svg').classList.add('text-secondary');
-  });
-  
-  btn.classList.add('active');
-  btn.querySelector('svg').classList.remove('text-secondary');
-  btn.querySelector('svg').classList.add('text-accent');
-  
-  // Update frame classes
-  var frame = document.getElementById(frameId);
-  if (frame) {
-    frame.classList.remove('desktop', 'tablet', 'mobile');
-    frame.classList.add(deviceType);
-  }
-};
