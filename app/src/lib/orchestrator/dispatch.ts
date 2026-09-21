@@ -6,6 +6,8 @@ import { encodeStringList } from "../db/json";
 import type { ModelProvider } from "../providers/types";
 import type { HandoffStatus } from "../agents/types";
 import { requireTaskType, requireOutputPath, artifactTypeFor } from "./agentConfig";
+import { estimateCostUsd } from "../costs/estimateCost";
+import { logEvent } from "../db/logEvent";
 
 /**
  * The one piece of real "orchestration" logic in this phase: given a Task
@@ -42,10 +44,8 @@ export interface DispatchResult {
   status: HandoffStatus;
   confidence: string;
   reviewTaskIds: string[];
-}
-
-async function logEvent(projectId: string, agentSlug: string | null, taskId: string | null, message: string) {
-  await prisma.event.create({ data: { projectId, agentSlug, taskId, message } });
+  /** USD cost estimate for this dispatch's model call. null when the provider reported no usage (e.g. MockProvider) — never a guessed number standing in for a real one. */
+  costUsd: number | null;
 }
 
 function buildUserInput(task: { title: string; description: string | null }): string {
@@ -104,11 +104,24 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
   const newTaskStatus = STATUS_TO_TASK_STATUS[result.metadata.status];
   await prisma.task.update({ where: { id: task.id }, data: { status: newTaskStatus } });
 
+  // Cost is reported honestly, not guessed: null (not 0) when the
+  // provider gave no real usage figures. A MockProvider run must never
+  // look like a free real run in the log.
+  let costUsd: number | null = null;
+  let costNote = "cost unknown (provider reported no usage)";
+  if (result.usage) {
+    const estimate = estimateCostUsd(result.model, result.usage);
+    costUsd = estimate.priced ? estimate.usd : null;
+    costNote = estimate.priced
+      ? `~$${estimate.usd.toFixed(4)} (${result.usage.inputTokens} in / ${result.usage.outputTokens} out tokens, ${result.model})`
+      : `cost unknown (no pricing entry for model "${result.model}")`;
+  }
+
   await logEvent(
     task.projectId,
     agentSlug,
     task.id,
-    `${agentSlug} completed with status=${result.metadata.status}, confidence=${result.metadata.confidence}.`
+    `${agentSlug} completed with status=${result.metadata.status}, confidence=${result.metadata.confidence}, ${costNote}.`
   );
 
   const reviewTaskIds: string[] = [];
@@ -144,5 +157,6 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
     status: result.metadata.status,
     confidence: result.metadata.confidence,
     reviewTaskIds,
+    costUsd,
   };
 }

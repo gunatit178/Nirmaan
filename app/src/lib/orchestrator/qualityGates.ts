@@ -1,4 +1,5 @@
 import { prisma } from "../db/client";
+import { logEvent } from "../db/logEvent";
 import type { ApprovalGate, ProjectStage } from "../db/enums";
 
 /**
@@ -114,13 +115,12 @@ export async function advanceProjectStage(projectId: string) {
     data: { stage: check.nextStage! },
   });
 
-  const event = await prisma.event.create({
-    data: {
-      projectId,
-      agentSlug: null,
-      message: `Advanced from ${check.currentStage} to ${check.nextStage} — ${check.gate} gate approved.`,
-    },
-  });
+  const event = await logEvent(
+    projectId,
+    null,
+    null,
+    `Advanced from ${check.currentStage} to ${check.nextStage} — ${check.gate} gate approved.`
+  );
 
   return { project, event };
 }

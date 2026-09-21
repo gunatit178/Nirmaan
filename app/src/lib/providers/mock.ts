@@ -8,7 +8,13 @@ import type { CompletionRequest, CompletionResult, ModelProvider } from "./types
  * about it. See src/lib/agents/runAgent.test.ts for how it's used.
  */
 export class MockProvider implements ModelProvider {
-  constructor(private response?: string) {}
+  constructor(
+    private response?: string,
+    /** Set only by tests that need to exercise the cost-estimation path — a real run never has fabricated usage, so this stays undefined by default, matching "no usage" rather than pretending to a real number. */
+    private usage?: CompletionResult["usage"],
+    /** Overrides the reported model — only meaningful together with `usage`, to exercise cost estimation against a model that's actually in pricing.ts. Defaults to "mock-echo", which is deliberately absent from pricing.ts. */
+    private modelOverride?: string
+  ) {}
 
   async complete(req: CompletionRequest): Promise<CompletionResult> {
     const text =
@@ -29,6 +35,6 @@ export class MockProvider implements ModelProvider {
         `No live model was called. Received a prompt of ${req.userPrompt.length} characters for model "${req.model}".`,
       ].join("\n");
 
-    return { text, provider: "mock", model: "mock-echo" };
+    return { text, provider: "mock", model: this.modelOverride ?? "mock-echo", usage: this.usage };
   }
 }

@@ -15,6 +15,8 @@ function fakeResult(overrides: Partial<RunAgentResult["metadata"]> = {}, body = 
   return {
     filePath: "/tmp/fake.md",
     rawResponse: `---\nstatus: "${overrides.status ?? "ready-for-handoff"}"\n---\n\n${body}`,
+    model: "fake-model",
+    provider: "fake",
     metadata: {
       project: "test",
       agent: "test-agent",

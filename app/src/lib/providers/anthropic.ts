@@ -27,6 +27,11 @@ export class AnthropicProvider implements ModelProvider {
       .map((block) => block.text)
       .join("\n");
 
-    return { text, provider: "anthropic", model: req.model };
+    return {
+      text,
+      provider: "anthropic",
+      model: req.model,
+      usage: { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens },
+    };
   }
 }

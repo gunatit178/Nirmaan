@@ -5,10 +5,17 @@ export interface CompletionRequest {
   maxTokens: number;
 }
 
+export interface TokenUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
+
 export interface CompletionResult {
   text: string;
   provider: string;
   model: string;
+  /** Real usage reported by the provider, when it reports one. Undefined — never a guessed number — if the provider doesn't report usage (e.g. MockProvider). See src/lib/costs/ for what turns this into a dollar estimate. */
+  usage?: TokenUsage;
 }
 
 /**
