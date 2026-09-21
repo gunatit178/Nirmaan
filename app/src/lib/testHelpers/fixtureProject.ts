@@ -15,9 +15,9 @@ export async function seedFixtureProject(opts: { stage?: ProjectStage } = {}) {
   return project;
 }
 
-export async function seedFixtureTask(projectId: string, ownerAgent: string, title = "Fixture task") {
+export async function seedFixtureTask(projectId: string, ownerAgent: string, title = "Fixture task", description?: string) {
   return prisma.task.create({
-    data: { title, projectId, ownerAgent, status: "READY" },
+    data: { title, description, projectId, ownerAgent, status: "READY" },
   });
 }
 

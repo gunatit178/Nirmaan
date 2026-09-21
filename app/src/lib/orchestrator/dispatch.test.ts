@@ -167,6 +167,106 @@ test("dispatchTask prefers a provider's real reported costUsd over the estimated
   }
 });
 
+/** Captures the model actually requested from the provider, so tests can prove the complexity heuristic changed what was asked for, not just that dispatch succeeded. */
+function capturingProvider(text: string): { provider: ModelProvider; requestedModels: string[] } {
+  const requestedModels: string[] = [];
+  return {
+    provider: {
+      async complete(req) {
+        requestedModels.push(req.model);
+        return { text, provider: "fake-capturing-provider", model: req.model };
+      },
+    },
+    requestedModels,
+  };
+}
+
+test("dispatchTask upgrades the model when the task description reads as more complex than its role's baseline", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+
+  const project = await seedFixtureProject();
+  const task = await seedFixtureTask(
+    project.id,
+    "business-analyst", // baseline task type "requirements" -> claude-sonnet-5
+    "Design the multi-tenant requirements",
+    "This needs a multi-tenant architecture with SSO, an audit trail, and SOC 2 compliance, migrating off the legacy system with high availability across multi-region deployments."
+  );
+  try {
+    const { provider, requestedModels } = capturingProvider(READY_RESPONSE);
+    const result = await dispatchTask(task.id, { provider });
+
+    assert.equal(result.model, "claude-opus-5");
+    assert.deepEqual(requestedModels, ["claude-opus-5"]);
+
+    const events = await prisma.event.findMany({ where: { projectId: project.id } });
+    assert.ok(events.some((e) => e.message.includes("Complexity heuristic: up-tiered claude-sonnet-5 -> claude-opus-5")));
+  } finally {
+    await cleanupFixtureProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
+test("dispatchTask downgrades the model when the task description reads as simpler than its role's baseline", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+
+  const project = await seedFixtureProject();
+  const task = await seedFixtureTask(
+    project.id,
+    "business-analyst", // baseline task type "requirements" -> claude-sonnet-5
+    "Write the requirements",
+    "Just a simple one-page static site, no backend, no database, no CMS needed."
+  );
+  try {
+    const { provider, requestedModels } = capturingProvider(READY_RESPONSE);
+    const result = await dispatchTask(task.id, { provider });
+
+    assert.equal(result.model, "claude-haiku-4-5-20251001");
+    assert.deepEqual(requestedModels, ["claude-haiku-4-5-20251001"]);
+  } finally {
+    await cleanupFixtureProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
+test("AGENCY_OS_DISABLE_COMPLEXITY_ROUTING=1 turns the heuristic off entirely, even for a clearly complex description", async () => {
+  const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
+  const prevRoot = process.env.PROJECTS_ROOT;
+  process.env.PROJECTS_ROOT = tmpProjectsRoot;
+  process.env.AGENCY_OS_DISABLE_COMPLEXITY_ROUTING = "1";
+
+  const project = await seedFixtureProject();
+  const task = await seedFixtureTask(
+    project.id,
+    "business-analyst",
+    "Design the multi-tenant requirements",
+    "This needs a multi-tenant architecture with SSO, an audit trail, and SOC 2 compliance, migrating off the legacy system with high availability across multi-region deployments."
+  );
+  try {
+    const { provider, requestedModels } = capturingProvider(READY_RESPONSE);
+    const result = await dispatchTask(task.id, { provider });
+
+    assert.equal(result.model, "claude-sonnet-5", "should stay at the unadjusted baseline with the kill switch on");
+    assert.deepEqual(requestedModels, ["claude-sonnet-5"]);
+
+    const events = await prisma.event.findMany({ where: { projectId: project.id } });
+    assert.ok(!events.some((e) => e.message.includes("Complexity heuristic")));
+  } finally {
+    delete process.env.AGENCY_OS_DISABLE_COMPLEXITY_ROUTING;
+    await cleanupFixtureProject(project.id);
+    fs.rmSync(tmpProjectsRoot, { recursive: true, force: true });
+    if (prevRoot === undefined) delete process.env.PROJECTS_ROOT;
+    else process.env.PROJECTS_ROOT = prevRoot;
+  }
+});
+
 test("dispatchTask marks the task BLOCKED and creates no review tasks when the agent reports blocked-on-input", async () => {
   const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));
   const prevRoot = process.env.PROJECTS_ROOT;

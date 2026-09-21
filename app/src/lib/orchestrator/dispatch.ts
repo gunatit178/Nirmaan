@@ -3,11 +3,13 @@ import { prisma } from "../db/client";
 import { runAgent, projectsRoot } from "../agents/runAgent";
 import { loadAgent } from "../agents/loadAgent";
 import { encodeStringList } from "../db/json";
+import { resolveModel } from "../model-router";
 import type { ModelProvider } from "../providers/types";
 import type { HandoffStatus } from "../agents/types";
 import { requireTaskType, requireOutputPath, artifactTypeFor } from "./agentConfig";
 import { estimateCostUsd } from "../costs/estimateCost";
 import { logEvent } from "../db/logEvent";
+import { estimateComplexity, adjustModelForComplexity } from "./complexityHeuristic";
 
 /**
  * The one piece of real "orchestration" logic in this phase: given a Task
@@ -46,6 +48,8 @@ export interface DispatchResult {
   reviewTaskIds: string[];
   /** USD cost estimate for this dispatch's model call. null when the provider reported no usage (e.g. MockProvider) — never a guessed number standing in for a real one. */
   costUsd: number | null;
+  /** The model actually used for this dispatch — may differ from the task type's baseline if the complexity heuristic adjusted it. */
+  model: string;
 }
 
 function buildUserInput(task: { title: string; description: string | null }): string {
@@ -67,17 +71,43 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
   const agentDef = loadAgent(agentSlug); // throws with a clear error if the slug doesn't exist
   const taskType = requireTaskType(agentSlug);
   const outputRelativePath = requireOutputPath(agentSlug);
+  const userInput = buildUserInput(task);
 
   await prisma.task.update({ where: { id: task.id }, data: { status: "IN_PROGRESS" } });
   await logEvent(task.projectId, agentSlug, task.id, `Dispatched task "${task.title}" to ${agentSlug}.`);
+
+  // Per-instance complexity adjustment (src/lib/orchestrator/complexityHeuristic.ts):
+  // the router's baseline model reflects what this AGENT ROLE generally
+  // needs; this nudges it up or down one tier for how hard THIS task
+  // instance specifically looks, at zero extra cost (no model call).
+  // AGENCY_OS_DISABLE_COMPLEXITY_ROUTING=1 turns it off entirely if it
+  // ever needs to be ruled out as a variable.
+  let modelOverrides: { model: string } | undefined;
+  if (process.env.AGENCY_OS_DISABLE_COMPLEXITY_ROUTING !== "1") {
+    const baseModel = resolveModel(taskType).model;
+    const { adjustment, reasons } = estimateComplexity(userInput);
+    if (adjustment !== 0) {
+      const adjustedModel = adjustModelForComplexity(baseModel, adjustment);
+      if (adjustedModel !== baseModel) {
+        modelOverrides = { model: adjustedModel };
+        await logEvent(
+          task.projectId,
+          agentSlug,
+          task.id,
+          `Complexity heuristic: ${adjustment > 0 ? "up" : "down"}-tiered ${baseModel} -> ${adjustedModel} (${reasons.join(", ")}).`
+        );
+      }
+    }
+  }
 
   const result = await runAgent({
     agentSlug,
     taskType,
     projectId: task.project.artifactsPath,
-    userInput: buildUserInput(task),
+    userInput,
     outputRelativePath,
     provider: options.provider,
+    modelOverrides,
   });
 
   const agentRow = await prisma.agent.upsert({
@@ -163,5 +193,6 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
     confidence: result.metadata.confidence,
     reviewTaskIds,
     costUsd,
+    model: result.model,
   };
 }
