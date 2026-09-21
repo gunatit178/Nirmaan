@@ -51,6 +51,19 @@ Fixed along the way: `Approval.gate`'s allowed values (`src/lib/db/enums.ts`) ha
 
 The Approvals dashboard (`src/lib/actions/approvals.ts`, Phase 3) now calls `tryAdvanceAfterApproval` after every APPROVED decision — approving a gate through the UI actually advances the project. Manually verified against the real seeded `demo-project` (approved its pending REQUIREMENTS gate, confirmed `stage` moved from `REQUIREMENTS` to `PLANNING`, then re-seeded to reset the fixture).
 
+## Tool integrations (Phase 7)
+
+`src/lib/tools/` gives agents scoped, concrete capabilities instead of the free-text permission strings in `agent.md` frontmatter being purely aspirational. Deliberately conservative, given the real security stakes of "let an LLM's output trigger actions":
+
+- **`filesystemTools.ts`** — read/list/write, all confined to `/projects/{id}/` via `resolveProjectPath` (`src/lib/agents/artifactWriter.ts`), which rejects any path that resolves outside the project directory (`../` traversal) by throwing, not by silently clamping. Writes go through the same never-overwrite-in-place versioning `runAgent` already uses (extracted into `artifactWriter.ts` so there's one writer, not two).
+- **`testTool.ts`** — the only execute-capable tool. Always runs the fixed command `npm test` in `/app`; its input schema has no field that reaches a command line. An agent can trigger it; it cannot make it run anything else.
+- **`commandRunner.ts`** — the only place in this codebase that spawns a process. Takes a command + argv array, never a shell string (`shell: false`), so there's no shell-interpolation surface by construction. Hard timeout (kills the child), output size cap per stream.
+- **`registry.ts`** — `toolsForAgent(slug)` filters the tool list by that agent's actual declared permissions (`read`/`write`/`execute` booleans and non-empty strings from `agent.md`).
+
+**What deliberately does NOT exist**: a deploy tool, a git-write tool, or any arbitrary-command tool. DevOps Engineer's `deploy: true` in its `agent.md` frontmatter describes a future capability (Section 26's human-approval-gate rule) — it grants nothing today, because no deploy tool is registered anywhere. This is enforced by absence, not by a permission check that could have a bug: `registry.test.ts` has a standing invariant test that fails if any tool's name or description ever mentions "deploy" or "git," specifically so adding either requires deliberately breaking that test, not just wiring up a handler.
+
+No live model has ever actually called one of these tools yet (that needs real tool-use wiring into `runAgent()`, plus API credits — neither exists). This is the capability layer a future live agent run would call into; today it's exercised entirely by direct import and `npm test`.
+
 Every other stage transition (`LEAD`→`DISCOVERY`, `ESTIMATION`→`PROPOSAL`, etc.) has no gate in this system — that's a deliberate reading of the architecture plan, not a gap to fill later.
 
 ## Learn more (Next.js)
