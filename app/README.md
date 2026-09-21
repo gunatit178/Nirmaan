@@ -35,6 +35,20 @@ The founder made a clear call: don't fund a separate metered API budget for this
 
 **This was tested live** — the one live-model exception to this whole project's "verified only against mocks" pattern. Product Manager was dispatched against a real, realistic client brief (a photographer portfolio site) through the actual `dispatchTask()` → `runAgent()` → `ClaudeCodeCliProvider` → real `claude` subprocess pipeline, no mocks anywhere in the path. Result: a genuinely well-structured PRD (correct MVP scoping, honestly-flagged low-confidence assumptions, real prioritized open questions), `status: ready-for-handoff`, `confidence: HIGH`, real cost `$0.2349`, ~81 seconds. Run against an isolated fixture project, fully cleaned up afterward — the seeded `demo-project` was untouched.
 
+### Per-task complexity routing
+
+The founder asked whether the model could adapt to how hard each *specific* task actually is, not just which agent role it belongs to — the router already picked a model per `TaskType` (e.g. every `product-manager` task gets Sonnet), but a one-line brief and a multi-service platform brief got the same model regardless.
+
+`src/lib/orchestrator/complexityHeuristic.ts` nudges the model one tier up or down per task instance, layered on top of the existing per-role routing — at **zero extra cost**: it's plain keyword/length matching on the task's title+description, not a second model call. (Spending tokens to decide how many tokens to spend would defeat the point; if this ever needs to be smarter than string matching, `model-router.ts` already reserves a `"classification"` task type — a cheap Haiku triage call — for exactly that, deliberately not taken here.)
+
+- **Up-signals**: multi-tenant, microservice, distributed, compliance/HIPAA/PCI/SOC 2, migration, high availability, multi-region, SSO, audit trail, concurrency, and similar; also a long, detailed description (200+ words).
+- **Down-signals**: one-page, static site, no backend/database/CMS, "simple", "just a", prototype, and similar; also a very short description (under 20 words).
+- Up- and down-signals net against each other rather than being counted independently, and the result is clamped to a single tier step (`haiku ↔ sonnet ↔ opus`) — this is a nudge, not a full re-routing.
+- `dispatch.ts` logs the decision and its specific reasons to the Event log whenever it fires (`Complexity heuristic: up-tiered claude-sonnet-5 -> claude-opus-5 (mentions "multi-tenant", mentions "compliance").`), so it's auditable, not a silent adjustment.
+- `AGENCY_OS_DISABLE_COMPLEXITY_ROUTING=1` turns it off entirely — a cheap escape hatch if it ever needs to be ruled out as a variable.
+
+Not live-tested separately from the rest of the pipeline — this is deterministic string matching with 12 unit tests covering the signal netting, length thresholds, and tier clamping, plus 3 `dispatch.ts` integration tests (using an injected provider that records which model was actually requested) proving a complex-sounding task really does get upgraded, a simple one really does get downgraded, and the kill switch really does disable it. That's the kind of thing tests prove conclusively; a live run wouldn't add anything a human wouldn't get from reading the same assertions.
+
 ## Project/task/artifact system (Phase 3)
 
 `prisma/schema.prisma` implements the Data Model from the architecture plan on SQLite (`app/prisma/dev.db`, gitignored — migrations in `prisma/migrations/` are tracked). Two SQLite-specific simplifications are documented inline in the schema: no native enums (allowed values live in `src/lib/db/enums.ts`) and no native scalar lists (JSON-encoded TEXT columns, via `src/lib/db/json.ts`).

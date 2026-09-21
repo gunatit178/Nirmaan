@@ -1,6 +1,6 @@
 import matter from "gray-matter";
 import { loadAgent } from "./loadAgent";
-import { resolveModel, type TaskType } from "../model-router";
+import { resolveModel, type TaskType, type ModelConfig } from "../model-router";
 import { ClaudeCodeCliProvider } from "../providers/claudeCodeCli";
 import { AnthropicProvider } from "../providers/anthropic";
 import { MockProvider } from "../providers/mock";
@@ -18,6 +18,8 @@ export interface RunAgentInput {
   outputRelativePath: string;
   /** Inject a provider (used by tests to avoid a live network call). Defaults to the model router's choice. */
   provider?: ModelProvider;
+  /** Passed straight through to resolveModel(taskType, overrides) — e.g. dispatch.ts's per-instance complexity adjustment (src/lib/orchestrator/complexityHeuristic.ts). Takes precedence over both the router's default and any env-var override for this task type. */
+  modelOverrides?: Partial<ModelConfig>;
 }
 
 export interface RunAgentResult {
@@ -113,7 +115,7 @@ function parseAgentResponse(
  */
 export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   const agent = loadAgent(input.agentSlug);
-  const modelConfig = resolveModel(input.taskType);
+  const modelConfig = resolveModel(input.taskType, input.modelOverrides);
   const provider =
     input.provider ??
     (modelConfig.provider === "claude-code-cli"
