@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --import tsx --test src/**/*.test.ts",
-    "demo:pm": "tsx scripts/demo-run-product-manager.ts"
+    "demo:pm": "node --env-file-if-exists=.env.local --import tsx scripts/demo-run-product-manager.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.127.0",
