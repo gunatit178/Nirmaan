@@ -4,12 +4,19 @@
  * this file should hardcode a model id or provider name — agents ask for a
  * TaskType and get back whatever this file currently maps it to.
  *
+ * Default provider is "claude-code-cli" (src/lib/providers/claudeCodeCli.ts):
+ * it shells out to the founder's own `claude` CLI, billed against their
+ * existing Claude subscription rather than a separate metered API budget
+ * they explicitly don't want to fund. "anthropic" (the raw API,
+ * src/lib/providers/anthropic.ts) still exists and still works if that
+ * tradeoff ever changes, but nothing routes to it by default.
+ *
  * Defaults can be overridden per task type via environment variables:
- *   AGENCY_OS_MODEL_<TASKTYPE>_PROVIDER=anthropic|mock
+ *   AGENCY_OS_MODEL_<TASKTYPE>_PROVIDER=claude-code-cli|anthropic|mock
  *   AGENCY_OS_MODEL_<TASKTYPE>_ID=<model id>
  */
 
-export type ModelProviderName = "anthropic" | "mock";
+export type ModelProviderName = "claude-code-cli" | "anthropic" | "mock";
 
 export type TaskType =
   | "requirements" // Product Manager, Business Analyst
@@ -29,12 +36,12 @@ export interface ModelConfig {
 // call sites, when models change — that's the entire point of routing
 // through this file.
 const DEFAULT_ROUTES: Record<TaskType, ModelConfig> = {
-  requirements: { provider: "anthropic", model: "claude-sonnet-5", maxTokens: 4096 },
-  classification: { provider: "anthropic", model: "claude-haiku-4-5-20251001", maxTokens: 1024 },
-  content: { provider: "anthropic", model: "claude-sonnet-5", maxTokens: 4096 },
-  architecture: { provider: "anthropic", model: "claude-opus-5", maxTokens: 8192 },
-  code: { provider: "anthropic", model: "claude-sonnet-5", maxTokens: 8192 },
-  research: { provider: "anthropic", model: "claude-sonnet-5", maxTokens: 4096 },
+  requirements: { provider: "claude-code-cli", model: "claude-sonnet-5", maxTokens: 4096 },
+  classification: { provider: "claude-code-cli", model: "claude-haiku-4-5-20251001", maxTokens: 1024 },
+  content: { provider: "claude-code-cli", model: "claude-sonnet-5", maxTokens: 4096 },
+  architecture: { provider: "claude-code-cli", model: "claude-opus-5", maxTokens: 8192 },
+  code: { provider: "claude-code-cli", model: "claude-sonnet-5", maxTokens: 8192 },
+  research: { provider: "claude-code-cli", model: "claude-sonnet-5", maxTokens: 4096 },
 };
 
 function envOverride(taskType: TaskType): Partial<ModelConfig> {

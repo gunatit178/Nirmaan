@@ -16,6 +16,8 @@ export interface CompletionResult {
   model: string;
   /** Real usage reported by the provider, when it reports one. Undefined — never a guessed number — if the provider doesn't report usage (e.g. MockProvider). See src/lib/costs/ for what turns this into a dollar estimate. */
   usage?: TokenUsage;
+  /** Real, provider-reported USD cost for this exact call, when the provider tells us directly (the claude CLI's total_cost_usd — see providers/claudeCodeCli.ts). More accurate than costs/estimateCost.ts's pricing-table guess; dispatch.ts prefers this when present. */
+  costUsd?: number;
 }
 
 /**

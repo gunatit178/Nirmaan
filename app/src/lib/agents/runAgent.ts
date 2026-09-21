@@ -1,6 +1,7 @@
 import matter from "gray-matter";
 import { loadAgent } from "./loadAgent";
 import { resolveModel, type TaskType } from "../model-router";
+import { ClaudeCodeCliProvider } from "../providers/claudeCodeCli";
 import { AnthropicProvider } from "../providers/anthropic";
 import { MockProvider } from "../providers/mock";
 import type { ModelProvider, TokenUsage } from "../providers/types";
@@ -28,6 +29,8 @@ export interface RunAgentResult {
   provider: string;
   /** Real usage when the provider reports one (Anthropic does; MockProvider doesn't). Never a guess — see src/lib/costs/. */
   usage?: TokenUsage;
+  /** Real provider-reported USD cost when available (claude-code-cli reports it directly). */
+  costUsd?: number;
 }
 
 export { projectsRoot };
@@ -113,7 +116,11 @@ export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   const modelConfig = resolveModel(input.taskType);
   const provider =
     input.provider ??
-    (modelConfig.provider === "anthropic" ? new AnthropicProvider() : new MockProvider());
+    (modelConfig.provider === "claude-code-cli"
+      ? new ClaudeCodeCliProvider()
+      : modelConfig.provider === "anthropic"
+        ? new AnthropicProvider()
+        : new MockProvider());
 
   const completion = await provider.complete({
     systemPrompt: buildSystemPrompt(agent.role, agent.body),
@@ -132,5 +139,6 @@ export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
     model: completion.model,
     provider: completion.provider,
     usage: completion.usage,
+    costUsd: completion.costUsd,
   };
 }
