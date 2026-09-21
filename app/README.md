@@ -15,10 +15,9 @@ npm run dev       # http://localhost:3000
 
 ```bash
 npm test           # plumbing tests — mock provider, no network call, no API key needed
-npm run demo:pm    # live run: Product Manager agent against a sample brief, real Anthropic call
 ```
 
-`npm run demo:pm` requires `ANTHROPIC_API_KEY` — copy `.env.example` to `.env.local` and fill it in. Without a key it fails with a clear error rather than pretending to succeed.
+Verified so far against the mock provider only (`src/lib/providers/mock.ts`) — no live model has been run against this yet. `src/lib/providers/anthropic.ts` implements the real provider and is wired into the model router, but isn't currently exercised by anything in this repo; running an agent against a live model requires setting `ANTHROPIC_API_KEY` in the environment and calling `runAgent()` yourself (e.g. from a script or an API route added in a later phase).
 
 Only two agents exist so far (`orchestrator`, `product-manager`) — see `/agents/README.md` for status and the rest of the planned roster.
 
