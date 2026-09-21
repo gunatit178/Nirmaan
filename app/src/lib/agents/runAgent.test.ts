@@ -35,9 +35,13 @@ test("loadAgent throws a clear error for a nonexistent agent", () => {
   assert.throws(() => loadAgent("does-not-exist"), /No agent\.md found/);
 });
 
-test("listAgentSlugs finds both Phase 1 agents", () => {
-  const slugs = listAgentSlugs().sort();
-  assert.deepEqual(slugs, ["orchestrator", "product-manager"]);
+test("listAgentSlugs includes the two Phase 1/2 agents", () => {
+  // Full-roster coverage (all 25 agents) is asserted in allAgentsLoad.test.ts
+  // (Phase 4) — this test only pins the two agents this file's other tests
+  // depend on existing.
+  const slugs = listAgentSlugs();
+  assert.ok(slugs.includes("orchestrator"));
+  assert.ok(slugs.includes("product-manager"));
 });
 
 test("runAgent writes a well-formed artifact with handoff metadata (mock provider)", async () => {

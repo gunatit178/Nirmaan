@@ -17,11 +17,16 @@ Every `agent.md` follows the same structure:
 
 ## Status
 
-Only two agents exist so far — this is Phase 1 of the roadmap (proving the pattern), not the full roster:
+All 25 agents from the architecture plan's Agent Architecture table (Section C) exist as `agent.md` specs, and all load cleanly through the real Phase 2 runtime (`app/src/lib/agents/loadAgent.ts` — see `app/src/lib/agents/allAgentsLoad.test.ts`):
 
-- [`orchestrator/`](orchestrator/agent.md) — plans work, dispatches to other agents, enforces quality gates
-- [`product-manager/`](product-manager/agent.md) — the first specialist agent, turns a client brief into a PRD
+- **Orchestrator** — [`orchestrator/`](orchestrator/agent.md)
+- **Discovery**: [`product-manager/`](product-manager/agent.md), [`business-analyst/`](business-analyst/agent.md), [`market-research/`](market-research/agent.md)
+- **Brand/Content**: [`brand-strategist/`](brand-strategist/agent.md), [`content-strategist/`](content-strategist/agent.md), [`technical-writer/`](technical-writer/agent.md), [`seo-specialist/`](seo-specialist/agent.md)
+- **Design**: [`creative-director/`](creative-director/agent.md), [`ux-designer/`](ux-designer/agent.md), [`ui-designer/`](ui-designer/agent.md), [`design-system-engineer/`](design-system-engineer/agent.md)
+- **Engineering**: [`principal-architect/`](principal-architect/agent.md), [`frontend-engineer/`](frontend-engineer/agent.md), [`backend-engineer/`](backend-engineer/agent.md), [`database-engineer/`](database-engineer/agent.md), [`ai-ml-engineer/`](ai-ml-engineer/agent.md)
+- **Ops/Quality**: [`devops-engineer/`](devops-engineer/agent.md), [`security-engineer/`](security-engineer/agent.md), [`qa-engineer/`](qa-engineer/agent.md), [`performance-engineer/`](performance-engineer/agent.md), [`sre/`](sre/agent.md)
+- **Cross-cutting**: [`legal-compliance/`](legal-compliance/agent.md), [`client-communication/`](client-communication/agent.md), [`finance-estimation/`](finance-estimation/agent.md)
 
-The remaining ~21 agents (Business Analyst, Market Research, Brand Strategist, Content Strategist, Technical Writer, SEO, Creative Director, UX Designer, UI Designer, Design System Engineer, Principal Architect, Frontend/Backend/Database/AI-ML Engineers, DevOps, Security, QA, Performance, SRE, Legal, Client Communication, Finance) are scoped in the architecture plan's Agent Architecture table and get written in Phase 4, each tested against a real or realistic input before being trusted with anything client-facing.
+**What this does NOT mean yet:** none of these agents have been run against a real or realistic input and had their output inspected — that only happened for Product Manager, in Phase 2, using a mock model response. Every agent here is a reviewed, structurally-valid *specification*; none has been exercised end-to-end against a live model. That's Phase 5+ work (orchestration) and Phase 8 (evaluation harness) — see `/docs/architecture-plan.md`.
 
-No orchestration runtime exists yet (that's Phase 2) — these files are specifications to be executed by a future runtime, not currently wired into any code.
+No production deploy/execute capability is live anywhere in this repo. A few agents (DevOps Engineer, Design System Engineer, AI/ML Engineer, Frontend/Backend/Database Engineers) declare `execute` or `deploy` permissions in their frontmatter — those describe what the agent *would* be authorized to do once the permission-enforcement runtime exists (Phase 7) and, for anything destructive or production-facing, once a human-approval-gate runtime exists (referenced throughout as a hard constraint, not yet built as code). Declaring a permission in `agent.md` is not the same as the platform actually granting or enforcing it today.

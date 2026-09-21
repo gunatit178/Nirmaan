@@ -67,7 +67,7 @@ Why this split, concretely:
 
 ## C. Agent Architecture
 
-23 agents total, matching the source spec's roster. Each becomes an `/agents/<slug>/agent.md`. Table below is the condensed mission/output/review map — full agent.md files (with constraints, decision rules, escalation rules) are written during Phase 4.
+25 agents total (the source spec's 23-folder example list in its Section 21 compressed two roles — Content Strategist and Technical Content Writer — into one `/content` folder; this table keeps them distinct per the spec's own Section 6 detail, which is why the total here is 25, not 23). Each becomes an `/agents/<slug>/agent.md`. Table below is the condensed mission/output/review map — full agent.md files (with constraints, decision rules, escalation rules) are written during Phase 4.
 
 | Agent | Mission | Key outputs | Reviewed by |
 |---|---|---|---|
