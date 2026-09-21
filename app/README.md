@@ -43,6 +43,16 @@ No production database exists — this is local SQLite for the founder's own mac
 
 What this phase does **not** do: decide which agent a task should go to in the first place (workstream planning from a bare project objective is unsolved — `Task.ownerAgent` has to already be set before `dispatchTask` can run), enforce the Quality Gates (Phase 6), or automatically dispatch the review tasks it creates (something still has to call `dispatchTask` on them). There's also no UI for this yet — it's exercised by `npm test` (`src/lib/orchestrator/dispatch.test.ts`, mock provider, isolated fixture project cleaned up after each test) and by direct import, not by a dashboard button.
 
+## Quality gates (Phase 6)
+
+`src/lib/orchestrator/qualityGates.ts` enforces the six gated stage transitions from the architecture plan's Section G/H (Requirements→Planning, Design→Architecture, Architecture→Implementation, Implementation→QA, QA→Security Review, Security Review→Deployment). "Enforced" means specifically: `advanceProjectStage(projectId)` refuses to move a project's `stage` forward unless an `APPROVED` `Approval` row exists for the gate governing that transition — it does not attempt to algorithmically judge whether, say, a PRD is actually good; that judgment is exactly what the human's Approve/Reject decision in the dashboard represents.
+
+Fixed along the way: `Approval.gate`'s allowed values (`src/lib/db/enums.ts`) had drifted from Section H's six gate names since Phase 3 (`IMPLEMENTATION_PLAN`/`DEPLOYMENT` instead of `IMPLEMENTATION`/`QA`/`PRODUCTION`) — corrected, with no existing data affected (nothing had used the old values).
+
+The Approvals dashboard (`src/lib/actions/approvals.ts`, Phase 3) now calls `tryAdvanceAfterApproval` after every APPROVED decision — approving a gate through the UI actually advances the project. Manually verified against the real seeded `demo-project` (approved its pending REQUIREMENTS gate, confirmed `stage` moved from `REQUIREMENTS` to `PLANNING`, then re-seeded to reset the fixture).
+
+Every other stage transition (`LEAD`→`DISCOVERY`, `ESTIMATION`→`PROPOSAL`, etc.) has no gate in this system — that's a deliberate reading of the architecture plan, not a gap to fill later.
+
 ## Learn more (Next.js)
 
 - [Next.js Documentation](https://nextjs.org/docs)

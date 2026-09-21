@@ -6,6 +6,7 @@ import path from "node:path";
 import { prisma } from "../db/client";
 import { MockProvider } from "../providers/mock";
 import { dispatchTask } from "./dispatch";
+import { seedFixtureProject, seedFixtureTask, cleanupFixtureProject } from "../testHelpers/fixtureProject";
 
 const READY_RESPONSE = [
   "---",
@@ -36,29 +37,13 @@ const BLOCKED_RESPONSE = [
   "# Requirements spec (incomplete)",
 ].join("\n");
 
-/** Creates an isolated Project + Task, cleaned up in the caller's finally block. */
 async function seedTestProject(ownerAgent: string) {
-  const artifactsPath = `dispatch-test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  const project = await prisma.project.create({
-    data: { name: "Dispatch test fixture", stage: "REQUIREMENTS", artifactsPath },
-  });
-  const task = await prisma.task.create({
-    data: {
-      title: "Turn client brief into requirements spec",
-      projectId: project.id,
-      ownerAgent,
-      status: "READY",
-    },
-  });
+  const project = await seedFixtureProject();
+  const task = await seedFixtureTask(project.id, ownerAgent, "Turn client brief into requirements spec");
   return { project, task };
 }
 
-async function cleanupTestProject(projectId: string) {
-  await prisma.event.deleteMany({ where: { projectId } });
-  await prisma.artifact.deleteMany({ where: { projectId } });
-  await prisma.task.deleteMany({ where: { projectId } });
-  await prisma.project.delete({ where: { id: projectId } });
-}
+const cleanupTestProject = cleanupFixtureProject;
 
 test("dispatchTask runs the owner agent, writes an artifact, and advances task status (ready-for-handoff)", async () => {
   const tmpProjectsRoot = fs.mkdtempSync(path.join(os.tmpdir(), "agency-os-dispatch-test-"));

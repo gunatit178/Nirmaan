@@ -107,7 +107,7 @@ model Approval {
   id          String    @id @default(cuid())
   projectId   String
   project     Project   @relation(fields: [projectId], references: [id])
-  // REQUIREMENTS|DESIGN|ARCHITECTURE|IMPLEMENTATION_PLAN|DEPLOYMENT
+  // REQUIREMENTS|DESIGN|ARCHITECTURE|IMPLEMENTATION|QA|PRODUCTION — see src/lib/db/enums.ts#APPROVAL_GATES
   gate        String
   // PENDING|APPROVED|REJECTED
   status      String    @default("PENDING")
