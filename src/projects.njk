@@ -1,155 +1,85 @@
 ---
 layout: base.njk
 title: "Projects — Nirmaan"
-description: "A real client case study — Sudaangeo.in, where we built a full website plus the business-automation and data-processing tool behind it."
-ogDescription: "A real client case study — Sudaangeo.in, where we built a full website plus the business-automation and data-processing tool behind it."
+description: "Case study: Sudaangeo.in, where a website brief became a full data-processing and business-automation system, with the public site as its front door."
+ogDescription: "Case study: Sudaangeo.in, where a website brief became a data-processing and business-automation system."
 permalink: "/projects.html"
-scripts: ["page-transitions.js", "tilt.js", "device-switcher.js"]
 nav: "projects"
-richFooter: false
+head:
+  eyebrow: "Case study"
+  lines: ["Work that speaks", "for itself."]
+  accent: 1
+  lede: "One real project, told honestly: what we were asked for, and what it actually took to build."
+  glyph: "10001/11001/10101/10011/10001"
+cta:
+  eyebrow: "Your project could be next"
+  lines: ["Ready to build", "something real?"]
+  text: "Whether it's a professional website or a complete full-stack system, let's talk about what you need."
+  primary: { label: "Start a build", href: "/contact.html" }
+  secondary: { label: "View all services", href: "/services.html" }
 ---
-<!-- PAGE HERO -->
-<section class="page-hero grid-bg relative overflow-hidden">
-  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="breadcrumb reveal">
-      <a href="index.html">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <span style="color:#C89B5C;">Projects</span>
+<section class="section" aria-labelledby="case-title">
+  <div class="wrap">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">Client · Sudaangeo.in</p>
+      <h2 class="section__title display" id="case-title">A website brief that became an&nbsp;engine.</h2>
     </div>
-    <p class="page-hero-label reveal">Case Study</p>
-    <h1 class="page-hero-title reveal rd1">Work that speaks<br /><span class="text-accent">for itself.</span></h1>
-    <p class="page-hero-sub reveal rd2">
-      A real project, told honestly — what we were asked for, and what it actually took to build.
-    </p>
+
+    <dl class="facts" data-reveal>
+      <div><dt class="mono">Client</dt><dd>Sudaangeo</dd></div>
+      <div><dt class="mono">Asked for</dt><dd>A website</dd></div>
+      <div><dt class="mono">Delivered</dt><dd>Website + automation system</dd></div>
+      <div><dt class="mono">Status</dt><dd>Live, with ongoing support</dd></div>
+    </dl>
   </div>
-</section>
 
-<!-- PROJECTS -->
-<section class="py-12 lg:py-16" aria-label="Project case studies">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 space-y-10">
-
-    <!-- Project 01: Sudaangeo.in -->
-    <article class="reveal">
-      <div class="project-card">
-        <div class="grid lg:grid-cols-2">
-          <!-- Screenshot placeholder -->
-          <!-- Interactive Device Mockup -->
-          <!-- *** REPLACE: Insert your actual screenshots into the device-content div *** -->
-          <div class="proj-img relative flex items-center justify-center p-6 bg-surface/50 border-r border-white/5" style="min-height:320px;">
-            <div class="absolute top-4 right-4 z-20 flex gap-2 glass px-2 py-1.5 rounded-xl border border-white/10" style="box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-              <button type="button" class="device-btn active p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'desktop', 'device-sudaangeo')" aria-label="Desktop view" title="Desktop">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-              </button>
-              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'tablet', 'device-sudaangeo')" aria-label="Tablet view" title="Tablet">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-              </button>
-              <button type="button" class="device-btn p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="switchDevice(this, 'mobile', 'device-sudaangeo')" aria-label="Mobile view" title="Mobile">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-              </button>
-            </div>
-            
-            <div id="device-sudaangeo" class="device-frame desktop relative overflow-hidden bg-bg border-2 border-white/10" style="box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
-              <div class="device-top-bar bg-white/5 border-b border-white/10 px-3 flex gap-1.5 items-center">
-                <div class="w-2 h-2 rounded-full bg-rose-500/80"></div>
-                <div class="w-2 h-2 rounded-full bg-amber-500/80"></div>
-                <div class="w-2 h-2 rounded-full bg-emerald-500/80"></div>
-              </div>
-              <div class="device-content w-full bg-[#15130F] flex items-center justify-center p-4 text-center group">
-                 <div class="transition-transform group-hover:scale-105">
-                   <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
-                     <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                   </div>
-                   <p class="text-sm font-medium text-white/80">Sudaangeo.in</p>
-                   <p class="text-[10px] text-white/50 mt-1 uppercase tracking-wider">Live Preview</p>
-                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- Content -->
-          <div class="p-6 sm:p-8 lg:p-9 flex flex-col justify-center">
-            <div class="flex items-center gap-3 mb-3">
-              <span class="num font-bold text-sm">Case Study</span>
-              <span class="w-1.5 h-1.5 rounded-full bg-muted"></span>
-              <span class="badge-pill text-xs">Website + Business Automation</span>
-            </div>
-            <h2 class="font-display font-semibold text-2xl sm:text-3xl text-primary mb-2.5">
-              <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="hover:text-accent-light transition-colors">Sudaangeo.in</a>
-            </h2>
-            <p class="text-secondary text-sm leading-relaxed mb-3">
-              Sudaangeo asked for a website. The brief grew into something bigger once we understood how the business actually ran: <span class="text-primary font-medium">a custom data-processing and business-automation tool</span> that now does real operational work, with the public website as just its front door.
-            </p>
-            <p class="text-secondary text-xs sm:text-sm leading-relaxed mb-4">
-              Everything underneath — the database, the automation logic, the workflows that used to be manual — was designed around how Sudaangeo specifically operates, not a generic template stretched to fit.
-            </p>
-
-            <!-- What was built -->
-            <div class="grid grid-cols-2 gap-2.5 mb-4">
-              <div class="info-card">
-                <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="8.5" rx="1.5" stroke="#C89B5C" stroke-width="1.3"/><path d="M4 12h6M7 10.5V12" stroke="#C89B5C" stroke-width="1.3" stroke-linecap="round"/></svg>
-                </div>
-                <p class="text-primary text-xs font-semibold mb-1">Website</p>
-                <p class="text-muted text-xs leading-relaxed">Custom front-end interface</p>
-              </div>
-              <div class="info-card">
-                <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 6l-2 2.5 2 2.5M11 6l2 2.5-2 2.5M9 3.5l-4 7" stroke="#C89B5C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <p class="text-primary text-xs font-semibold mb-1">Automation Engine</p>
-                <p class="text-muted text-xs leading-relaxed">Runs daily operations</p>
-              </div>
-              <div class="info-card">
-                <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="4.5" rx="5" ry="2.5" stroke="#C89B5C" stroke-width="1.3"/><path d="M2 4.5v5c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5v-5" stroke="#C89B5C" stroke-width="1.3"/><path d="M2 7c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5" stroke="#C89B5C" stroke-width="1.3"/></svg>
-                </div>
-                <p class="text-primary text-xs font-semibold mb-1">Data Processing</p>
-                <p class="text-muted text-xs leading-relaxed">Structured, automated pipeline</p>
-              </div>
-              <div class="info-card">
-                <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5v2M7 10.5v2M1.5 7h2M10.5 7h2" stroke="#C89B5C" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="7" r="2.2" stroke="#C89B5C" stroke-width="1.3"/></svg>
-                </div>
-                <p class="text-primary text-xs font-semibold mb-1">Business Logic</p>
-                <p class="text-muted text-xs leading-relaxed">Built around their workflow</p>
-              </div>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="badge-pill text-xs">Custom Website</span>
-              <span class="badge-pill text-xs">Data-Processing Tool</span>
-              <span class="badge-pill text-xs">Business Automation</span>
-              <span class="badge-pill text-xs">Database</span>
-              <span class="badge-pill text-xs">API Layer</span>
-              <span class="badge-pill text-xs">Business Logic</span>
-            </div>
-            <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="btn-primary px-5 py-2.5 text-sm gap-2 self-start">
-              Visit Sudaangeo.in
-              <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
-        </div>
+  <div class="wrap story">
+    <div class="story__chapters">
+      <div class="story__chapter" data-reveal>
+        <p class="mono">The brief</p>
+        <h3>“We need a website.”</h3>
+        <p>Sudaangeo came to us for a professional web presence: something that explained the business and let customers get in touch.</p>
       </div>
-    </article>
-
-    <!-- CTA -->
-    <div class="cta-section reveal">
-      <div class="relative z-10">
-        <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2">Your project could be next</p>
-        <h2 class="font-display font-semibold text-primary mb-3" style="font-size:clamp(1.7rem,3vw,2.5rem);">
-          Ready to build something real?
-        </h2>
-        <p class="text-secondary text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-5">
-          Whether it's a professional website or a complete full-stack system — let's have a conversation about what you need.
-        </p>
-        <div class="flex flex-wrap gap-3 justify-center">
-          <a href="contact.html" class="btn-primary px-7 py-3 text-sm sm:text-base gap-2">
-            Start Your Project
-            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="services.html" class="btn-secondary px-7 py-3 text-sm sm:text-base gap-2">View All Services</a>
+      <div class="story__chapter" data-reveal>
+        <p class="mono">What we found</p>
+        <h3>The real work was happening by hand.</h3>
+        <p>Once we understood how the business actually ran, it was clear the bigger opportunity sat behind the website: operational data being processed manually, day after day.</p>
+      </div>
+      <div class="story__chapter" data-reveal>
+        <p class="mono">What we built</p>
+        <h3>A system, with a website as its front door.</h3>
+        <p>We built <strong>a custom data-processing and business-automation tool</strong> that now does real operational work. The database, the automation logic and the workflows that used to be manual were all designed around how Sudaangeo specifically operates, not a generic template stretched to fit.</p>
+      </div>
+      <div class="story__chapter" data-reveal>
+        <p class="mono">Where it is now</p>
+        <h3>Live, and still improving.</h3>
+        <p>The system is in daily use. We keep supporting it and iterating as the business changes.</p>
+        <ul class="tags" role="list">
+          <li>Custom website</li><li>Data processing</li><li>Business automation</li><li>Database</li><li>API layer</li><li>Business logic</li>
+        </ul>
+        <div class="actions">
+          <a class="btn" href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer">Visit sudaangeo.in <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a>
         </div>
       </div>
     </div>
 
+    <figure class="arch" data-reveal aria-labelledby="arch-caption">
+      <figcaption class="arch__caption" id="arch-caption">
+        <span class="mono">System map</span>
+        <span class="mono">Sudaangeo</span>
+      </figcaption>
+      <div class="arch__node arch__node--public"><b>Public website</b><span>What customers see</span></div>
+      <div class="arch__link" aria-hidden="true"></div>
+      <div class="arch__node"><b>API layer</b><span>Connects every part</span></div>
+      <div class="arch__link" aria-hidden="true"></div>
+      <div class="arch__pair">
+        <div class="arch__node"><b>Business logic</b><span>Their workflow, as code</span></div>
+        <div class="arch__node"><b>Automation engine</b><span>Runs daily operations</span></div>
+      </div>
+      <div class="arch__link" aria-hidden="true"></div>
+      <div class="arch__node"><b>Data processing</b><span>Structured pipeline</span></div>
+      <div class="arch__link" aria-hidden="true"></div>
+      <div class="arch__node"><b>Database</b><span>Single source of truth</span></div>
+    </figure>
   </div>
 </section>

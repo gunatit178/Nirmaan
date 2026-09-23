@@ -1,160 +1,93 @@
 ---
 layout: base.njk
 title: "Agency OS — Nirmaan"
-description: "How Nirmaan actually builds: a coordinated team of specialized AI agents carrying work from discovery through deployment, with a human approving every key gate."
-ogDescription: "How Nirmaan actually builds: a coordinated team of specialized AI agents, with a human approving every key gate — not autonomous, gated."
+description: "How Nirmaan builds: a coordinated team of specialised AI agents carrying work from discovery through deployment, with a human approving every key gate."
+ogDescription: "How Nirmaan builds: specialised AI agents, with a human approving every key gate. Not autonomous: gated."
 permalink: "/agency-os.html"
-scripts: ["page-transitions.js", "tilt.js"]
 nav: "agency-os"
-richFooter: false
+head:
+  eyebrow: "How we build"
+  lines: ["Not vibe-coded.", "Orchestrated."]
+  accent: 1
+  lede: "Agency OS is the system behind Nirmaan's work: a coordinated team of specialised AI agents, each with a defined role, carrying a project from discovery to deployment, with a human approving every key decision."
+  glyph: "10101/01110/11111/01110/10101"
+  actions:
+    - { label: "Start your project", href: "/contact.html", style: "primary" }
+    - { label: "See the pipeline", href: "#pipeline" }
+cta:
+  eyebrow: "Put it to work"
+  lines: ["Specialists on every layer.", "A person at every gate."]
+  text: "Bring us a project. You get the speed of a coordinated agent team and the judgement of a human who signs off on every stage."
+  primary: { label: "Start your project", href: "/contact.html" }
+roles:
+  - { glyph: "00100/01110/11111/01110/00100", title: "Orchestrator", text: "Breaks the objective into workstreams, assigns the right specialist, and never blindly trusts a single output." }
+  - { glyph: "11011/11011/00000/11011/11011", title: "Specialist agents", text: "Product, design, architecture, engineering, QA and more, each with a defined mission and its own quality bar." }
+  - { glyph: "11111/10001/10001/10001/11111", title: "Quality gates", text: "Work doesn't advance until it clears a defined gate: requirements, design, architecture, QA." }
+  - { glyph: "01110/01110/00100/11111/10101", title: "Human approval", text: "The founder signs off at every key gate. The system proposes; a person decides." }
+stages:
+  - { title: "Discovery & requirements", text: "Product and business-analysis agents turn a vague brief into a precise, sourced requirements spec, with assumptions flagged rather than hidden.", gate: "Requirements gate" }
+  - { title: "Design & architecture", text: "Design and architecture agents produce the visual direction and the technical plan, reviewed against each other before either is final.", gate: "Design & architecture gate" }
+  - { title: "Implementation", text: "Engineering agents build against the approved plan, not freelancing on design decisions nobody signed off." }
+  - { title: "QA & security review", text: "A dedicated QA pass checks the work against the original requirements before it's ever presented as done.", gate: "QA gate" }
+  - { title: "Deployment & monitoring", text: "Once approved, work ships, and stays owned rather than abandoned the moment it goes live." }
+roster: ["Creative director", "UX designer", "UI designer", "Principal architect", "QA engineer"]
 ---
-<!-- PAGE HERO -->
-<section class="page-hero grid-bg relative overflow-hidden">
-  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="breadcrumb reveal">
-      <a href="index.html">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <span style="color:#C89B5C;">Agency OS</span>
+<section class="section" aria-labelledby="honest-title">
+  <div class="wrap split">
+    <div class="split__copy" data-reveal>
+      <p class="eyebrow">The honest version</p>
+      <h2 class="section__title display" id="honest-title">A team of specialists. Not one model&nbsp;guessing.</h2>
+      <p>“AI-built” usually means one model improvising a whole project in a single pass: no review, no specialisation, no way to catch a bad decision before it ships. That's the vibe-coded look, and it shows.</p>
+      <p>Agency OS breaks a project into the roles a real studio has (product, design, architecture, engineering, QA) and routes work through each of them, with review built into every handoff.</p>
     </div>
-    <p class="page-hero-label reveal">How We Build</p>
-    <h1 class="page-hero-title reveal rd1">Not vibe-coded.<br /><span class="text-accent">Orchestrated.</span></h1>
-    <p class="page-hero-sub reveal rd2">
-      Agency OS is the system behind Nirmaan's own work: a coordinated team of specialized AI agents, each with a defined role, carrying a project from discovery through deployment — with a human approving every key decision along the way.
-    </p>
-    <div class="mt-6 reveal rd3 flex flex-wrap gap-3">
-      <a href="contact.html" class="btn-primary px-6 py-3 text-sm gap-2">
-        Start Your Project
-        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="projects.html" class="btn-secondary px-6 py-3 text-sm gap-2">See It Produce Real Work</a>
-    </div>
+    <ul class="roles" role="list" data-reveal style="--d: 1">
+      {%- for r in roles %}
+      <li>{% glyph r.glyph %}<h3>{{ r.title }}</h3><p>{{ r.text }}</p></li>
+      {%- endfor %}
+    </ul>
   </div>
 </section>
 
-<!-- WHAT IT ACTUALLY IS -->
-<section class="py-12 lg:py-16" aria-label="What Agency OS is">
-  <div class="s-line mb-8 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10"></div>
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-
-      <div class="lg:col-span-5 reveal">
-        <p class="text-muted text-xs font-semibold uppercase tracking-widest mb-2">The Honest Version</p>
-        <h2 class="font-display font-semibold text-primary leading-tight mb-3 text-2xl sm:text-3xl lg:text-4xl">
-          A team of specialists.<br />Not one model guessing.
-        </h2>
-        <p class="text-secondary text-sm sm:text-base leading-relaxed mb-3">
-          "AI-built" usually means one model improvising an entire project in one pass — no review, no specialization, no way to catch a bad decision before it ships. That's the vibe-coded look, and it shows.
-        </p>
-        <p class="text-secondary text-xs sm:text-sm leading-relaxed">
-          Agency OS instead breaks a project into roles a real studio would have — product, design, architecture, engineering, QA — and routes work through each of them, with review built into the handoffs.
-        </p>
+<section class="section" id="pipeline" aria-labelledby="pipeline-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">The pipeline</p>
+        <h2 class="section__title display" id="pipeline-title">Discovery to deployment, gated at every&nbsp;stage.</h2>
       </div>
+      <p class="section__text">Five stages. Nothing crosses a gate until a person has reviewed it and said yes.</p>
+    </div>
 
-      <div class="lg:col-span-7 reveal rd2">
-        <div class="grid sm:grid-cols-2 gap-3.5">
-          <div class="glass rounded-xl p-4 border border-accent/15">
-            <p class="text-primary text-sm font-semibold mb-1">Orchestrator</p>
-            <p class="text-secondary text-xs leading-relaxed">Breaks the objective into workstreams, assigns the right specialist, and never blindly trusts a single output.</p>
-          </div>
-          <div class="glass rounded-xl p-4 border border-accent/15">
-            <p class="text-primary text-sm font-semibold mb-1">Specialist Agents</p>
-            <p class="text-secondary text-xs leading-relaxed">Product, design, architecture, engineering, QA and more — each with a defined mission and its own quality bar.</p>
-          </div>
-          <div class="glass rounded-xl p-4 border border-accent/15">
-            <p class="text-primary text-sm font-semibold mb-1">Quality Gates</p>
-            <p class="text-secondary text-xs leading-relaxed">Work doesn't advance to the next stage until it clears a defined gate — requirements, design, architecture, QA.</p>
-          </div>
-          <div class="glass rounded-xl p-4 border border-accent/15">
-            <p class="text-primary text-sm font-semibold mb-1">Human Approval</p>
-            <p class="text-secondary text-xs leading-relaxed">The founder signs off at every key gate. The system proposes; a person decides.</p>
+    <ol class="pipeline" role="list">
+      {%- for st in stages %}
+      <li data-reveal>
+        <div class="stage">
+          <p class="stage__num" aria-hidden="true">{{ loop.index }}</p>
+          <div>
+            <h3><span class="visually-hidden">Stage {{ loop.index }}: </span>{{ st.title }}</h3>
+            <p>{{ st.text }}</p>
           </div>
         </div>
-      </div>
-
-    </div>
+        {%- if st.gate %}
+        <p class="gate">{% glyph "01110/01110/00100/11111/10101" %}<span>{{ st.gate }} · human sign-off</span></p>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ol>
   </div>
 </section>
 
-<!-- PIPELINE -->
-<section class="py-12 lg:py-16" aria-label="How a project moves through the system">
-  <div class="s-line mb-8 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10"></div>
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-
-    <div class="text-center mb-10 reveal">
-      <p class="text-muted text-xs font-semibold uppercase tracking-widest mb-2">The Pipeline</p>
-      <h2 class="font-display font-semibold text-primary text-2xl sm:text-3xl lg:text-4xl">
-        Discovery to deployment, <span class="text-accent">gated at every stage.</span>
-      </h2>
-    </div>
-
-    <div class="space-y-2.5">
-      <div class="reason-card">
-        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="font-display font-semibold text-accent text-xs">1</span>
-        </div>
-        <div>
-          <p class="text-primary text-sm font-semibold mb-1">Discovery &amp; Requirements</p>
-          <p class="text-secondary text-xs leading-relaxed">Product and business-analysis agents turn a vague brief into a precise, sourced requirements spec — flagged assumptions included, not hidden.</p>
-        </div>
+<section class="section section--tight" aria-labelledby="proof-title">
+  <div class="wrap">
+    <div class="proof" data-reveal>
+      <div>
+        <p class="eyebrow">Not a pitch: a fact</p>
+        <h2 class="proof__title display" id="proof-title">We run it on ourselves first.</h2>
+        <p class="proof__text">Nirmaan's own agent roster ran a real review of Nirmaan's own marketing site. We don't ask clients to trust a system we haven't used on our own work.</p>
       </div>
-      <div class="reason-card">
-        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="font-display font-semibold text-accent text-xs">2</span>
-        </div>
-        <div>
-          <p class="text-primary text-sm font-semibold mb-1">Design &amp; Architecture</p>
-          <p class="text-secondary text-xs leading-relaxed">Design and architecture agents produce the visual direction and technical plan — reviewed against each other before either is final.</p>
-        </div>
-      </div>
-      <div class="reason-card">
-        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="font-display font-semibold text-accent text-xs">3</span>
-        </div>
-        <div>
-          <p class="text-primary text-sm font-semibold mb-1">Implementation</p>
-          <p class="text-secondary text-xs leading-relaxed">Engineering agents build against the approved plan — not freelancing on design decisions that were never signed off.</p>
-        </div>
-      </div>
-      <div class="reason-card">
-        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="font-display font-semibold text-accent text-xs">4</span>
-        </div>
-        <div>
-          <p class="text-primary text-sm font-semibold mb-1">QA &amp; Security Review</p>
-          <p class="text-secondary text-xs leading-relaxed">A dedicated QA pass checks the work against the original requirements before it's ever presented as done.</p>
-        </div>
-      </div>
-      <div class="reason-card">
-        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="font-display font-semibold text-accent text-xs">5</span>
-        </div>
-        <div>
-          <p class="text-primary text-sm font-semibold mb-1">Deployment &amp; Monitoring</p>
-          <p class="text-secondary text-xs leading-relaxed">Once approved, work ships — and stays owned, not abandoned the moment it goes live.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- PROOF -->
-<section class="py-12 lg:py-16" aria-label="Proof this is real">
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="cta-section reveal">
-      <div class="relative z-10">
-        <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2">Not a pitch — a fact</p>
-        <h2 class="font-display font-semibold text-primary mb-3" style="font-size:clamp(1.5rem,3vw,2.2rem);">
-          This isn't hypothetical. We've used it on ourselves.
-        </h2>
-        <p class="text-secondary text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-5">
-          Nirmaan's own agent roster — creative director, UX designer, UI designer, principal architect, and QA engineer — ran a real review against Nirmaan's own marketing site. Their findings are what this site's design direction is based on. We don't ask clients to trust something we haven't run ourselves.
-        </p>
-        <a href="contact.html" class="btn-primary px-7 py-3 text-sm sm:text-base gap-2">
-          Put It to Work on Your Project
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
+      <ul class="proof__roster" role="list" aria-label="Agents in that review">
+        {%- for r in roster %}<li>{{ r }}</li>{% endfor %}
+      </ul>
     </div>
   </div>
 </section>

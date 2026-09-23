@@ -1,0 +1,21 @@
+{#- Closing call to action, driven by the page's `cta` front matter:
+      cta.eyebrow, cta.lines (array), cta.text, cta.primary {label, href},
+      cta.secondary {label, href} (optional) -#}
+<section class="cta-band" aria-labelledby="cta-title">
+  <div class="cta-band__blocks" aria-hidden="true">
+    {%- for i in range(0, 14) %}<span></span>{% endfor %}
+  </div>
+  <div class="wrap cta-band__inner">
+    <p class="eyebrow eyebrow--inverse">{{ cta.eyebrow }}</p>
+    <h2 class="cta-band__title display" id="cta-title">
+      {%- for line in cta.lines %}<span class="line"><span>{{ line | safe }}</span></span>{% endfor -%}
+    </h2>
+    <p class="cta-band__text">{{ cta.text }}</p>
+    <div class="actions">
+      <a class="btn btn--inverse" href="{{ cta.primary.href }}">{{ cta.primary.label }} {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</a>
+      {%- if cta.secondary %}
+      <a class="link-arrow link-arrow--inverse" href="{{ cta.secondary.href }}">{{ cta.secondary.label }} <span aria-hidden="true">→</span></a>
+      {%- endif %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+{
+  "name": "Nirmaan",
+  "descriptor": "Software Studio",
+  "url": "https://nirmaan.online",
+  "email": "",
+  "phone": "",
+  "whatsapp": "",
+  "social": {
+    "linkedin": "",
+    "github": "",
+    "x": ""
+  },
+  "_comment": "Fill in email / phone / whatsapp (digits only, with country code, e.g. 919800000000) and social URLs. Anything left empty is simply not rendered anywhere on the site."
+}

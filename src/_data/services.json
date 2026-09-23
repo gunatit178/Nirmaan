@@ -1,0 +1,64 @@
+{
+  "groups": [
+    {
+      "id": "websites",
+      "label": "Websites & Design",
+      "summary": "The part your customers see: fast, clear, built from scratch around your brand.",
+      "items": [
+        { "id": "custom-websites", "title": "Custom Website Development", "glyph": "11111/11111/10001/10001/11111",
+          "text": "Hand-built websites that match your brand, goals and audience. No generic templates.",
+          "features": ["Mobile-first responsive design", "SEO-ready structure", "Fast load times", "Contact forms & integrations"] },
+        { "id": "business-websites", "title": "Business Websites", "glyph": "11111/10001/11111/10001/11111",
+          "text": "A professional presence for service businesses, consultants and organisations that need to earn trust and bring in enquiries.",
+          "features": ["Services, about & team pages", "Lead capture forms", "Google Maps & directions", "WhatsApp & call integration"] },
+        { "id": "redesign", "title": "Website Redesign", "glyph": "11100/11100/11111/00111/00111",
+          "text": "Turn an outdated site into a modern, fast, conversion-focused one without losing your content or search rankings.",
+          "features": ["Modern design refresh", "Content migration", "Performance improvements", "SEO preservation"] },
+        { "id": "ecommerce", "title": "E-commerce Websites", "glyph": "01110/01010/11111/11111/11111",
+          "text": "Online stores with product management, secure payments, inventory tracking and order management.",
+          "features": ["Product catalogue & search", "Secure payment integration", "Order management", "Mobile-first checkout"] },
+        { "id": "performance", "title": "Performance Optimisation", "glyph": "00110/01100/11111/00110/01100",
+          "text": "Speed up an existing site for better user experience, search rankings and conversion.",
+          "features": ["Core Web Vitals improvement", "Image & asset optimisation", "Caching & CDN setup", "Technical SEO fixes"] },
+        { "id": "maintenance", "title": "Maintenance & Support", "glyph": "11100/10100/11100/00010/00001",
+          "text": "Keep your site secure, updated and running smoothly, with a team that already knows the code.",
+          "features": ["Regular updates & backups", "Security monitoring", "Content changes & edits", "Priority support"] }
+      ]
+    },
+    {
+      "id": "systems",
+      "label": "Applications & Backend",
+      "summary": "The part that does the work: logic, data and automation built around how you operate.",
+      "items": [
+        { "id": "web-applications", "title": "Custom Web Applications", "glyph": "11011/11011/00000/11011/11011",
+          "text": "Portals, platforms and tools shaped around your workflows. Far beyond what a standard website can do.",
+          "features": ["User accounts & roles", "Real-time data & updates", "Complex business logic", "Third-party integrations"] },
+        { "id": "backend-apis", "title": "Backend & API Development", "glyph": "01010/10001/10001/10001/01010",
+          "text": "The engine behind the product: server-side logic, REST APIs and business-specific software.",
+          "features": ["REST API design", "Server-side business logic", "Payment gateway integration", "Webhooks & event systems"] },
+        { "id": "databases", "title": "Database Design", "glyph": "11111/00000/11111/00000/11111",
+          "text": "Structured, scalable databases that store, query and protect your business data reliably.",
+          "features": ["Schema design & modelling", "PostgreSQL & MySQL", "Query optimisation", "Security & backups"] },
+        { "id": "automation", "title": "Business Automation", "glyph": "01110/10001/10101/10001/01110",
+          "text": "Automate repetitive tasks, notifications and internal processes so your team can focus on real work.",
+          "features": ["Email & notification workflows", "Report generation", "Data import & export", "Scheduled tasks & triggers"] },
+        { "id": "dashboards", "title": "Admin Panels & Dashboards", "glyph": "00001/00011/01011/11011/11111",
+          "text": "Purpose-built admin panels and data dashboards with full visibility and control over your platform.",
+          "features": ["Role-based access control", "Data tables & analytics", "Create, edit & manage records", "Exports & reporting"] },
+        { "id": "responsive", "title": "Mobile-First Development", "glyph": "01110/01010/01010/01010/01110",
+          "text": "Every build is made mobile-first, so it works properly on every screen your customers use.",
+          "features": ["Mobile-first development", "Cross-browser testing", "Touch-friendly interfaces", "Tuned for every device"] }
+      ]
+    }
+  ],
+  "featured": [
+    { "id": "custom-websites",  "title": "Custom Websites",     "text": "Mobile-first websites built around your brand, audience and goals." },
+    { "id": "web-applications", "title": "Web Applications",    "text": "Portals, platforms and SaaS tools that do real work." },
+    { "id": "backend-apis",     "title": "Backend & APIs",      "text": "Server logic, REST APIs, payments and third-party integrations." },
+    { "id": "databases",        "title": "Database Systems",    "text": "SQL and NoSQL data, designed for speed and security." },
+    { "id": "automation",       "title": "Business Automation", "text": "Workflows, notifications and reports that run themselves." },
+    { "id": "ecommerce",        "title": "E-commerce",          "text": "Stores with fast checkout, inventory and analytics." },
+    { "id": "dashboards",       "title": "Dashboards & Admin",  "text": "Admin portals and live data views for full oversight." },
+    { "id": "maintenance",      "title": "Maintenance & SEO",   "text": "Performance tuning, security patches and search visibility." }
+  ]
+}

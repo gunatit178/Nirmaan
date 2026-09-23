@@ -1,323 +1,115 @@
 ---
 layout: base.njk
 title: "Our Process — Nirmaan"
-description: "How we work — a clear 5-step development process from discovery through launch and ongoing support. No surprises, just results."
-ogDescription: "How we work — a clear 5-step development process from discovery through launch and ongoing support. No surprises, just results."
+description: "How Nirmaan works: a clear five-step process from discovery and planning through design, build, launch and ongoing support. You approve every stage."
+ogDescription: "A clear five-step process from discovery through launch and ongoing support. You approve every stage."
 permalink: "/process.html"
-scripts: ["page-transitions.js"]
 nav: "process"
-richFooter: false
+head:
+  eyebrow: "How we work"
+  lines: ["A clear process.", "No surprises."]
+  accent: 1
+  lede: "Every project follows the same structure, from understanding your goals through to launch and beyond. You'll always know where things stand."
+  glyph: "00001/00011/00111/01111/11111"
+cta:
+  eyebrow: "Let's begin"
+  lines: ["Step one is", "a conversation."]
+  text: "Tell us what you need. No obligation, no pressure: just a conversation about what you want to build."
+  primary: { label: "Start a conversation", href: "/contact.html" }
+steps:
+  - id: "discover"
+    title: "Discover"
+    text: "We start by listening. Before any wireframe or line of code, we want to understand your business, your audience and your goals, and what success actually looks like for this project."
+    lists:
+      - { label: "What we learn", items: ["Your business model and objectives", "Your audience and what they need", "The problems you want solved", "Timeline and budget expectations"] }
+      - { label: "How we do it", items: ["Consultation call or chat", "Discovery questionnaire", "Competitor and market review", "Written requirements"] }
+  - id: "plan"
+    title: "Plan"
+    text: "We map out the full structure: which pages or screens you need, what features to build and which technologies fit. You review and approve before anything starts."
+    lists:
+      - { label: "What gets defined", items: ["Sitemap or screen architecture", "Features and priorities", "Technology stack", "Timeline and milestones"] }
+      - { label: "You receive", items: ["Project scope document", "Technical proposal", "Cost estimate", "A sign-off point before we proceed"] }
+  - id: "design"
+    title: "Design"
+    text: "We design the layout, typography, colour and components. The goal is clarity and conversion, not decoration for its own sake. You give feedback and sign off before development begins."
+    lists:
+      - { label: "What we design", items: ["Page layouts and wireframes", "Visual design aligned to your brand", "Mobile and desktop views", "Navigation and user flows"] }
+      - { label: "How we approach it", items: ["Conversion-focused layouts", "Clean, modern visuals", "Feedback rounds included", "Your approval before building"] }
+  - id: "build"
+    title: "Build"
+    text: "We build the website, backend, integrations and any custom functionality in the plan. Code is written cleanly, tested thoroughly and documented, so it can be maintained and extended."
+    layers:
+      - { name: "Frontend", text: "Interface, pages, responsive layout" }
+      - { name: "Backend", text: "APIs, business logic, integrations" }
+      - { name: "Database", text: "Data model, schema, queries" }
+  - id: "launch"
+    title: "Launch & support"
+    text: "We deploy to a live server, run final checks and make sure everything works across devices and browsers. After launch we stay available for support, updates and improvements."
+    lists:
+      - { label: "At launch", items: ["Server deployment and configuration", "Domain and SSL setup", "Cross-device and browser testing", "Performance checks"] }
+      - { label: "After launch", items: ["Ongoing maintenance", "Content updates on request", "New features as you grow", "Priority support"] }
+faq:
+  - q: "How long does a project take?"
+    a: "It depends on scope. A straightforward business website usually takes 2–4 weeks. A web application with a custom backend may take 6–12 weeks. You get a realistic timeline during planning, before any work begins."
+  - q: "Do I need to provide design assets or content?"
+    a: "If you have a logo, brand guidelines or existing content, we'll use them. If not, we'll work with what you have and guide you on what's needed. Page content (text, images) usually comes from you, and we can advise on structure and messaging."
+  - q: "What if I want to change something mid-project?"
+    a: "Minor changes within the agreed scope are part of the project. If you want significant new features or a change of direction, we'll talk openly about the impact on timeline and cost before going ahead."
+  - q: "Will I own the code when the project is done?"
+    a: "Yes. Once the project is paid for, you own the code and every deliverable. We hand over everything (source code, database schemas, assets) so you're never locked in."
+  - q: "Can you maintain the website after launch?"
+    a: "Yes. We offer ongoing maintenance and support: regular updates, new features, fixes and general improvements, long after the initial project is complete."
 ---
-<!-- PAGE HERO -->
-<section class="page-hero grid-bg relative overflow-hidden">
-  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="breadcrumb reveal">
-      <a href="index.html">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <span style="color:#C89B5C;">Process</span>
-    </div>
-    <p class="page-hero-label reveal">How We Work</p>
-    <h1 class="page-hero-title reveal rd1">A clear process.<br /><span class="text-accent">No surprises.</span></h1>
-    <p class="page-hero-sub reveal rd2">
-      Every project follows a structured approach — from understanding your goals through to launch and ongoing support. You'll always know where things stand.
-    </p>
+<section class="section" aria-label="The five steps">
+  <div class="wrap steps">
+    <nav class="steps__index" aria-label="Steps" data-scene="spy">
+      {%- for step in steps %}
+      <a href="#{{ step.id }}"><span>0{{ loop.index }}</span>{{ step.title }}</a>
+      {%- endfor %}
+    </nav>
+
+    <ol class="steps__list" role="list">
+      {%- for step in steps %}
+      <li class="step" id="{{ step.id }}" data-reveal>
+        <p class="step__num" aria-hidden="true">0{{ loop.index }}</p>
+        <h2 class="step__title display"><span class="visually-hidden">Step {{ loop.index }}: </span>{{ step.title }}</h2>
+        <p class="step__text">{{ step.text }}</p>
+        {%- if step.lists %}
+        <div class="step__lists">
+          {%- for list in step.lists %}
+          <div>
+            <h3 class="mono step__list-label">{{ list.label }}</h3>
+            <ul class="ticks" role="list">
+              {%- for item in list.items %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+          </div>
+          {%- endfor %}
+        </div>
+        {%- endif %}
+        {%- if step.layers %}
+        <ul class="step__layers" role="list">
+          {%- for l in step.layers %}<li><b>{{ l.name }}</b><span>{{ l.text }}</span></li>{% endfor %}
+        </ul>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ol>
   </div>
 </section>
 
-<!-- PROCESS STEPS -->
-<section class="py-12 lg:py-16" aria-label="Development process">
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-
-    <!-- Step 01 -->
-    <div class="step-card reveal">
-      <span class="step-number">01</span>
-      <div class="flex items-start gap-5">
-        <div class="step-circle" style="width:52px;height:52px;flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="#C89B5C" stroke-width="1.5"/><path d="M2 18c0-4 3.58-7 8-7s8 3 8 7" stroke="#C89B5C" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="num mb-1">Step 01</p>
-          <h2 class="font-display font-bold text-primary text-xl mb-3">Discover</h2>
-          <p class="text-secondary text-base leading-relaxed mb-5">
-            We begin by listening. Before any wireframe or line of code, we want to deeply understand your business, your audience, your goals — and what success actually looks like for this project.
-          </p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">What we learn:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your business model and objectives</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your target audience and their needs</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Current problems you want to solve</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Timeline and budget expectations</li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">How we do it:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Initial consultation call or chat</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Discovery questionnaire</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Competitor and market review</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Requirements documentation</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+<section class="section" aria-labelledby="faq-title">
+  <div class="wrap faq-layout">
+    <div data-reveal>
+      <p class="eyebrow">Common questions</p>
+      <h2 class="section__title display" id="faq-title">Before you&nbsp;start.</h2>
     </div>
-
-    <div class="connector-arrow reveal"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M6 12l4 4 4-4" stroke="rgba(200,155,92,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-    <!-- Step 02 -->
-    <div class="step-card reveal rd1">
-      <span class="step-number">02</span>
-      <div class="flex items-start gap-5">
-        <div class="step-circle" style="width:52px;height:52px;flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="#C89B5C" stroke-width="1.5"/><path d="M7 7h6M7 10h4" stroke="#C89B5C" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="num mb-1">Step 02</p>
-          <h2 class="font-display font-bold text-primary text-xl mb-3">Plan</h2>
-          <p class="text-secondary text-base leading-relaxed mb-5">
-            Based on what we've learned, we map out the full structure of the project — which pages or screens are needed, what features to build, and which technologies to use. You review and approve before anything starts.
-          </p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">What gets defined:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Sitemap / screen architecture</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Feature list and priorities</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Technology stack selection</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Project timeline &amp; milestones</li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">Deliverables:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Project scope document</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Technical proposal</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cost estimate</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your approval before we proceed</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="connector-arrow reveal"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M6 12l4 4 4-4" stroke="rgba(200,155,92,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-    <!-- Step 03 -->
-    <div class="step-card reveal rd1">
-      <span class="step-number">03</span>
-      <div class="flex items-start gap-5">
-        <div class="step-circle" style="width:52px;height:52px;flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16l4-4 2 2 4-8" stroke="#C89B5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 6h3M2 9h3M2 12h3" stroke="#C89B5C" stroke-width="1.3" stroke-linecap="round"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="num mb-1">Step 03</p>
-          <h2 class="font-display font-bold text-primary text-xl mb-3">Design</h2>
-          <p class="text-secondary text-base leading-relaxed mb-5">
-            We create the visual design of your website or application — layout, typography, colour, components. The goal is always clarity and conversion, not decoration for its own sake. You provide feedback and sign off before development begins.
-          </p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">What we design:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Page layouts &amp; wireframes</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Visual design &amp; brand alignment</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mobile &amp; desktop views</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Navigation &amp; user flow</li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">Our approach:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Conversion-focused layout</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Clean &amp; modern aesthetics</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Feedback rounds included</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your approval before building</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="connector-arrow reveal"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M6 12l4 4 4-4" stroke="rgba(200,155,92,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-    <!-- Step 04 -->
-    <div class="step-card reveal rd1">
-      <span class="step-number">04</span>
-      <div class="flex items-start gap-5">
-        <div class="step-circle" style="width:52px;height:52px;flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 9l-3 3 3 3M15 9l3 3-3 3M11.5 5l-3 10" stroke="#C89B5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="num mb-1">Step 04</p>
-          <h2 class="font-display font-bold text-primary text-xl mb-3">Build</h2>
-          <p class="text-secondary text-base leading-relaxed mb-5">
-            The development phase. We build the website, backend, integrations, and any custom functionality defined in the plan. Code is written cleanly, tested thoroughly, and documented so it can be maintained and extended.
-          </p>
-          <div class="grid sm:grid-cols-3 gap-4">
-            <div class="info-card">
-              <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="8.5" rx="1.5" stroke="#C89B5C" stroke-width="1.3"/></svg>
-              </div>
-              <p class="text-primary text-xs font-bold mb-1">Frontend</p>
-              <p class="text-muted text-xs leading-relaxed">Interface, pages, responsive layout</p>
-            </div>
-            <div class="info-card">
-              <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="4" rx="1" stroke="#C89B5C" stroke-width="1.3"/><rect x="2" y="8" width="10" height="4" rx="1" stroke="#C89B5C" stroke-width="1.3"/></svg>
-              </div>
-              <p class="text-primary text-xs font-bold mb-1">Backend</p>
-              <p class="text-muted text-xs leading-relaxed">APIs, logic, integrations</p>
-            </div>
-            <div class="info-card">
-              <div class="w-8 h-8 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="4.5" rx="5" ry="2.5" stroke="#C89B5C" stroke-width="1.3"/><path d="M2 4.5v5c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5v-5" stroke="#C89B5C" stroke-width="1.3"/></svg>
-              </div>
-              <p class="text-primary text-xs font-bold mb-1">Database</p>
-              <p class="text-muted text-xs leading-relaxed">Data layer, schema, queries</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="connector-arrow reveal"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M6 12l4 4 4-4" stroke="rgba(200,155,92,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-
-    <!-- Step 05 -->
-    <div class="step-card reveal rd1">
-      <span class="step-number">05</span>
-      <div class="flex items-start gap-5">
-        <div class="step-circle" style="width:52px;height:52px;flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v3M10 14v3M3 10h3M14 10h3" stroke="#C89B5C" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="3.5" stroke="#C89B5C" stroke-width="1.5"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="num mb-1">Step 05</p>
-          <h2 class="font-display font-bold text-primary text-xl mb-3">Launch &amp; Support</h2>
-          <p class="text-secondary text-base leading-relaxed mb-5">
-            We deploy your project to a live server, run final checks, and make sure everything works as expected across all devices and browsers. After launch, we remain available for ongoing support, updates, and improvements.
-          </p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">At launch:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Server deployment &amp; configuration</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Domain &amp; SSL setup</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cross-device &amp; browser testing</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Performance checks</li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-primary text-sm font-semibold mb-2">After launch:</p>
-              <ul class="space-y-2">
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ongoing maintenance</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Content updates on request</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>New features as you grow</li>
-                <li class="flex items-start gap-2 text-secondary text-sm"><svg class="w-3.5 h-3.5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support access</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="py-12 lg:py-16" aria-label="Frequently asked questions">
-  <div class="s-line mb-16 max-w-4xl mx-auto px-5 sm:px-8 lg:px-10"></div>
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-
-    <div class="text-center mb-12 reveal">
-      <p class="text-muted text-xs font-bold uppercase tracking-widest mb-3">Common Questions</p>
-      <h2 class="font-display font-semibold text-primary text-2xl sm:text-3xl">Things people ask before starting</h2>
-    </div>
-
-    <div class="space-y-3">
-
-      <div class="faq-item reveal rd1">
-        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-          <span class="text-primary text-sm font-semibold">How long does a project typically take?</span>
-          <svg class="faq-icon w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="faq-content">
-          <p class="text-secondary text-sm leading-relaxed">It depends on the scope. A straightforward business website can be completed in 2–4 weeks. A more complex web application with custom backend systems may take 6–12 weeks. During the planning phase, we give you a realistic timeline before any work begins.</p>
-        </div>
-      </div>
-
-      <div class="faq-item reveal rd2">
-        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-          <span class="text-primary text-sm font-semibold">Do I need to provide design assets or content?</span>
-          <svg class="faq-icon w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="faq-content">
-          <p class="text-secondary text-sm leading-relaxed">If you have a logo, brand guidelines, or existing content, we'll use them. If you don't, we can work with what you have and guide you on what's needed. Content (text, images) for your pages is typically provided by you, though we can advise on structure and messaging.</p>
-        </div>
-      </div>
-
-      <div class="faq-item reveal rd3">
-        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-          <span class="text-primary text-sm font-semibold">What if I want to change something mid-project?</span>
-          <svg class="faq-icon w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="faq-content">
-          <p class="text-secondary text-sm leading-relaxed">Minor changes within the defined scope are handled as part of the project. If you want to add significant new features or change direction substantially, we'll discuss the impact on timeline and cost openly before proceeding. No surprises.</p>
-        </div>
-      </div>
-
-      <div class="faq-item reveal rd4">
-        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-          <span class="text-primary text-sm font-semibold">Will I own the code when the project is done?</span>
-          <svg class="faq-icon w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="faq-content">
-          <p class="text-secondary text-sm leading-relaxed">Yes. Once the project is fully paid for, you own the code and all deliverables. We can hand over everything — source code, database schemas, assets — so you're never locked in.</p>
-        </div>
-      </div>
-
-      <div class="faq-item reveal rd5">
-        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
-          <span class="text-primary text-sm font-semibold">Can you maintain and update the website after launch?</span>
-          <svg class="faq-icon w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="faq-content">
-          <p class="text-secondary text-sm leading-relaxed">Yes. We offer ongoing maintenance and support — whether that's regular updates, adding new features, fixing issues, or general improvements. We're available long after the initial project is complete.</p>
-        </div>
-      </div>
-
+    <div class="faq" data-reveal>
+      {%- for item in faq %}
+      <details{% if loop.first %} open{% endif %}>
+        <summary>{{ item.q }}<span class="faq__icon" aria-hidden="true"></span></summary>
+        <p class="faq__answer">{{ item.a }}</p>
+      </details>
+      {%- endfor %}
     </div>
   </div>
 </section>
-
-<!-- CTA -->
-<section class="py-10 lg:py-14">
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="cta-section reveal">
-      <div class="relative z-10">
-        <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2">Let's begin</p>
-        <h2 class="font-display font-semibold text-primary mb-3" style="font-size:clamp(1.7rem,3vw,2.5rem);">Ready to start the process?</h2>
-        <p class="text-secondary text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-5">
-          The first step is simply telling us what you need. No obligation, no pressure — just a conversation.
-        </p>
-        <a href="contact.html" class="btn-primary px-7 py-3 text-sm sm:text-base gap-2">
-          Start a Conversation
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-  function toggleFaq(btn) {
-    const content = btn.nextElementSibling;
-    const icon = btn.querySelector('.faq-icon');
-    const isOpen = content.classList.toggle('open');
-    icon.classList.toggle('open', isOpen);
-    btn.setAttribute('aria-expanded', isOpen);
-  }
-</script>
