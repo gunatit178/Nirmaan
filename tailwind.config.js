@@ -14,7 +14,7 @@ module.exports = {
         'accent-light': '#818cf8',
         primary: '#F8FAFC',
         secondary: '#94A3B8',
-        muted: '#475569',
+        muted: '#7B8CA6',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

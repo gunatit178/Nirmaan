@@ -261,7 +261,7 @@ body {
   font-family: 'Inter', sans-serif; font-size: 0.875rem;
   transition: border-color 0.2s, box-shadow 0.2s; outline: none;
 }
-.form-field::placeholder { color: #475569; }
+.form-field::placeholder { color: #7B8CA6; }
 .form-field:focus { border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
 select.form-field option { background: #0D1117; color: #F8FAFC; }
 
@@ -355,8 +355,8 @@ select.form-field option { background: #0D1117; color: #F8FAFC; }
 .info-card:hover { border-color: rgba(99,102,241,0.2); transform: translateY(-2px); }
 
 /* ---- PAGE BREADCRUMB ---- */
-.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #475569; margin-bottom: 10px; }
-.breadcrumb a { color: #475569; text-decoration: none; transition: color 0.2s; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #7B8CA6; margin-bottom: 10px; }
+.breadcrumb a { color: #7B8CA6; text-decoration: none; transition: color 0.2s; }
 .breadcrumb a:hover { color: #818cf8; }
 .breadcrumb-sep { opacity: 0.4; }
 
