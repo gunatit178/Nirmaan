@@ -1,12 +1,16 @@
 {
   "name": "nirmaan-website",
   "private": true,
-  "description": "Static marketing site. Only the Tailwind stylesheet needs a build step.",
+  "description": "Static marketing site built with Eleventy — one base layout instead of 6 hand-duplicated pages. Generated HTML is committed, same convention as tailwind.css.",
   "scripts": {
+    "build": "npm run build:css && npm run build:html",
     "build:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.css --minify",
-    "watch:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.css --watch"
+    "watch:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.css --watch",
+    "build:html": "eleventy",
+    "watch:html": "eleventy --serve"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
     "tailwindcss": "^3.4.17"
   }
 }
