@@ -1,0 +1,99 @@
+{% if richFooter %}
+<footer class="border-t py-10 lg:py-12" style="border-color:rgba(255,255,255,0.05);">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+      <!-- Brand -->
+      <div class="lg:col-span-2">
+        <a href="#home" class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 rounded-lg bg-accent flex items-center justify-center flex-shrink-0" style="box-shadow:0 0 14px rgba(99,102,241,0.4);">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="font-display font-extrabold text-primary text-sm">Nirmaan</span>
+        </a>
+        <p class="text-secondary text-xs leading-relaxed max-w-xs mb-4">
+          Custom website and software development studio. We build complete digital solutions — from website through to backend, database, APIs and automation.
+        </p>
+        <!-- Social links — *** REPLACE: Add your actual profile URLs *** -->
+        <div class="flex gap-2">
+          <a href="#" aria-label="LinkedIn" class="w-8 h-8 rounded-lg glass border border-white/6 flex items-center justify-center hover:border-accent/28 transition-colors">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="#94A3B8" stroke-width="1.2"/><path d="M4 6v4M4 4.5v.01M6 6v4M6 8c0-1.1.9-2 2-2s2 .9 2 2v2" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#" aria-label="GitHub" class="w-8 h-8 rounded-lg glass border border-white/6 flex items-center justify-center hover:border-accent/28 transition-colors">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="#94A3B8"><path d="M7 1C3.7 1 1 3.7 1 7c0 2.65 1.72 4.9 4.1 5.69.3.05.41-.13.41-.29v-1.01c-1.67.36-2.02-.81-2.02-.81-.27-.7-.67-.88-.67-.88-.55-.37.04-.36.04-.36.6.04.92.62.92.62.54.92 1.41.65 1.76.5.05-.39.21-.65.38-.8-1.33-.15-2.73-.67-2.73-2.97 0-.66.23-1.19.62-1.61-.06-.15-.27-.76.06-1.59 0 0 .51-.16 1.66.62A5.8 5.8 0 017 4.79c.51 0 1.03.07 1.51.2 1.15-.78 1.66-.62 1.66-.62.33.83.12 1.44.06 1.59.38.42.62.95.62 1.61 0 2.31-1.4 2.82-2.74 2.97.22.19.41.56.41 1.13v1.68c0 .16.11.34.42.28C11.28 11.9 13 9.65 13 7c0-3.3-2.7-6-6-6z"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter/X" class="w-8 h-8 rounded-lg glass border border-white/6 flex items-center justify-center hover:border-accent/28 transition-colors">
+            <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M1 1.5L5.5 7 1 12h1.2l4-4.5L9.8 12H12L7.3 6.2 12 1.5h-1.2L6.7 5.7 3.2 1.5H1z" fill="#94A3B8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h3 class="font-display font-bold text-primary text-xs mb-3.5">Services</h3>
+        <ul class="space-y-2">
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Custom Websites</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Web Applications</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Backend &amp; APIs</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Database Systems</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Business Automation</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">E-commerce</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Dashboards &amp; Admin</a></li>
+          <li><a href="/services.html" class="text-secondary text-xs hover:text-primary transition-colors">Maintenance &amp; Support</a></li>
+        </ul>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h3 class="font-display font-bold text-primary text-xs mb-3.5">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#home"       class="text-secondary text-xs hover:text-primary transition-colors">Home</a></li>
+          <li><a href="/projects.html" class="text-secondary text-xs hover:text-primary transition-colors">Projects &amp; Work</a></li>
+          <li><a href="/process.html" class="text-secondary text-xs hover:text-primary transition-colors">Our Process</a></li>
+          <li><a href="/technology.html" class="text-secondary text-xs hover:text-primary transition-colors">Technology</a></li>
+          <li><a href="/contact.html" class="text-secondary text-xs hover:text-primary transition-colors">Contact</a></li>
+          <li>
+            <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="text-secondary text-xs hover:text-accent-light transition-colors inline-flex items-center gap-1">
+              Sudaangeo.in
+              <svg class="w-2.5 h-2.5" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="https://khelshiksha.com" target="_blank" rel="noopener noreferrer" class="text-secondary text-xs hover:text-accent-light transition-colors inline-flex items-center gap-1">
+              Khelshiksha.com
+              <svg class="w-2.5 h-2.5" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style="border-color:rgba(255,255,255,0.05);">
+      <p class="text-muted text-xs">&copy; 2025 Nirmaan. All rights reserved.</p>
+      <p class="text-muted text-[11px]">Custom website &amp; software development</p>
+    </div>
+
+  </div>
+</footer>
+{% else %}
+<footer class="border-t py-8 mt-12" style="border-color:rgba(255,255,255,0.05);">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="/index.html" class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-accent flex items-center justify-center" style="box-shadow:0 0 12px rgba(99,102,241,0.4);">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="font-display font-extrabold text-primary text-sm">Nirmaan</span>
+      </a>
+      <div class="flex items-center gap-6 flex-wrap justify-center">
+        {% for link in navLinks %}
+        <a href="/{{ link.href }}" class="text-muted text-xs hover:text-primary transition-colors">{{ link.label }}</a>
+        {% endfor %}
+      </div>
+      <p class="text-muted text-xs">&copy; 2025 Nirmaan</p>
+    </div>
+  </div>
+</footer>
+{% endif %}

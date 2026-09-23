@@ -1,6 +1,9 @@
 /** Tailwind build config. Rebuild the stylesheet with:  npm run build:css  (or see README.md) */
 module.exports = {
-  content: ['./*.html', './*.js'],
+  // *.html is now Eleventy's generated output (see .eleventy.js) — scanned
+  // as a safety net, but src/**/*.njk (the actual source templates) is
+  // what's authoritative.
+  content: ['./src/**/*.njk', './*.html', './*.js'],
   theme: {
     extend: {
       colors: {

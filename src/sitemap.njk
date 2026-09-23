@@ -1,0 +1,22 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+priorities:
+  /: "1.0"
+  /services.html: "0.9"
+  /projects.html: "0.9"
+  /process.html: "0.8"
+  /technology.html: "0.8"
+  /contact.html: "0.9"
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for p in collections.all | sort(attribute='url') %}
+  <url>
+    <loc>https://[YOUR-DOMAIN].com{{ p.url }}</loc>
+    <lastmod>{{ p.date.toISOString().slice(0, 10) }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>{{ priorities[p.url] or "0.7" }}</priority>
+  </url>
+{%- endfor %}
+</urlset>
