@@ -1,57 +1,80 @@
+{%- set pageOrder -%}index{% for link in navLinks %} {{ link.slug }}{% endfor %}{%- endset -%}
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en-IN" data-pages="{{ pageOrder }}">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>{{ title | safe }}</title>
   <meta name="description" content="{{ description }}" />
-  {% if nav == "home" %}<meta name="keywords" content="web development company, custom website development, web application development, backend development, custom software development, business website development, website developer, web development services" />{% endif %}
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://nirmaan.online{{ permalink }}" />
+  <link rel="canonical" href="{{ site.url }}{{ permalink }}" />
 
-  <!-- Open Graph / Social -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://nirmaan.online{{ permalink }}" />
+  <meta property="og:site_name" content="{{ site.name }}" />
+  <meta property="og:url" content="{{ site.url }}{{ permalink }}" />
   <meta property="og:title" content="{{ title | safe }}" />
-  <meta property="og:description" content="{{ ogDescription }}" />
-  <meta property="og:image" content="https://nirmaan.online/og-image.jpg" />
+  <meta property="og:description" content="{{ ogDescription or description }}" />
+  <meta property="og:image" content="{{ site.url }}/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The Nirmaan pixel-N mark beside the line: We build software, block by block." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta property="og:site_name" content="Nirmaan" />
   <meta name="twitter:title" content="{{ title | safe }}" />
-  <meta name="twitter:description" content="{{ ogDescription }}" />
-  <meta name="twitter:image" content="https://nirmaan.online/og-image.jpg" />
-  <meta name="theme-color" content="#0B0A08" />
+  <meta name="twitter:description" content="{{ ogDescription or description }}" />
+  <meta name="twitter:image" content="{{ site.url }}/og-image.png" />
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C89B5C'/><text y='.9em' font-size='60' x='20' fill='%230B0A08'>N</text></svg>" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#F1F1EC" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0E0E0F" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  <!-- Fonts -->
+  {#- Runs before first paint: applies a saved theme choice, and marks the page as
+      able to animate. Content is only ever hidden for a reveal when .motion is
+      set, so with no JS or with reduced motion every section renders at rest. #}
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var saved = localStorage.getItem('nirmaan-theme');
+        if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+      } catch (e) {}
+      root.classList.add('js');
+      if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        root.classList.add('motion');
+      }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
-
-  <!-- Shared styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
-  <script src="/page-transitions.js"></script>
-  {% if "tilt.js" in scripts %}<script src="/tilt.js" defer></script>{% endif %}
-  {% if "contact-form.js" in scripts %}<script src="/contact-form.js" defer></script>{% endif %}
-  {% if "layers-3d.js" in scripts %}<script src="/layers-3d.js" defer></script>{% endif %}
-  {% if "device-switcher.js" in scripts %}<script src="/device-switcher.js" defer></script>{% endif %}
 
-  <!-- Built with the Tailwind CLI (see tailwind.config.js). -->
-  <link rel="stylesheet" href="/tailwind.css" />
+  <script src="/page-transitions.js"></script>
+  <script src="/site.js" defer></script>
+  {%- for script in scripts %}
+  <script src="/{{ script }}" defer></script>
+  {%- endfor %}
 </head>
-<body class="bg-bg text-primary">
+<body class="page page--{{ nav }}" id="top">
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 {% include "nav.njk" %}
 
-<main id="main">
+<main id="main" tabindex="-1">
+{%- if head %}
+{% include "page-head.njk" %}
+{%- endif %}
 {{ content | safe }}
+{%- if cta %}
+{% include "cta.njk" %}
+{%- endif %}
 </main>
 
 {% include "footer.njk" %}
-
-<script src="/nav-interactions.js" defer></script>
 
 </body>
 </html>

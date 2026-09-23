@@ -1,0 +1,33 @@
+{#- Inner-page opener, driven entirely by the page's `head` front matter:
+      head.eyebrow, head.lines (array; the line at head.accent is set in blue),
+      head.lede, head.glyph (5x5 pattern), head.actions ([{label, href, style}]) -#}
+<section class="page-head" aria-labelledby="page-title">
+  <div class="page-head__grid" aria-hidden="true"></div>
+  <div class="wrap page-head__inner">
+    <div class="page-head__copy">
+      <nav aria-label="Breadcrumb" class="crumbs mono">
+        <ol role="list">
+          <li><a href="/">Home</a></li>
+          <li aria-current="page">{% for link in navLinks %}{% if link.slug == nav %}{{ link.label }}{% endif %}{% endfor %}</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">{{ head.eyebrow }}</p>
+      <h1 class="page-head__title display" id="page-title">
+        {%- for line in head.lines %}
+        <span class="line"><span{% if loop.index0 == head.accent %} class="accent"{% endif %}>{{ line | safe }}</span></span>
+        {%- endfor %}
+      </h1>
+      <p class="lede">{{ head.lede | safe }}</p>
+      {%- if head.actions %}
+      <div class="actions">
+        {%- for a in head.actions %}
+        <a class="{{ 'btn' if a.style == 'primary' else 'link-arrow' }}" href="{{ a.href }}">{{ a.label }}{% if a.style == 'primary' %} {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}{% else %} <span aria-hidden="true">→</span>{% endif %}</a>
+        {%- endfor %}
+      </div>
+      {%- endif %}
+    </div>
+    <div class="page-head__mark">
+      {% glyph head.glyph, "glyph--assemble page-head__glyph" %}
+    </div>
+  </div>
+</section>

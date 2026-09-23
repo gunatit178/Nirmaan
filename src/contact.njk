@@ -1,358 +1,228 @@
 ---
 layout: base.njk
 title: "Contact — Nirmaan"
-description: "Get in touch to discuss your project. Tell us what you want to build and we'll help you figure out the right approach and give you a project estimate."
-ogDescription: "Get in touch to discuss your project. Tell us what you want to build and we'll help you figure out the right approach and give you a project estimate."
+description: "Tell Nirmaan what you want to build. Get a ballpark budget and timeline instantly, then send an enquiry. We reply within 24 hours."
+ogDescription: "Tell us what you want to build. Get a ballpark budget instantly, and a reply within 24 hours."
 permalink: "/contact.html"
-scripts: ["page-transitions.js", "contact-form.js"]
+scripts: ["contact-form.js", "estimator.js"]
 nav: "contact"
-richFooter: false
+head:
+  eyebrow: "Start a build"
+  lines: ["Have an idea?", "Let's build it."]
+  accent: 1
+  lede: "Tell us what you need. Website, web application or a complete full-stack system, we'll help turn it into a working product."
+  glyph: "00100/00010/11111/00010/00100"
+  actions:
+    - { label: "Estimate a budget first", href: "#estimator" }
+types:
+  - { value: "15000", weeks: "1-2", form: "website",   name: "Business website",  note: "Pages, forms, SEO" }
+  - { value: "35000", weeks: "3-4", form: "ecommerce", name: "E-commerce store",  note: "Catalogue, payments, orders" }
+  - { value: "60000", weeks: "4-6", form: "webapp",    name: "Web application",   note: "Accounts, logic, data" }
+  - { value: "80000", weeks: "6-8", form: "fullstack", name: "Full-stack system", note: "Frontend + backend + database" }
+scales:
+  - { value: "1",   mult: "1",   name: "Simple",  note: "Standard features" }
+  - { value: "1.5", mult: "1.5", name: "Medium",  note: "More pages, some custom logic" }
+  - { value: "2.5", mult: "2",   name: "Complex", note: "Intricate logic, lots of data" }
+addons:
+  - { value: "10000", weeks: "1", name: "User login" }
+  - { value: "15000", weeks: "2", name: "Admin dashboard" }
+  - { value: "8000",  weeks: "1", name: "Payments" }
 ---
-<!-- PAGE HERO -->
-<section class="page-hero grid-bg relative overflow-hidden">
-  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="breadcrumb reveal">
-      <a href="index.html">Home</a>
-      <span class="breadcrumb-sep">/</span>
-      <span style="color:#C89B5C;">Contact</span>
-    </div>
-    <p class="page-hero-label reveal">Get in Touch</p>
-    <h1 class="page-hero-title reveal rd1">Have an idea?<br /><span class="text-accent">Let's build it.</span></h1>
-    <p class="page-hero-sub reveal rd2">
-      Tell us what you need. We'll help turn your idea into a working digital product — whether it's a website, web application, or complete full-stack system.
-    </p>
+<section class="section" aria-label="Enquiry">
+  <div class="wrap contact">
+
+    <form class="form" id="enquiry" data-enquiry novalidate
+          data-endpoint=""
+          data-fallback-email="{{ site.email }}"
+          aria-labelledby="enquiry-title">
+      <div>
+        <h2 class="form__title" id="enquiry-title">Tell us about your project</h2>
+        <p class="form__intro">Fields marked <span class="accent" aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required. We reply within 24 hours.</p>
+      </div>
+
+      <div class="hp-field" aria-hidden="true">
+        <label for="gotcha">Leave this empty</label>
+        <input type="text" id="gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="form__row">
+        <div class="field">
+          <label for="name">Full name <span class="req" aria-hidden="true">*</span></label>
+          <input class="input" type="text" id="name" name="name" required autocomplete="name" placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+          <input class="input" type="email" id="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@company.com" />
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input class="input" type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+91 98xxx xxxxx" />
+        </div>
+        <div class="field">
+          <label for="company">Company <span class="opt">(optional)</span></label>
+          <input class="input" type="text" id="company" name="company" autocomplete="organization" placeholder="Company or organisation" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="project">What do you want to build? <span class="req" aria-hidden="true">*</span></label>
+        <input class="input" type="text" id="project" name="project" required placeholder="e.g. An online store for my clothing brand, a booking system for my salon…" />
+      </div>
+
+      <div class="form__row">
+        <div class="field">
+          <label for="project-type">Project type</label>
+          <select class="input" id="project-type" name="project_type">
+            <option value="">Choose one</option>
+            <option value="website">Business website</option>
+            <option value="ecommerce">E-commerce website</option>
+            <option value="webapp">Web application</option>
+            <option value="backend">Backend / API development</option>
+            <option value="fullstack">Full-stack (website + backend)</option>
+            <option value="dashboard">Admin panel / dashboard</option>
+            <option value="redesign">Website redesign</option>
+            <option value="maintenance">Maintenance &amp; support</option>
+            <option value="other">Other / not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="budget">Budget</label>
+          <select class="input" id="budget" name="budget">
+            <option value="">Choose a range</option>
+            <option value="under-25k">Under ₹25,000</option>
+            <option value="25k-75k">₹25,000 – ₹75,000</option>
+            <option value="75k-2l">₹75,000 – ₹2,00,000</option>
+            <option value="2l-5l">₹2,00,000 – ₹5,00,000</option>
+            <option value="5l-plus">₹5,00,000+</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="timeline">When do you need it?</label>
+        <select class="input" id="timeline" name="timeline">
+          <option value="">Choose a timeline</option>
+          <option value="asap">As soon as possible</option>
+          <option value="1-month">Within 1 month</option>
+          <option value="3-months">Within 3 months</option>
+          <option value="flexible">Flexible / no deadline</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="message">Anything else? <span class="opt">(optional)</span></label>
+        <textarea class="input" id="message" name="message" rows="5" placeholder="Requirements, links, questions: anything that helps us understand the project."></textarea>
+      </div>
+
+      <div class="notice notice--ok" data-form-ok role="status" tabindex="-1" hidden>
+        <b>Enquiry sent.</b>
+        <span>Thanks. We'll reply within 24 hours.</span>
+      </div>
+      <div class="notice notice--error" data-form-error role="alert" hidden>
+        <b>Not sent.</b>
+        <span data-form-error-text></span>
+      </div>
+
+      <div class="form__submit">
+        <button class="btn" type="submit"><span data-label>Send enquiry</span> {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</button>
+        <p class="form__note">No spam, no mailing lists. We only use this to reply.</p>
+      </div>
+    </form>
+
+    <aside class="contact__aside" aria-label="What to expect">
+      <div data-reveal>
+        <p class="eyebrow">What happens next</p>
+        <ol class="next-steps" role="list">
+          <li><b>You send your enquiry</b><span>As much or as little detail as you have.</span></li>
+          <li><b>We review and reply</b><span>Within 24 hours, with first thoughts and any questions.</span></li>
+          <li><b>A short discovery call</b><span>Call or WhatsApp, to understand the project before recommending anything.</span></li>
+          <li><b>Proposal &amp; estimate</b><span>Clear scope, timeline and cost. No hidden surprises.</span></li>
+        </ol>
+      </div>
+
+      {%- if site.email or site.phone or site.whatsapp %}
+      <div data-reveal>
+        <p class="eyebrow">Or reach us directly</p>
+        <div class="channels">
+          {%- if site.email %}<a class="channel" href="mailto:{{ site.email }}"><span class="mono">Email</span><b>{{ site.email }}</b></a>{% endif %}
+          {%- if site.phone %}<a class="channel" href="tel:{{ site.phone | replace(' ', '') }}"><span class="mono">Phone</span><b>{{ site.phone }}</b></a>{% endif %}
+          {%- if site.whatsapp %}<a class="channel" href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener noreferrer"><span class="mono">WhatsApp</span><b>Message us <span aria-hidden="true">↗</span></b></a>{% endif %}
+        </div>
+      </div>
+      {%- endif %}
+
+      <div data-reveal>
+        <p class="eyebrow">Recent client</p>
+        <a class="channel" href="/projects.html"><span class="mono">Sudaangeo.in</span><b>Website + automation →</b></a>
+      </div>
+    </aside>
   </div>
 </section>
 
-<!-- MAIN CONTACT SECTION -->
-<section id="contact-form" class="py-10 lg:py-14" aria-label="Contact form and details">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-    <div class="grid lg:grid-cols-5 gap-8 lg:gap-12">
-
-      <!-- LEFT: Details + Why contact -->
-      <div class="lg:col-span-2 space-y-4">
-
-        <!-- Contact Methods -->
-        <div>
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-3">Reach Us Directly</p>
-          <div class="space-y-2">
-
-            <!-- *** REPLACE: Add your actual email *** -->
-            <a href="mailto:[YOUR-EMAIL@DOMAIN.COM]" class="contact-card">
-              <div class="contact-card-icon">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="#C89B5C" stroke-width="1.4"/><path d="M2 7l7 4 7-4" stroke="#C89B5C" stroke-width="1.4" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <p class="text-muted text-xs mb-0.5">Email</p>
-                <p class="text-primary text-sm font-semibold">[YOUR-EMAIL@DOMAIN.COM]</p>
-                <p class="text-muted text-xs mt-0.5">We reply within 24 hours</p>
-              </div>
-            </a>
-
-            <!-- *** REPLACE: Add your actual phone *** -->
-            <a href="tel:[YOUR-PHONE]" class="contact-card">
-              <div class="contact-card-icon">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3h4l1.5 4-2 1.5c1 2 2.5 3.5 4.5 4.5L12.5 11l4 1.5V16c-8 .5-14-6.5-13.5-13z" stroke="#C89B5C" stroke-width="1.4" stroke-linejoin="round"/></svg>
-              </div>
-              <div>
-                <p class="text-muted text-xs mb-0.5">Phone</p>
-                <p class="text-primary text-sm font-semibold">[YOUR-PHONE-NUMBER]</p>
-                <p class="text-muted text-xs mt-0.5">Calls &amp; messages welcome</p>
-              </div>
-            </a>
-
-            <!-- *** REPLACE: Add your WhatsApp number (no + prefix, e.g. 919876543210) *** -->
-            <a href="https://wa.me/[WHATSAPP-NUMBER]" target="_blank" rel="noopener noreferrer" class="contact-card">
-              <div class="contact-card-icon" style="border-color:rgba(52,211,153,0.25);">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#34d399" stroke-width="1.4"/><path d="M6 9.5c.5 1.5 2 2.5 3.5 2.5.7 0 1.3-.2 1.8-.5l1.7.5-.5-1.7C12.8 9.8 13 9.2 13 8.5 13 6.6 11.2 5 9 5S5 6.6 5 8.5c0 .5.1 1 .3 1.4L5 12l2.1-.5" stroke="#34d399" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div>
-                <p class="text-muted text-xs mb-0.5">WhatsApp</p>
-                <p class="text-primary text-sm font-semibold">Message on WhatsApp</p>
-                <p class="text-muted text-xs mt-0.5">Quickest way to reach us</p>
-              </div>
-            </a>
-
-          </div>
-        </div>
-
-        <!-- Why contact us -->
-        <div>
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-3">What happens next</p>
-          <div class="space-y-2">
-            <div class="reason-card">
-              <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span class="font-display font-bold text-accent text-xs">1</span>
-              </div>
-              <div>
-                <p class="text-primary text-sm font-semibold mb-1">You send your enquiry</p>
-                <p class="text-secondary text-xs leading-relaxed">Fill in the form or reach us directly. Tell us what you need — as much or as little detail as you have.</p>
-              </div>
-            </div>
-            <div class="reason-card">
-              <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span class="font-display font-bold text-accent text-xs">2</span>
-              </div>
-              <div>
-                <p class="text-primary text-sm font-semibold mb-1">We review and respond</p>
-                <p class="text-secondary text-xs leading-relaxed">We get back to you within 24 hours with initial thoughts and any questions we have.</p>
-              </div>
-            </div>
-            <div class="reason-card">
-              <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span class="font-display font-bold text-accent text-xs">3</span>
-              </div>
-              <div>
-                <p class="text-primary text-sm font-semibold mb-1">Discovery call or chat</p>
-                <p class="text-secondary text-xs leading-relaxed">A short call or WhatsApp conversation to understand your project properly before we recommend anything.</p>
-              </div>
-            </div>
-            <div class="reason-card">
-              <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span class="font-display font-bold text-accent text-xs">4</span>
-              </div>
-              <div>
-                <p class="text-primary text-sm font-semibold mb-1">Proposal &amp; estimate</p>
-                <p class="text-secondary text-xs leading-relaxed">We send a clear project proposal with scope, timeline, and cost. No hidden surprises.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Clients -->
-        <div class="glass rounded-xl p-4 sm:p-5">
-          <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2.5">Happy Customers</p>
-          <div class="space-y-2.5">
-            <a href="https://sudaangeo.in" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
-              <div class="w-7 h-7 rounded-lg bg-accent/12 border border-accent/20 flex items-center justify-center flex-shrink-0">
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L1.5 5v4.5L7 12.5l5.5-3V5L7 1.5z" stroke="#C89B5C" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              </div>
-              <div>
-                <p class="text-primary text-sm font-semibold group-hover:text-accent-light transition-colors">Sudaangeo.in</p>
-                <p class="text-muted text-xs">Website + Business Automation</p>
-              </div>
-            </a>
-          </div>
-        </div>
-
+<section class="section" id="estimator" aria-labelledby="estimator-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Project estimator</p>
+        <h2 class="section__title display" id="estimator-title">Ballpark it in ten&nbsp;seconds.</h2>
       </div>
-
-      <!-- RIGHT: Estimator + Contact Form -->
-      <div class="lg:col-span-3 space-y-5 reveal rd1">
-
-        <!-- INTERACTIVE ESTIMATOR WIDGET -->
-        <div class="glass rounded-xl p-5 sm:p-6 border border-accent/20">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-9 h-9 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-light"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-            </div>
-            <div>
-              <h2 class="font-display font-bold text-primary text-lg">Project Estimator</h2>
-              <p class="text-secondary text-xs">Get a ballpark cost and timeline instantly.</p>
-            </div>
-          </div>
-          
-          <div class="grid sm:grid-cols-2 gap-3.5 mb-3.5">
-            <div>
-              <label class="block text-secondary text-xs font-medium mb-1.5">Base Project Type</label>
-              <select id="est-type" class="form-field" onchange="calculateEstimate()">
-                <option value="15000" data-time="1-2 weeks">Standard Business Website</option>
-                <option value="35000" data-time="3-4 weeks">E-Commerce Website</option>
-                <option value="60000" data-time="4-6 weeks">Custom Web Application</option>
-                <option value="80000" data-time="6-8 weeks">Full-Stack System (Frontend + Backend)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-secondary text-xs font-medium mb-2">Scale / Complexity</label>
-              <select id="est-scale" class="form-field" onchange="calculateEstimate()">
-                <option value="1" data-time-mult="1">Simple (Standard features)</option>
-                <option value="1.5" data-time-mult="1.5">Medium (More pages, some custom logic)</option>
-                <option value="2.5" data-time-mult="2">Complex (Intricate logic, lots of data)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label class="block text-secondary text-xs font-medium mb-1.5">Optional Add-ons</label>
-            <div class="flex flex-wrap gap-2">
-              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
-                <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="10000" data-time="1" onchange="calculateEstimate()" /> User Login / Auth
-              </label>
-              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
-                <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="15000" data-time="2" onchange="calculateEstimate()" /> Admin Dashboard
-              </label>
-              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-accent/40 cursor-pointer transition-colors text-xs text-primary">
-                <input type="checkbox" class="est-addon w-3.5 h-3.5 accent-accent" value="8000" data-time="1" onchange="calculateEstimate()" /> Payment Integration
-              </label>
-            </div>
-          </div>
-
-          <div class="bg-surface/80 rounded-xl p-4 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <p class="text-secondary text-[11px] uppercase tracking-wider mb-0.5">Estimated Range</p>
-              <p class="font-display font-semibold text-xl sm:text-2xl text-accent-light" id="est-price">₹15,000 - ₹25,000</p>
-              <p class="text-muted text-xs mt-0.5">Timeline: <span id="est-timeline" class="text-primary font-medium">1-2 weeks</span></p>
-            </div>
-            <button type="button" onclick="applyEstimateToForm()" class="btn-secondary px-4 py-2 text-xs whitespace-nowrap gap-1.5 bg-white/5">
-              Prefill Form Below
-              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <form id="main-contact-form" class="glass rounded-xl p-6 sm:p-7 lg:p-8 space-y-4" onsubmit="handleSubmit(event)" novalidate data-endpoint="">
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" hidden />
-
-          <div>
-            <h2 class="font-display font-bold text-primary text-lg sm:text-xl mb-1">Start your project</h2>
-            <p class="text-secondary text-xs sm:text-sm">Fill in the form and we'll get back to you within 24 hours.</p>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="name" class="block text-secondary text-xs font-medium mb-2">Full Name <span class="text-accent">*</span></label>
-              <input type="text" id="name" name="name" class="form-field" placeholder="Your full name" required autocomplete="name" />
-            </div>
-            <div>
-              <label for="email" class="block text-secondary text-xs font-medium mb-2">Email Address <span class="text-accent">*</span></label>
-              <input type="email" id="email" name="email" class="form-field" placeholder="your@email.com" required autocomplete="email" />
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="phone" class="block text-secondary text-xs font-medium mb-2">Phone Number</label>
-              <input type="tel" id="phone" name="phone" class="form-field" placeholder="+91 00000 00000" autocomplete="tel" />
-            </div>
-            <div>
-              <label for="company" class="block text-secondary text-xs font-medium mb-2">Company / Organization</label>
-              <input type="text" id="company" name="company" class="form-field" placeholder="Your company name" autocomplete="organization" />
-            </div>
-          </div>
-
-          <div>
-            <label for="project-type" class="block text-secondary text-xs font-medium mb-2">Project Type</label>
-            <select id="project-type" name="project_type" class="form-field">
-              <option value="">Select a project type</option>
-              <option value="website">Business Website</option>
-              <option value="ecommerce">E-commerce Website</option>
-              <option value="webapp">Web Application</option>
-              <option value="backend">Backend / API Development</option>
-              <option value="fullstack">Full-Stack (Website + Backend)</option>
-              <option value="dashboard">Admin Panel / Dashboard</option>
-              <option value="redesign">Website Redesign</option>
-              <option value="maintenance">Maintenance &amp; Support</option>
-              <option value="other">Other / Not sure yet</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="project" class="block text-secondary text-xs font-medium mb-2">What do you want to build? <span class="text-accent">*</span></label>
-            <input type="text" id="project" name="project" class="form-field" placeholder="e.g. An online store for my clothing brand, a booking system for my salon..." required />
-          </div>
-
-          <div>
-            <label for="budget" class="block text-secondary text-xs font-medium mb-2">Budget Range</label>
-            <select id="budget" name="budget" class="form-field">
-              <option value="">Select a budget range</option>
-              <option value="under-25k">Under ₹25,000</option>
-              <option value="25k-75k">₹25,000 – ₹75,000</option>
-              <option value="75k-2l">₹75,000 – ₹2,00,000</option>
-              <option value="2l-5l">₹2,00,000 – ₹5,00,000</option>
-              <option value="5l+">₹5,00,000+</option>
-              <option value="not-sure">Not sure yet</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="timeline" class="block text-secondary text-xs font-medium mb-2">When do you need this?</label>
-            <select id="timeline" name="timeline" class="form-field">
-              <option value="">Select a timeline</option>
-              <option value="asap">As soon as possible</option>
-              <option value="1month">Within 1 month</option>
-              <option value="3months">Within 3 months</option>
-              <option value="flexible">Flexible / no deadline</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="message" class="block text-secondary text-xs font-medium mb-2">Additional Details</label>
-            <textarea id="message" name="message" rows="4" class="form-field resize-none" placeholder="Any other details, requirements, or questions you'd like us to know..."></textarea>
-          </div>
-
-          <!-- Set data-endpoint on the <form> to your form service URL. See contact-form.js. -->
-          <button type="submit" id="submit-btn" class="btn-primary w-full py-4 text-base font-semibold gap-2">
-            <span id="submit-text">Send My Enquiry</span>
-            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-
-          <div id="form-success" class="hidden text-center py-2">
-            <div class="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center mx-auto mb-3">
-              <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <p class="text-emerald-400 text-sm font-semibold">Enquiry sent successfully!</p>
-            <p class="text-muted text-xs mt-1">We'll get back to you within 24 hours.</p>
-          </div>
-          <div id="form-error" class="hidden text-center py-2">
-            <p class="text-rose-400 text-sm font-medium">Please fill in the required fields — Name, Email, and Project description.</p>
-          </div>
-
-        </form>
-      </div>
-
+      <p class="section__text">Pick what's closest. It's a starting range, not a quote. Your real proposal comes after we've talked.</p>
     </div>
+
+    <form class="estimator" data-estimator aria-label="Project estimator">
+      <div class="estimator__inputs">
+        <fieldset>
+          <legend>Project type</legend>
+          <div class="choice-grid">
+            {%- for t in types %}
+            <label class="choice">
+              <input type="radio" name="est-type" value="{{ t.value }}" data-weeks="{{ t.weeks }}" data-form-value="{{ t.form }}"{% if loop.first %} checked{% endif %} />
+              <span class="choice__box"><b>{{ t.name }}</b><span>{{ t.note }}</span></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Complexity</legend>
+          <div class="choice-grid choice-grid--3">
+            {%- for sc in scales %}
+            <label class="choice">
+              <input type="radio" name="est-scale" value="{{ sc.value }}" data-time-mult="{{ sc.mult }}"{% if loop.first %} checked{% endif %} />
+              <span class="choice__box"><b>{{ sc.name }}</b><span>{{ sc.note }}</span></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Add-ons</legend>
+          <div class="chip-row">
+            {%- for a in addons %}
+            <label class="choice chip">
+              <input type="checkbox" name="est-addon" value="{{ a.value }}" data-weeks="{{ a.weeks }}" />
+              <span class="choice__box"><b>{{ a.name }}</b></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="estimator__result" aria-live="polite">
+        <p class="mono">Estimated range</p>
+        <p class="estimator__price" data-est-price>₹15,000 – ₹19,500</p>
+        <div>
+          <p class="mono">Timeline · <span class="estimator__weeks" data-est-weeks>1–2 weeks</span></p>
+          <div class="weeks" data-est-bar role="img" aria-label="Timeline: 1–2 weeks"><i></i><i class="is-range"></i></div>
+          <p class="weeks-legend"><span>1 block = 1 week</span><span>Possible extra time</span></p>
+        </div>
+        <button class="btn btn--inverse" type="submit">Use this estimate {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</button>
+        <p class="estimator__fine">Adds your choices to the enquiry form above. Final pricing depends on scope, content and integrations.</p>
+      </div>
+    </form>
   </div>
 </section>
-
-<script>
-  // Interactive Estimator Logic
-  function calculateEstimate() {
-    const typeSelect = document.getElementById('est-type');
-    const scaleSelect = document.getElementById('est-scale');
-    const addons = document.querySelectorAll('.est-addon:checked');
-
-    let basePrice = parseInt(typeSelect.value);
-    let scale = parseFloat(scaleSelect.value);
-
-    let addonPrice = 0;
-    let extraWeeks = 0;
-    addons.forEach(box => {
-      addonPrice += parseInt(box.value);
-      extraWeeks += parseInt(box.getAttribute('data-time'));
-    });
-
-    let totalMin = (basePrice * scale) + addonPrice;
-    let totalMax = totalMin + (totalMin * 0.3); // 30% upper bound for range
-
-    // Calculate timeline
-    let baseTime = typeSelect.options[typeSelect.selectedIndex].getAttribute('data-time'); // e.g. "3-4 weeks"
-    let timeMult = parseFloat(scaleSelect.options[scaleSelect.selectedIndex].getAttribute('data-time-mult'));
-
-    let minWeeks = parseInt(baseTime.split('-')[0]) * timeMult + extraWeeks;
-    let maxWeeks = parseInt(baseTime.split('-')[1].split(' ')[0]) * timeMult + extraWeeks;
-
-    document.getElementById('est-price').innerText = `₹${Math.round(totalMin).toLocaleString('en-IN')} - ₹${Math.round(totalMax).toLocaleString('en-IN')}`;
-    document.getElementById('est-timeline').innerText = `${Math.round(minWeeks)}-${Math.round(maxWeeks)} weeks`;
-  }
-
-  function applyEstimateToForm() {
-    const typeSelect = document.getElementById('est-type');
-    const typeText = typeSelect.options[typeSelect.selectedIndex].text;
-    const estPrice = document.getElementById('est-price').innerText;
-    const estTime = document.getElementById('est-timeline').innerText;
-
-    let formType = document.getElementById('project-type');
-    if(typeText.includes('Website')) formType.value = 'website';
-    if(typeText.includes('E-Commerce')) formType.value = 'ecommerce';
-    if(typeText.includes('Application')) formType.value = 'webapp';
-    if(typeText.includes('Full-Stack')) formType.value = 'fullstack';
-
-    let msg = document.getElementById('message');
-    msg.value = `I used the project estimator:\n- Base: ${typeText}\n- Estimated Range: ${estPrice}\n- Estimated Timeline: ${estTime}\n\nAdditional details: `;
-
-    const y = document.getElementById('main-contact-form').getBoundingClientRect().top + window.pageYOffset - 100;
-    window.scrollTo({top: y, behavior: 'smooth'});
-  }
-
-  calculateEstimate();
-</script>

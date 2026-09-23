@@ -8,7 +8,7 @@
   2. Other browsers (e.g. Firefox) get a simple fade out / fade in from the second
      block below.
 
-  Load it in <head>, after styles.css, so it is ready before first paint.
+  Loaded in <head>, after styles.css, so it is ready before first paint.
 */
 
 /* ---- 1. Direction for native view transitions ---- */
@@ -17,7 +17,8 @@
   if (!('CSSViewTransitionRule' in window)) return;
 
   var root = document.documentElement;
-  var ORDER = ['index', 'services', 'projects', 'process', 'technology', 'contact'];   // same as the nav
+  // Page order comes from the nav (src/_data/navLinks.json via base.njk), so it can't drift.
+  var ORDER = (root.getAttribute('data-pages') || 'index').split(/\s+/);
 
   function indexOf(url) {
     try {
