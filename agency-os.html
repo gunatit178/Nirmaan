@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Agency OS — Nirmaan</title>
+  <meta name="description" content="How Nirmaan actually builds: a coordinated team of specialized AI agents carrying work from discovery through deployment, with a human approving every key gate." />
+  
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://nirmaan.online/agency-os.html" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nirmaan.online/agency-os.html" />
+  <meta property="og:title" content="Agency OS — Nirmaan" />
+  <meta property="og:description" content="How Nirmaan actually builds: a coordinated team of specialized AI agents, with a human approving every key gate — not autonomous, gated." />
+  <meta property="og:image" content="https://nirmaan.online/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:site_name" content="Nirmaan" />
+  <meta name="twitter:title" content="Agency OS — Nirmaan" />
+  <meta name="twitter:description" content="How Nirmaan actually builds: a coordinated team of specialized AI agents, with a human approving every key gate — not autonomous, gated." />
+  <meta name="twitter:image" content="https://nirmaan.online/og-image.jpg" />
+  <meta name="theme-color" content="#0B0A08" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C89B5C'/><text y='.9em' font-size='60' x='20' fill='%230B0A08'>N</text></svg>" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/page-transitions.js"></script>
+  <script src="/tilt.js" defer></script>
+  
+  
+  
+
+  <!-- Built with the Tailwind CLI (see tailwind.config.js). -->
+  <link rel="stylesheet" href="/tailwind.css" />
+</head>
+<body class="bg-bg text-primary">
+
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="/index.html" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="#0B0A08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="font-display font-semibold text-primary text-[15px] tracking-tight">Nirmaan</span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden lg:flex items-center gap-7">
+        
+        <a href="/services.html" class="nav-link">Services</a>
+        
+        <a href="/projects.html" class="nav-link">Projects</a>
+        
+        <a href="/agency-os.html" class="nav-link active">Agency OS</a>
+        
+        <a href="/process.html" class="nav-link">Process</a>
+        
+        <a href="/technology.html" class="nav-link">Technology</a>
+        
+        <a href="/contact.html" class="nav-link">Contact</a>
+        
+      </div>
+
+      <!-- Desktop CTA -->
+      <a href="/contact.html" class="hidden lg:inline-flex btn-primary px-5 py-2.5 text-sm gap-2">
+        Start Your Project
+      </a>
+
+      <!-- Hamburger -->
+      <button id="hamburger" aria-label="Toggle menu" aria-expanded="false" class="lg:hidden flex flex-col gap-1.5 p-2">
+        <span class="hamburger-line line-1"></span>
+        <span class="hamburger-line line-2"></span>
+        <span class="hamburger-line line-3"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu — role="dialog"/aria-modal restored on every page (previously
+       only index.html had it; the other five silently drifted without it). -->
+  <div id="mobile-menu" class="lg:hidden absolute inset-x-0 top-16 glass border-b border-white/5" role="dialog" aria-modal="true">
+    <div class="px-6 py-7 flex flex-col gap-5">
+      
+      <a href="/services.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Services</a>
+      
+      <a href="/projects.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Projects</a>
+      
+      <a href="/agency-os.html" class="mobile-link text-accent-light font-medium">Agency OS</a>
+      
+      <a href="/process.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Process</a>
+      
+      <a href="/technology.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Technology</a>
+      
+      <a href="/contact.html" class="mobile-link text-secondary font-medium hover:text-primary transition-colors">Contact</a>
+      
+      <a href="/contact.html" class="mobile-link btn-primary px-5 py-3 text-sm text-center mt-1">Start Your Project</a>
+    </div>
+  </div>
+</nav>
+
+
+<main id="main">
+<!-- PAGE HERO -->
+<section class="page-hero grid-bg relative overflow-hidden">
+  <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="breadcrumb reveal">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span style="color:#C89B5C;">Agency OS</span>
+    </div>
+    <p class="page-hero-label reveal">How We Build</p>
+    <h1 class="page-hero-title reveal rd1">Not vibe-coded.<br /><span class="text-accent">Orchestrated.</span></h1>
+    <p class="page-hero-sub reveal rd2">
+      Agency OS is the system behind Nirmaan's own work: a coordinated team of specialized AI agents, each with a defined role, carrying a project from discovery through deployment — with a human approving every key decision along the way.
+    </p>
+    <div class="mt-6 reveal rd3 flex flex-wrap gap-3">
+      <a href="contact.html" class="btn-primary px-6 py-3 text-sm gap-2">
+        Start Your Project
+        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="projects.html" class="btn-secondary px-6 py-3 text-sm gap-2">See It Produce Real Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT ACTUALLY IS -->
+<section class="py-12 lg:py-16" aria-label="What Agency OS is">
+  <div class="s-line mb-8 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10"></div>
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+      <div class="lg:col-span-5 reveal">
+        <p class="text-muted text-xs font-semibold uppercase tracking-widest mb-2">The Honest Version</p>
+        <h2 class="font-display font-semibold text-primary leading-tight mb-3 text-2xl sm:text-3xl lg:text-4xl">
+          A team of specialists.<br />Not one model guessing.
+        </h2>
+        <p class="text-secondary text-sm sm:text-base leading-relaxed mb-3">
+          "AI-built" usually means one model improvising an entire project in one pass — no review, no specialization, no way to catch a bad decision before it ships. That's the vibe-coded look, and it shows.
+        </p>
+        <p class="text-secondary text-xs sm:text-sm leading-relaxed">
+          Agency OS instead breaks a project into roles a real studio would have — product, design, architecture, engineering, QA — and routes work through each of them, with review built into the handoffs.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 reveal rd2">
+        <div class="grid sm:grid-cols-2 gap-3.5">
+          <div class="glass rounded-xl p-4 border border-accent/15">
+            <p class="text-primary text-sm font-semibold mb-1">Orchestrator</p>
+            <p class="text-secondary text-xs leading-relaxed">Breaks the objective into workstreams, assigns the right specialist, and never blindly trusts a single output.</p>
+          </div>
+          <div class="glass rounded-xl p-4 border border-accent/15">
+            <p class="text-primary text-sm font-semibold mb-1">Specialist Agents</p>
+            <p class="text-secondary text-xs leading-relaxed">Product, design, architecture, engineering, QA and more — each with a defined mission and its own quality bar.</p>
+          </div>
+          <div class="glass rounded-xl p-4 border border-accent/15">
+            <p class="text-primary text-sm font-semibold mb-1">Quality Gates</p>
+            <p class="text-secondary text-xs leading-relaxed">Work doesn't advance to the next stage until it clears a defined gate — requirements, design, architecture, QA.</p>
+          </div>
+          <div class="glass rounded-xl p-4 border border-accent/15">
+            <p class="text-primary text-sm font-semibold mb-1">Human Approval</p>
+            <p class="text-secondary text-xs leading-relaxed">The founder signs off at every key gate. The system proposes; a person decides.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="py-12 lg:py-16" aria-label="How a project moves through the system">
+  <div class="s-line mb-8 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10"></div>
+  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+
+    <div class="text-center mb-10 reveal">
+      <p class="text-muted text-xs font-semibold uppercase tracking-widest mb-2">The Pipeline</p>
+      <h2 class="font-display font-semibold text-primary text-2xl sm:text-3xl lg:text-4xl">
+        Discovery to deployment, <span class="text-accent">gated at every stage.</span>
+      </h2>
+    </div>
+
+    <div class="space-y-2.5">
+      <div class="reason-card">
+        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span class="font-display font-semibold text-accent text-xs">1</span>
+        </div>
+        <div>
+          <p class="text-primary text-sm font-semibold mb-1">Discovery &amp; Requirements</p>
+          <p class="text-secondary text-xs leading-relaxed">Product and business-analysis agents turn a vague brief into a precise, sourced requirements spec — flagged assumptions included, not hidden.</p>
+        </div>
+      </div>
+      <div class="reason-card">
+        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span class="font-display font-semibold text-accent text-xs">2</span>
+        </div>
+        <div>
+          <p class="text-primary text-sm font-semibold mb-1">Design &amp; Architecture</p>
+          <p class="text-secondary text-xs leading-relaxed">Design and architecture agents produce the visual direction and technical plan — reviewed against each other before either is final.</p>
+        </div>
+      </div>
+      <div class="reason-card">
+        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span class="font-display font-semibold text-accent text-xs">3</span>
+        </div>
+        <div>
+          <p class="text-primary text-sm font-semibold mb-1">Implementation</p>
+          <p class="text-secondary text-xs leading-relaxed">Engineering agents build against the approved plan — not freelancing on design decisions that were never signed off.</p>
+        </div>
+      </div>
+      <div class="reason-card">
+        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span class="font-display font-semibold text-accent text-xs">4</span>
+        </div>
+        <div>
+          <p class="text-primary text-sm font-semibold mb-1">QA &amp; Security Review</p>
+          <p class="text-secondary text-xs leading-relaxed">A dedicated QA pass checks the work against the original requirements before it's ever presented as done.</p>
+        </div>
+      </div>
+      <div class="reason-card">
+        <div class="w-7 h-7 rounded-lg bg-accent/10 border border-accent/18 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span class="font-display font-semibold text-accent text-xs">5</span>
+        </div>
+        <div>
+          <p class="text-primary text-sm font-semibold mb-1">Deployment &amp; Monitoring</p>
+          <p class="text-secondary text-xs leading-relaxed">Once approved, work ships — and stays owned, not abandoned the moment it goes live.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="py-12 lg:py-16" aria-label="Proof this is real">
+  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="cta-section reveal">
+      <div class="relative z-10">
+        <p class="text-muted text-xs font-bold uppercase tracking-widest mb-2">Not a pitch — a fact</p>
+        <h2 class="font-display font-semibold text-primary mb-3" style="font-size:clamp(1.5rem,3vw,2.2rem);">
+          This isn't hypothetical. We've used it on ourselves.
+        </h2>
+        <p class="text-secondary text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-5">
+          Nirmaan's own agent roster — creative director, UX designer, UI designer, principal architect, and QA engineer — ran a real review against Nirmaan's own marketing site. Their findings are what this site's design direction is based on. We don't ask clients to trust something we haven't run ourselves.
+        </p>
+        <a href="contact.html" class="btn-primary px-7 py-3 text-sm sm:text-base gap-2">
+          Put It to Work on Your Project
+          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="border-t py-8 mt-12" style="border-color:rgba(255,255,255,0.05);">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="/index.html" class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4l5 3.5L13 4M3 8l5 3.5L13 8" stroke="#0B0A08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="font-display font-semibold text-primary text-sm">Nirmaan</span>
+      </a>
+      <div class="flex items-center gap-6 flex-wrap justify-center">
+        
+        <a href="/services.html" class="text-muted text-xs hover:text-primary transition-colors">Services</a>
+        
+        <a href="/projects.html" class="text-muted text-xs hover:text-primary transition-colors">Projects</a>
+        
+        <a href="/agency-os.html" class="text-muted text-xs hover:text-primary transition-colors">Agency OS</a>
+        
+        <a href="/process.html" class="text-muted text-xs hover:text-primary transition-colors">Process</a>
+        
+        <a href="/technology.html" class="text-muted text-xs hover:text-primary transition-colors">Technology</a>
+        
+        <a href="/contact.html" class="text-muted text-xs hover:text-primary transition-colors">Contact</a>
+        
+      </div>
+      <p class="text-muted text-xs">&copy; 2025 Nirmaan</p>
+    </div>
+  </div>
+</footer>
+
+
+
+<script src="/nav-interactions.js" defer></script>
+
+</body>
+</html>

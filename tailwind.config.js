@@ -7,18 +7,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bg: '#080C14',
-        surface: '#0D1117',
-        elevated: '#111827',
-        accent: '#6366f1',
-        'accent-light': '#818cf8',
-        primary: '#F8FAFC',
-        secondary: '#94A3B8',
-        muted: '#7B8CA6',
+        bg: '#0B0A08',
+        surface: '#15130F',
+        elevated: '#1D1A15',
+        accent: '#C89B5C',
+        'accent-light': '#D9B67D',
+        primary: '#F3EFE6',
+        secondary: '#ADA290',
+        muted: '#918468',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Manrope', 'Inter', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
       },
     },
   },

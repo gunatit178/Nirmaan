@@ -1,6 +1,7 @@
 [
   { "slug": "services", "href": "services.html", "label": "Services" },
   { "slug": "projects", "href": "projects.html", "label": "Projects" },
+  { "slug": "agency-os", "href": "agency-os.html", "label": "Agency OS" },
   { "slug": "process", "href": "process.html", "label": "Process" },
   { "slug": "technology", "href": "technology.html", "label": "Technology" },
   { "slug": "contact", "href": "contact.html", "label": "Contact" }
