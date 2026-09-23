@@ -1,7 +1,6 @@
 # robots.txt
-# *** REPLACE: Update [YOUR-DOMAIN].com with your actual domain ***
 
 User-agent: *
 Allow: /
 
-Sitemap: https://[YOUR-DOMAIN].com/sitemap.xml
+Sitemap: https://nirmaan.online/sitemap.xml
