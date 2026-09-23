@@ -1,5 +1,5 @@
 {
-  "name": "studio-website",
+  "name": "nirmaan-website",
   "private": true,
   "description": "Static marketing site. Only the Tailwind stylesheet needs a build step.",
   "scripts": {
