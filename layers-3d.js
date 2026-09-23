@@ -37,6 +37,12 @@
   var conn = navigator.connection;
   if (conn && conn.saveData) return;              // Data Saver: keep the light 2D version
 
+  // Below ~768px, skip the scene entirely rather than pay its ~170KB
+  // gzipped download and WebGL init cost: the 2D fallback is the real
+  // mobile design here, not a degraded stand-in. Checked once at load,
+  // same as the Data Saver check above.
+  if (window.matchMedia('(max-width: 767px)').matches) return;
+
   // One shared download of Three.js for every scene on the page.
   var threePromise = null;
   function loadThree() {
