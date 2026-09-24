@@ -105,10 +105,16 @@ recurring invoices (today: a "Create due invoices" button).
 Capability links still work for proposals and status pages; accounts are for
 clients who need ongoing access.
 
-### Phase 5: Productization · PROPOSED
+### Phase 5: Productization signals · IMPLEMENTED (products themselves: PROPOSED)
 
-Only when the data shows the same problem across several clients. See
-`strategy/productization.md` for the criteria.
+| Capability | Scope |
+|---|---|
+| Patterns screen | `/os/patterns` (finance roles): won projects grouped by kind of work and checked against the four criteria in `strategy/productization.md`. Each is pass, fail or unknown; unknown (no costs or asset uses recorded) never counts as a pass. |
+| Verdict | Candidate (all four pass), watch (repeat demand plus at least one other), not yet. |
+| Decisions | "Pursue a configurable starter" or "not now", with reasoning, saved as a knowledge article with the signal snapshot at the time. |
+
+Building an actual product stays **PROPOSED** until a kind of work is a
+candidate and a decision to pursue it has been recorded.
 
 ## Build method (every phase)
 

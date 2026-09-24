@@ -1,8 +1,10 @@
 # Internal OS
 
 Implemented screens: Today, Leads, Lead detail (discovery), Proposals,
-Proposal editor and preview, Projects, Project workspace, Approvals, AI
-usage, Audit log, Team, Login. See `portal-architecture.md` for the map
+Proposal editor and preview, Projects, Project workspace (with the AI
+factory, money and knowledge panels), Approvals, Support, Knowledge, IP
+library, Patterns, Finance, AI usage, Audit log, Team, Login. Clients sign in
+to a separate `/portal`. See `portal-architecture.md` for the map
 and `engineering/security.md` for who sees what.
 
 Getting started locally:
