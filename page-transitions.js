@@ -14,7 +14,7 @@
 
   On phones (up to 40rem) pages slide sideways instead, like a native app: the
   new page comes in from the right going forward, and from the left going back.
-  There's no title morph on phones; the slide carries the whole page.
+  A tapped card's title still flies into the new page's heading.
 
   Loaded in <head>, after styles.css, so it is ready before first paint.
 */
@@ -23,7 +23,7 @@
 
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  // Phones slide pages like a native app (styles.css); no title morph there.
+  // Phones slide pages like a native app (styles.css); the title morph rides along.
   var phone = window.matchMedia('(max-width: 40rem)');
   var MORPH_KEY = 'nirmaan-morph';
   var CURTAIN_KEY = 'nirmaan-curtain';
@@ -106,7 +106,7 @@
       var dest = urlOf(e.activation.entry.url);
       setDirection(direction(location.href, dest && dest.href));
       session('del', MORPH_KEY);
-      if (reduceMotion.matches || phone.matches || e.activation.navigationType === 'traverse') return;
+      if (reduceMotion.matches || e.activation.navigationType === 'traverse') return;
       var source = morphSource(lastLink && sameDocument(urlOf(lastLink.href), dest) ? lastLink : null, dest);
       if (!source) return;
       source.style.viewTransitionName = 'morph';
@@ -120,8 +120,7 @@
       if (!e.viewTransition) return;
       var nav = window.navigation, from = nav && nav.activation && nav.activation.from;
       setDirection(direction(from ? from.url : document.referrer, location.href));
-      // On phones the slide is the entrance, so the page arrives complete
-      // instead of replaying its own intro once it has slid in.
+      // On phones the page's own entrance starts as it slides in, not after.
       if (phone.matches) root.classList.add('vt-slide');
 
       // The heading's text span, not the full-width block, so both ends of the

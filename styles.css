@@ -1478,8 +1478,9 @@
     @keyframes block-fall { to { transform: translateY(calc(100vh + 6rem)); } }
     /* A card title that morphs into this page's heading arrives with it, instead of rising. */
     .vt-morph .page-head__title .line > span { animation: none; }
-    /* Phones: a page that slid in is already complete; no second entrance. */
-    .vt-slide :is(.page-head__title .line > span, .page-head__copy > *, .hero__title .line > span, .hero__copy > *, .glyph--assemble rect) { animation: none; }
+    /* Phones: a page's entrance plays while it slides in, instead of waiting
+       until after, so it never arrives empty. */
+    .vt-slide :is(.page-head__copy > :not(.page-head__title), .hero__copy > :not(.hero__title)) { animation-delay: 60ms; animation-duration: 0.6s; }
 
     /* Page heads: the mark drifts off and the blueprint grid thins as you scroll away. */
     @supports (animation-timeline: scroll()) {
