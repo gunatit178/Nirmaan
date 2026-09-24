@@ -1,15 +1,14 @@
 # Changelog
 
-## 2026-09-25: Website: a quieter hero, and the name in Gujarati
+## 2026-09-25: Website: a quieter hero, led by the mark
 
-- Hero: the pixel N on the left, the line on the right, nothing else. The
-  studio line is larger and carries the name twice in Gujarati, set in
-  Khastakshar by Bhaumik Suthar (CC BY-ND 4.0, unmodified, credited in the
-  footer): નિર્માણ "to build" and નિર્માન "without ego".
-- The problem → system box moved into "How we work": the customer's words
-  as the opening statement, then each step stamps its outcome ("problem
-  understood", "system designed"…) as the line reaches it, with "you
-  approve" on the steps that need your sign-off.
+- Hero: the headline on the left, a large pixel N on the right leading the
+  composition; the build-log box is gone.
+- A larger studio line with both meanings of the name: निर्माण "to build"
+  and निर्मान "without ego".
+- The problem → system story moved into "How we work": the customer's
+  words as the opening statement, then each step stamps its outcome as the
+  line reaches it, with "you approve" on the steps that need sign-off.
 
 ## 2026-09-25: Website: page flow and a page for every plan and service
 
