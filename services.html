@@ -46,7 +46,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preload" href="/assets/motion/build-landscape.svg" as="image" type="image/svg+xml" media="(orientation: landscape)" />
+  <link rel="preload" href="/assets/motion/build-portrait.svg" as="image" type="image/svg+xml" media="(orientation: portrait)" />
+  <script type="speculationrules">{"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}</script>
   <script src="/page-transitions.js"></script>
   <script src="/site.js" defer></script>
 </head>
@@ -145,8 +147,9 @@
         <article class="svc-row" id="custom-websites" data-reveal aria-labelledby="custom-websites-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="4" y="3" width="1" height="1" style="--i:6"/><rect x="0" y="2" width="1" height="1" style="--i:7"/><rect x="4" y="2" width="1" height="1" style="--i:8"/><rect x="0" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="1" width="1" height="1" style="--i:10"/><rect x="2" y="1" width="1" height="1" style="--i:11"/><rect x="3" y="1" width="1" height="1" style="--i:12"/><rect x="4" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="1" y="0" width="1" height="1" style="--i:15"/><rect x="2" y="0" width="1" height="1" style="--i:16"/><rect x="3" y="0" width="1" height="1" style="--i:17"/><rect x="4" y="0" width="1" height="1" style="--i:18"/></svg>
           <div>
-            <h3 class="svc-row__title" id="custom-websites-title">Custom Website Development</h3>
+            <h3 class="svc-row__title" id="custom-websites-title"><a href="/services/custom-websites.html" data-morph="svc-custom-websites">Custom Website Development</a></h3>
             <p class="svc-row__text">Hand-built websites that match your brand, goals and audience. No generic templates.</p>
+            <a class="svc-row__more" href="/services/custom-websites.html" aria-label="Custom Website Development: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Mobile-first responsive design</li><li>SEO-ready structure</li><li>Fast load times</li><li>Contact forms &amp; integrations</li>
           </ul>
@@ -154,8 +157,9 @@
         <article class="svc-row" id="business-websites" data-reveal aria-labelledby="business-websites-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="4" y="3" width="1" height="1" style="--i:6"/><rect x="0" y="2" width="1" height="1" style="--i:7"/><rect x="1" y="2" width="1" height="1" style="--i:8"/><rect x="2" y="2" width="1" height="1" style="--i:9"/><rect x="3" y="2" width="1" height="1" style="--i:10"/><rect x="4" y="2" width="1" height="1" style="--i:11"/><rect x="0" y="1" width="1" height="1" style="--i:12"/><rect x="4" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="1" y="0" width="1" height="1" style="--i:15"/><rect x="2" y="0" width="1" height="1" style="--i:16"/><rect x="3" y="0" width="1" height="1" style="--i:17"/><rect x="4" y="0" width="1" height="1" style="--i:18"/></svg>
           <div>
-            <h3 class="svc-row__title" id="business-websites-title">Business Websites</h3>
+            <h3 class="svc-row__title" id="business-websites-title"><a href="/services/business-websites.html" data-morph="svc-business-websites">Business Websites</a></h3>
             <p class="svc-row__text">A professional presence for service businesses, consultants and organisations that need to earn trust and bring in enquiries.</p>
+            <a class="svc-row__more" href="/services/business-websites.html" aria-label="Business Websites: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Services, about &amp; team pages</li><li>Lead capture forms</li><li>Google Maps &amp; directions</li><li>WhatsApp &amp; call integration</li>
           </ul>
@@ -163,8 +167,9 @@
         <article class="svc-row" id="redesign" data-reveal aria-labelledby="redesign-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="4" width="1" height="1" style="--i:1"/><rect x="4" y="4" width="1" height="1" style="--i:2"/><rect x="2" y="3" width="1" height="1" style="--i:3"/><rect x="3" y="3" width="1" height="1" style="--i:4"/><rect x="4" y="3" width="1" height="1" style="--i:5"/><rect x="0" y="2" width="1" height="1" style="--i:6"/><rect x="1" y="2" width="1" height="1" style="--i:7"/><rect x="2" y="2" width="1" height="1" style="--i:8"/><rect x="3" y="2" width="1" height="1" style="--i:9"/><rect x="4" y="2" width="1" height="1" style="--i:10"/><rect x="0" y="1" width="1" height="1" style="--i:11"/><rect x="1" y="1" width="1" height="1" style="--i:12"/><rect x="2" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="1" y="0" width="1" height="1" style="--i:15"/><rect x="2" y="0" width="1" height="1" style="--i:16"/></svg>
           <div>
-            <h3 class="svc-row__title" id="redesign-title">Website Redesign</h3>
+            <h3 class="svc-row__title" id="redesign-title"><a href="/services/redesign.html" data-morph="svc-redesign">Website Redesign</a></h3>
             <p class="svc-row__text">Turn an outdated site into a modern, fast, conversion-focused one without losing your content or search rankings.</p>
+            <a class="svc-row__more" href="/services/redesign.html" aria-label="Website Redesign: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Modern design refresh</li><li>Content migration</li><li>Performance improvements</li><li>SEO preservation</li>
           </ul>
@@ -172,8 +177,9 @@
         <article class="svc-row" id="ecommerce" data-reveal aria-labelledby="ecommerce-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/><rect x="0" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="2" width="1" height="1" style="--i:11"/><rect x="2" y="2" width="1" height="1" style="--i:12"/><rect x="3" y="2" width="1" height="1" style="--i:13"/><rect x="4" y="2" width="1" height="1" style="--i:14"/><rect x="1" y="1" width="1" height="1" style="--i:15"/><rect x="3" y="1" width="1" height="1" style="--i:16"/><rect x="1" y="0" width="1" height="1" style="--i:17"/><rect x="2" y="0" width="1" height="1" style="--i:18"/><rect x="3" y="0" width="1" height="1" style="--i:19"/></svg>
           <div>
-            <h3 class="svc-row__title" id="ecommerce-title">E-commerce Websites</h3>
+            <h3 class="svc-row__title" id="ecommerce-title"><a href="/services/ecommerce.html" data-morph="svc-ecommerce">E-commerce Websites</a></h3>
             <p class="svc-row__text">Online stores with product management, secure payments, inventory tracking and order management.</p>
+            <a class="svc-row__more" href="/services/ecommerce.html" aria-label="E-commerce Websites: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Product catalogue &amp; search</li><li>Secure payment integration</li><li>Order management</li><li>Mobile-first checkout</li>
           </ul>
@@ -181,8 +187,9 @@
         <article class="svc-row" id="performance" data-reveal aria-labelledby="performance-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="3" width="1" height="1" style="--i:2"/><rect x="3" y="3" width="1" height="1" style="--i:3"/><rect x="0" y="2" width="1" height="1" style="--i:4"/><rect x="1" y="2" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="2" width="1" height="1" style="--i:7"/><rect x="4" y="2" width="1" height="1" style="--i:8"/><rect x="1" y="1" width="1" height="1" style="--i:9"/><rect x="2" y="1" width="1" height="1" style="--i:10"/><rect x="2" y="0" width="1" height="1" style="--i:11"/><rect x="3" y="0" width="1" height="1" style="--i:12"/></svg>
           <div>
-            <h3 class="svc-row__title" id="performance-title">Performance Optimisation</h3>
+            <h3 class="svc-row__title" id="performance-title"><a href="/services/performance.html" data-morph="svc-performance">Performance Optimisation</a></h3>
             <p class="svc-row__text">Speed up an existing site for better user experience, search rankings and conversion.</p>
+            <a class="svc-row__more" href="/services/performance.html" aria-label="Performance Optimisation: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Core Web Vitals improvement</li><li>Image &amp; asset optimisation</li><li>Caching &amp; CDN setup</li><li>Technical SEO fixes</li>
           </ul>
@@ -190,8 +197,9 @@
         <article class="svc-row" id="maintenance" data-reveal aria-labelledby="maintenance-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="4" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="0" y="1" width="1" height="1" style="--i:5"/><rect x="2" y="1" width="1" height="1" style="--i:6"/><rect x="0" y="0" width="1" height="1" style="--i:7"/><rect x="1" y="0" width="1" height="1" style="--i:8"/><rect x="2" y="0" width="1" height="1" style="--i:9"/></svg>
           <div>
-            <h3 class="svc-row__title" id="maintenance-title">Maintenance &amp; Support</h3>
+            <h3 class="svc-row__title" id="maintenance-title"><a href="/services/maintenance.html" data-morph="svc-maintenance">Maintenance &amp; Support</a></h3>
             <p class="svc-row__text">Keep your site secure, updated and running smoothly, with a team that already knows the code.</p>
+            <a class="svc-row__more" href="/services/maintenance.html" aria-label="Maintenance &amp; Support: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Regular updates &amp; backups</li><li>Security monitoring</li><li>Content changes &amp; edits</li><li>Priority support</li>
           </ul>
@@ -209,8 +217,9 @@
         <article class="svc-row" id="web-applications" data-reveal aria-labelledby="web-applications-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="4" y="4" width="1" height="1" style="--i:3"/><rect x="0" y="3" width="1" height="1" style="--i:4"/><rect x="1" y="3" width="1" height="1" style="--i:5"/><rect x="3" y="3" width="1" height="1" style="--i:6"/><rect x="4" y="3" width="1" height="1" style="--i:7"/><rect x="0" y="1" width="1" height="1" style="--i:8"/><rect x="1" y="1" width="1" height="1" style="--i:9"/><rect x="3" y="1" width="1" height="1" style="--i:10"/><rect x="4" y="1" width="1" height="1" style="--i:11"/><rect x="0" y="0" width="1" height="1" style="--i:12"/><rect x="1" y="0" width="1" height="1" style="--i:13"/><rect x="3" y="0" width="1" height="1" style="--i:14"/><rect x="4" y="0" width="1" height="1" style="--i:15"/></svg>
           <div>
-            <h3 class="svc-row__title" id="web-applications-title">Custom Web Applications</h3>
+            <h3 class="svc-row__title" id="web-applications-title"><a href="/services/web-applications.html" data-morph="svc-web-applications">Custom Web Applications</a></h3>
             <p class="svc-row__text">Portals, platforms and tools shaped around your workflows. Far beyond what a standard website can do.</p>
+            <a class="svc-row__more" href="/services/web-applications.html" aria-label="Custom Web Applications: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>User accounts &amp; roles</li><li>Real-time data &amp; updates</li><li>Complex business logic</li><li>Third-party integrations</li>
           </ul>
@@ -218,8 +227,9 @@
         <article class="svc-row" id="backend-apis" data-reveal aria-labelledby="backend-apis-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="4" width="1" height="1" style="--i:1"/><rect x="0" y="3" width="1" height="1" style="--i:2"/><rect x="4" y="3" width="1" height="1" style="--i:3"/><rect x="0" y="2" width="1" height="1" style="--i:4"/><rect x="4" y="2" width="1" height="1" style="--i:5"/><rect x="0" y="1" width="1" height="1" style="--i:6"/><rect x="4" y="1" width="1" height="1" style="--i:7"/><rect x="1" y="0" width="1" height="1" style="--i:8"/><rect x="3" y="0" width="1" height="1" style="--i:9"/></svg>
           <div>
-            <h3 class="svc-row__title" id="backend-apis-title">Backend &amp; API Development</h3>
+            <h3 class="svc-row__title" id="backend-apis-title"><a href="/services/backend-apis.html" data-morph="svc-backend-apis">Backend &amp; API Development</a></h3>
             <p class="svc-row__text">The engine behind the product: server-side logic, REST APIs and business-specific software.</p>
+            <a class="svc-row__more" href="/services/backend-apis.html" aria-label="Backend &amp; API Development: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>REST API design</li><li>Server-side business logic</li><li>Payment gateway integration</li><li>Webhooks &amp; event systems</li>
           </ul>
@@ -227,8 +237,9 @@
         <article class="svc-row" id="databases" data-reveal aria-labelledby="databases-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="2" width="1" height="1" style="--i:5"/><rect x="1" y="2" width="1" height="1" style="--i:6"/><rect x="2" y="2" width="1" height="1" style="--i:7"/><rect x="3" y="2" width="1" height="1" style="--i:8"/><rect x="4" y="2" width="1" height="1" style="--i:9"/><rect x="0" y="0" width="1" height="1" style="--i:10"/><rect x="1" y="0" width="1" height="1" style="--i:11"/><rect x="2" y="0" width="1" height="1" style="--i:12"/><rect x="3" y="0" width="1" height="1" style="--i:13"/><rect x="4" y="0" width="1" height="1" style="--i:14"/></svg>
           <div>
-            <h3 class="svc-row__title" id="databases-title">Database Design</h3>
+            <h3 class="svc-row__title" id="databases-title"><a href="/services/databases.html" data-morph="svc-databases">Database Design</a></h3>
             <p class="svc-row__text">Structured, scalable databases that store, query and protect your business data reliably.</p>
+            <a class="svc-row__more" href="/services/databases.html" aria-label="Database Design: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Schema design &amp; modelling</li><li>PostgreSQL &amp; MySQL</li><li>Query optimisation</li><li>Security &amp; backups</li>
           </ul>
@@ -236,8 +247,9 @@
         <article class="svc-row" id="automation" data-reveal aria-labelledby="automation-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="0" y="3" width="1" height="1" style="--i:3"/><rect x="4" y="3" width="1" height="1" style="--i:4"/><rect x="0" y="2" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="4" y="2" width="1" height="1" style="--i:7"/><rect x="0" y="1" width="1" height="1" style="--i:8"/><rect x="4" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="0" width="1" height="1" style="--i:10"/><rect x="2" y="0" width="1" height="1" style="--i:11"/><rect x="3" y="0" width="1" height="1" style="--i:12"/></svg>
           <div>
-            <h3 class="svc-row__title" id="automation-title">Business Automation</h3>
+            <h3 class="svc-row__title" id="automation-title"><a href="/services/automation.html" data-morph="svc-automation">Business Automation</a></h3>
             <p class="svc-row__text">Automate repetitive tasks, notifications and internal processes so your team can focus on real work.</p>
+            <a class="svc-row__more" href="/services/automation.html" aria-label="Business Automation: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Email &amp; notification workflows</li><li>Report generation</li><li>Data import &amp; export</li><li>Scheduled tasks &amp; triggers</li>
           </ul>
@@ -245,8 +257,9 @@
         <article class="svc-row" id="dashboards" data-reveal aria-labelledby="dashboards-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="3" y="3" width="1" height="1" style="--i:7"/><rect x="4" y="3" width="1" height="1" style="--i:8"/><rect x="1" y="2" width="1" height="1" style="--i:9"/><rect x="3" y="2" width="1" height="1" style="--i:10"/><rect x="4" y="2" width="1" height="1" style="--i:11"/><rect x="3" y="1" width="1" height="1" style="--i:12"/><rect x="4" y="1" width="1" height="1" style="--i:13"/><rect x="4" y="0" width="1" height="1" style="--i:14"/></svg>
           <div>
-            <h3 class="svc-row__title" id="dashboards-title">Admin Panels &amp; Dashboards</h3>
+            <h3 class="svc-row__title" id="dashboards-title"><a href="/services/dashboards.html" data-morph="svc-dashboards">Admin Panels &amp; Dashboards</a></h3>
             <p class="svc-row__text">Purpose-built admin panels and data dashboards with full visibility and control over your platform.</p>
+            <a class="svc-row__more" href="/services/dashboards.html" aria-label="Admin Panels &amp; Dashboards: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Role-based access control</li><li>Data tables &amp; analytics</li><li>Create, edit &amp; manage records</li><li>Exports &amp; reporting</li>
           </ul>
@@ -254,8 +267,9 @@
         <article class="svc-row" id="responsive" data-reveal aria-labelledby="responsive-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="3" y="3" width="1" height="1" style="--i:4"/><rect x="1" y="2" width="1" height="1" style="--i:5"/><rect x="3" y="2" width="1" height="1" style="--i:6"/><rect x="1" y="1" width="1" height="1" style="--i:7"/><rect x="3" y="1" width="1" height="1" style="--i:8"/><rect x="1" y="0" width="1" height="1" style="--i:9"/><rect x="2" y="0" width="1" height="1" style="--i:10"/><rect x="3" y="0" width="1" height="1" style="--i:11"/></svg>
           <div>
-            <h3 class="svc-row__title" id="responsive-title">Mobile-First Development</h3>
+            <h3 class="svc-row__title" id="responsive-title"><a href="/services/responsive.html" data-morph="svc-responsive">Mobile-First Development</a></h3>
             <p class="svc-row__text">Every build is made mobile-first, so it works properly on every screen your customers use.</p>
+            <a class="svc-row__more" href="/services/responsive.html" aria-label="Mobile-First Development: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Mobile-first development</li><li>Cross-browser testing</li><li>Touch-friendly interfaces</li><li>Tuned for every device</li>
           </ul>
@@ -273,8 +287,9 @@
         <article class="svc-row" id="ai-systems" data-reveal aria-labelledby="ai-systems-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="4" y="4" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="2" y="3" width="1" height="1" style="--i:4"/><rect x="3" y="3" width="1" height="1" style="--i:5"/><rect x="0" y="2" width="1" height="1" style="--i:6"/><rect x="1" y="2" width="1" height="1" style="--i:7"/><rect x="2" y="2" width="1" height="1" style="--i:8"/><rect x="3" y="2" width="1" height="1" style="--i:9"/><rect x="4" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="1" width="1" height="1" style="--i:11"/><rect x="2" y="1" width="1" height="1" style="--i:12"/><rect x="3" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="2" y="0" width="1" height="1" style="--i:15"/><rect x="4" y="0" width="1" height="1" style="--i:16"/></svg>
           <div>
-            <h3 class="svc-row__title" id="ai-systems-title">AI Systems</h3>
+            <h3 class="svc-row__title" id="ai-systems-title"><a href="/services/ai-systems.html" data-morph="svc-ai-systems">AI Systems</a></h3>
             <p class="svc-row__text">Practical AI inside your workflow: reading documents, answering routine questions, sorting requests. Always with a person able to check the result.</p>
+            <a class="svc-row__more" href="/services/ai-systems.html" aria-label="AI Systems: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Document and data extraction</li><li>Assistants grounded in your own data</li><li>Classification and routing</li><li>Cost and quality monitoring</li>
           </ul>
@@ -282,8 +297,9 @@
         <article class="svc-row" id="mobile-apps" data-reveal aria-labelledby="mobile-apps-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="2" y="3" width="1" height="1" style="--i:4"/><rect x="3" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="2" width="1" height="1" style="--i:7"/><rect x="1" y="1" width="1" height="1" style="--i:8"/><rect x="3" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="0" width="1" height="1" style="--i:10"/><rect x="2" y="0" width="1" height="1" style="--i:11"/><rect x="3" y="0" width="1" height="1" style="--i:12"/></svg>
           <div>
-            <h3 class="svc-row__title" id="mobile-apps-title">Mobile Applications</h3>
+            <h3 class="svc-row__title" id="mobile-apps-title"><a href="/services/mobile-apps.html" data-morph="svc-mobile-apps">Mobile Applications</a></h3>
             <p class="svc-row__text">Apps for the people who work away from a desk: field staff, delivery teams, customers on the move.</p>
+            <a class="svc-row__more" href="/services/mobile-apps.html" aria-label="Mobile Applications: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Android and iOS from one codebase</li><li>Works with patchy connectivity</li><li>Push notifications</li><li>Connected to your backend</li>
           </ul>
@@ -291,8 +307,9 @@
         <article class="svc-row" id="integrations" data-reveal aria-labelledby="integrations-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="3" y="4" width="1" height="1" style="--i:0"/><rect x="4" y="4" width="1" height="1" style="--i:1"/><rect x="0" y="3" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="3" y="3" width="1" height="1" style="--i:4"/><rect x="4" y="3" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="0" y="1" width="1" height="1" style="--i:7"/><rect x="1" y="1" width="1" height="1" style="--i:8"/><rect x="3" y="1" width="1" height="1" style="--i:9"/><rect x="4" y="1" width="1" height="1" style="--i:10"/><rect x="0" y="0" width="1" height="1" style="--i:11"/><rect x="1" y="0" width="1" height="1" style="--i:12"/></svg>
           <div>
-            <h3 class="svc-row__title" id="integrations-title">Integrations</h3>
+            <h3 class="svc-row__title" id="integrations-title"><a href="/services/integrations.html" data-morph="svc-integrations">Integrations</a></h3>
             <p class="svc-row__text">Connect the tools you already pay for (payments, CRM, accounting, messaging) so data moves without copy-pasting.</p>
+            <a class="svc-row__more" href="/services/integrations.html" aria-label="Integrations: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Payment gateways</li><li>CRM and accounting sync</li><li>WhatsApp and email notifications</li><li>Webhooks and scheduled syncs</li>
           </ul>
@@ -300,8 +317,9 @@
         <article class="svc-row" id="internal-tools" data-reveal aria-labelledby="internal-tools-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="2" y="3" width="1" height="1" style="--i:6"/><rect x="4" y="3" width="1" height="1" style="--i:7"/><rect x="0" y="2" width="1" height="1" style="--i:8"/><rect x="1" y="2" width="1" height="1" style="--i:9"/><rect x="2" y="2" width="1" height="1" style="--i:10"/><rect x="3" y="2" width="1" height="1" style="--i:11"/><rect x="4" y="2" width="1" height="1" style="--i:12"/><rect x="0" y="1" width="1" height="1" style="--i:13"/><rect x="2" y="1" width="1" height="1" style="--i:14"/><rect x="4" y="1" width="1" height="1" style="--i:15"/><rect x="0" y="0" width="1" height="1" style="--i:16"/><rect x="1" y="0" width="1" height="1" style="--i:17"/><rect x="2" y="0" width="1" height="1" style="--i:18"/><rect x="3" y="0" width="1" height="1" style="--i:19"/><rect x="4" y="0" width="1" height="1" style="--i:20"/></svg>
           <div>
-            <h3 class="svc-row__title" id="internal-tools-title">Internal Tools &amp; Portals</h3>
+            <h3 class="svc-row__title" id="internal-tools-title"><a href="/services/internal-tools.html" data-morph="svc-internal-tools">Internal Tools &amp; Portals</a></h3>
             <p class="svc-row__text">Back-office tools, staff portals and customer portals built around how your team actually works, replacing spreadsheet workflows.</p>
+            <a class="svc-row__more" href="/services/internal-tools.html" aria-label="Internal Tools &amp; Portals: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Role-based access</li><li>Approvals and workflows</li><li>Search, filters and exports</li><li>Audit trail of who changed what</li>
           </ul>
@@ -309,8 +327,9 @@
         <article class="svc-row" id="modernisation" data-reveal aria-labelledby="modernisation-title">
           <svg class="glyph svc-row__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="4" width="1" height="1" style="--i:1"/><rect x="4" y="4" width="1" height="1" style="--i:2"/><rect x="4" y="3" width="1" height="1" style="--i:3"/><rect x="0" y="2" width="1" height="1" style="--i:4"/><rect x="1" y="2" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="2" width="1" height="1" style="--i:7"/><rect x="4" y="2" width="1" height="1" style="--i:8"/><rect x="0" y="1" width="1" height="1" style="--i:9"/><rect x="0" y="0" width="1" height="1" style="--i:10"/><rect x="1" y="0" width="1" height="1" style="--i:11"/><rect x="2" y="0" width="1" height="1" style="--i:12"/></svg>
           <div>
-            <h3 class="svc-row__title" id="modernisation-title">Modernisation</h3>
+            <h3 class="svc-row__title" id="modernisation-title"><a href="/services/modernisation.html" data-morph="svc-modernisation">Modernisation</a></h3>
             <p class="svc-row__text">Take an old or fragile system and make it reliable, maintainable and secure without stopping the business to do it.</p>
+            <a class="svc-row__more" href="/services/modernisation.html" aria-label="Modernisation: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes"><li>Codebase and risk assessment</li><li>Incremental migration</li><li>Data migration with verification</li><li>Documentation and handover</li>
           </ul>
@@ -373,14 +392,14 @@
       <nav class="footer__col" aria-label="Services">
         <p class="footer__heading mono">Services</p>
         <ul role="list">
-          <li><a href="/services.html#custom-websites">Websites</a></li>
-          <li><a href="/services.html#web-applications">Web Applications</a></li>
-          <li><a href="/services.html#internal-tools">Internal Tools</a></li>
-          <li><a href="/services.html#automation">Workflow Automation</a></li>
-          <li><a href="/services.html#ai-systems">AI Systems</a></li>
-          <li><a href="/services.html#mobile-apps">Mobile Apps</a></li>
-          <li><a href="/services.html#integrations">Integrations</a></li>
-          <li><a href="/services.html#dashboards">Dashboards &amp; Data</a></li>
+          <li><a href="/services/custom-websites.html">Websites</a></li>
+          <li><a href="/services/web-applications.html">Web Applications</a></li>
+          <li><a href="/services/internal-tools.html">Internal Tools</a></li>
+          <li><a href="/services/automation.html">Workflow Automation</a></li>
+          <li><a href="/services/ai-systems.html">AI Systems</a></li>
+          <li><a href="/services/mobile-apps.html">Mobile Apps</a></li>
+          <li><a href="/services/integrations.html">Integrations</a></li>
+          <li><a href="/services/dashboards.html">Dashboards &amp; Data</a></li>
         </ul>
       </nav>
 

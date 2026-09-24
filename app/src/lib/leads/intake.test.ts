@@ -49,6 +49,15 @@ test("intake: strips control characters, caps lengths, ignores unknown fields", 
   }
 });
 
+test("intake: keeps what the visitor was looking at on the website, within limits", () => {
+  const r = validateIntake({ ...valid, interest: "Growth package (from ₹35,000 · 3–4 weeks)" });
+  assert.equal(r.ok, true);
+  if (r.ok) assert.equal(r.data.interest, "Growth package (from ₹35,000 · 3–4 weeks)");
+  const long = validateIntake({ ...valid, interest: "x".repeat(201) });
+  assert.equal(long.ok, false);
+  if (!long.ok) assert.ok(long.errors.interest);
+});
+
 test("lead status: WON can't be set by hand, LOST needs a reason, roles are checked", async () => {
   assert.equal(allowedLeadTransitions("PROPOSAL").includes("WON"), false);
   const lead = await makeLead();

@@ -17,11 +17,12 @@ Edit `src/`, rebuild, and commit the regenerated `*.html` with your change.
 
 | Path | What it is |
 | --- | --- |
-| `src/*.njk` | One file per page. Page copy lives in its front matter (lists, steps, FAQ, pricing), and the markup loops over it. |
+| `src/*.njk` | One file per page. Page copy lives in its front matter (lists, steps, FAQ), and the markup loops over it. `plan.njk`, `care.njk` and `service.njk` are paginated: one page per package (`/pricing/<id>.html`), care plan (`/pricing/care/<id>.html`) and service (`/services/<id>.html`). |
 | `src/_includes/base.njk` | The shared `<head>`, plus the page intro and closing call to action, rendered from each page's `head:` and `cta:` front matter. |
 | `src/_includes/nav.njk`, `footer.njk` | Site header (with theme toggle and mobile menu) and footer. |
 | `src/_data/site.json` | **Contact details and social links.** Anything left empty isn't rendered anywhere on the site. |
-| `src/_data/services.json` | The service catalogue. Feeds the Services page, the homepage rail and the footer. |
+| `src/_data/pricing.json` | **Every price and plan detail**: packages, care plans, estimator, payment schedule, FAQs. Feeds the pricing page, the plan and care-plan pages, the homepage and the estimator. |
+| `src/_data/services.json` | The service catalogue, with each service's problems, usual package and related services. Feeds the Services page, the service pages, the homepage rail and the footer. |
 | `src/_data/navLinks.json` | Navigation order. Also sets page-transition direction and the sitemap. |
 | `vercel.json` | Redirects (the retired `/agency-os.html` → `/process.html#honest`) and baseline security headers. |
 | `styles.css` | The whole design system: tokens (light and dark), components, page layouts, motion. |
@@ -41,11 +42,11 @@ and again for dark.
 
 | File | Purpose |
 | --- | --- |
-| `contact-form.js` | Contact page. The three-step, problem-first intake: problem → optional context → timing and contact. Posts JSON to the Nirmaan OS intake API (`intakeEndpoint` in `site.json`). Until that's set, it honestly says the form isn't connected and shows the email address. |
-| `site.js` | Every page. Nav state and reading-progress bar, theme toggle (system / light / dark, remembered), mobile menu, scroll reveal, and the scroll scenes (the layer stack and services rail that pin on wide screens, the process timeline, the step index). |
+| `contact-form.js` | Contact page. The three-step, problem-first intake: problem → optional context → timing and contact. Arriving from a plan, care plan or service (`?plan=`, `?care=`, `?service=`) shows what they're asking about and sends it as `interest`. Posts JSON to the Nirmaan OS intake API (`intakeEndpoint` in `site.json`). Until that's set, it honestly says the form isn't connected and shows the email address. |
+| `site.js` | Every page. Nav state and reading-progress bar, theme toggle (system / light / dark, remembered), mobile menu, scroll reveal, drawn section rules, price count-ups, the card spotlight, and the scroll scenes (the layer stack and services rail that pin on wide screens, the process timeline, the step index). |
 | `hero.js` | Homepage only. The pixel N assembling on the construction grid. |
-| `estimator.js` | Contact page. The budget and timeline estimator. Prices and durations are `data-*` attributes written from `src/contact.njk` front matter. |
-| `page-transitions.js` | Direction-aware page transitions, with a fade fallback. |
+| `estimator.js` | Pricing page. The budget and timeline estimator. Prices and durations are `data-*` attributes written from `pricing.json`. |
+| `page-transitions.js` | Every page. Pages are built block by block: a stepped mask (`assets/motion/`, from `npm run masks`) with direction from the menu order, plus the title morph from a card into its page's heading. Browsers without view transitions get the same block build from an overlay. |
 
 All motion is progressive enhancement. With JavaScript off, or with the visitor's
 "reduce motion" setting on, every section renders complete and nothing animates.

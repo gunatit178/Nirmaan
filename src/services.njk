@@ -20,11 +20,6 @@ cta:
   text: "Describe what you want to build. We'll recommend the right approach and give you an honest estimate before any work starts."
   primary: { label: "Discuss your project", href: "/contact.html" }
   secondary: { label: "Try the estimator", href: "/pricing.html#estimator" }
-includes:
-  - { title: "Mobile-first", text: "Designed for phones first, then scaled up to tablets and desktops." }
-  - { title: "Search-ready", text: "Clean structure, metadata and speed that search engines reward." }
-  - { title: "Yours to keep", text: "Once paid for, you own the code, the database and every asset." }
-  - { title: "Supported", text: "Maintenance, fixes and improvements after launch, on request." }
 ---
 <section class="section" aria-label="Services">
   <div class="wrap">
@@ -41,8 +36,9 @@ includes:
         <article class="svc-row" id="{{ item.id }}" data-reveal aria-labelledby="{{ item.id }}-title">
           {% glyph item.glyph, "svc-row__glyph" %}
           <div>
-            <h3 class="svc-row__title" id="{{ item.id }}-title">{{ item.title }}</h3>
+            <h3 class="svc-row__title" id="{{ item.id }}-title"><a href="/services/{{ item.id }}.html" data-morph="svc-{{ item.id }}">{{ item.title }}</a></h3>
             <p class="svc-row__text">{{ item.text }}</p>
+            <a class="svc-row__more" href="/services/{{ item.id }}.html" aria-label="{{ item.title }}: when you need it, what's included, pricing">Details <span aria-hidden="true">→</span></a>
           </div>
           <ul class="ticks" role="list" aria-label="Includes">
             {%- for f in item.features %}<li>{{ f }}</li>{% endfor %}
@@ -65,7 +61,7 @@ includes:
       <p class="section__text">Whatever the service, these come as standard. They aren't upsells.</p>
     </div>
     <ul class="includes" role="list">
-      {%- for i in includes %}
+      {%- for i in services.standard %}
       <li data-reveal style="--d: {{ loop.index0 }}"><b>{{ i.title }}</b><span>{{ i.text }}</span></li>
       {%- endfor %}
     </ul>

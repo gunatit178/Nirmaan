@@ -1,0 +1,166 @@
+---
+layout: base.njk
+pagination:
+  data: serviceList
+  size: 1
+  addAllPagesToCollections: true
+  alias: s
+permalink: "/services/{{ s.id }}.html"
+nav: "services"
+eleventyComputed:
+  title: "{{ s.title }} — Nirmaan"
+  description: "{{ s.text }} What's included, when you need it, what it usually costs and how the build runs."
+---
+{%- set head = {
+  eyebrow: s.group.label,
+  lines: [s.title],
+  accent: -1,
+  lede: s.text,
+  glyph: s.glyph,
+  morph: "svc-" + s.id,
+  crumbs: [{ label: "Services", href: "/services.html" }],
+  current: s.title,
+  actions: [
+    { label: "Tell us your problem", href: "/contact.html?service=" + s.id + "#enquiry", style: "primary" },
+    { label: "See pricing", href: ("/pricing.html#care" if s.plan == "care" else "/pricing/" + s.plan + ".html") }
+  ]
+} %}
+{% include "page-head.njk" %}
+
+<section class="section" aria-labelledby="need-title">
+  <div class="wrap fit">
+    <div data-reveal>
+      <p class="eyebrow">When you need it</p>
+      <h2 class="section__title display" id="need-title">You might need this&nbsp;if…</h2>
+    </div>
+    <div class="fit__body">
+      <ol class="fit__list" role="list">
+        {%- for f in s.problems %}
+        <li data-reveal style="--d: {{ loop.index0 }}"><span class="mono">{{ "0" + loop.index }}</span><p>{{ f }}</p></li>
+        {%- endfor %}
+      </ol>
+      <p class="fit__aside" data-reveal>Not sure it's this one? That's normal. Describe the problem and we'll tell you which approach fits, including when you don't need custom software at all.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="gets-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">What you get</p>
+        <h2 class="section__title display" id="gets-title">Built properly, end to&nbsp;end.</h2>
+      </div>
+      <p class="section__text">What's part of {{ s.title | lower }} as standard, plus what comes with every Nirmaan build.</p>
+    </div>
+    <div class="gets">
+      <ul class="gets__list" role="list">
+        {%- for f in s.features %}
+        <li data-reveal style="--d: {{ loop.index0 }}">{% glyph "00100/01110/11111/01110/00100", "gets__mark" %}<span>{{ f }}</span></li>
+        {%- endfor %}
+      </ul>
+      <ul class="includes" role="list">
+        {%- for i in services.standard %}
+        <li data-reveal style="--d: {{ loop.index0 }}"><b>{{ i.title }}</b><span>{{ i.text }}</span></li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="cost-title">
+  <div class="wrap after">
+    <div data-reveal>
+      <p class="eyebrow">What it usually costs</p>
+      {%- if s.plan == "care" %}
+      <h2 class="section__title display" id="cost-title">A monthly care&nbsp;plan.</h2>
+      <p class="section__text">Looking after a live system is ongoing work, so it's a monthly plan rather than a project. Pick the level of cover you need; stop any time.</p>
+      {%- else %}
+      {%- set pl = pricing | plan(s.plan) %}
+      <h2 class="section__title display" id="cost-title">Usually starts at {{ pl.name }}.</h2>
+      <p class="section__text">Most {{ s.title | lower }} projects fit the {{ pl.name }} package. Yours might be smaller or bigger; you get one fixed quote after we understand the problem.</p>
+      {%- endif %}
+    </div>
+    {%- if s.plan == "care" %}
+    <ul class="care-links" role="list">
+      {%- for k in pricing.care %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <a class="care-link care-link--compact" href="/pricing/care/{{ k.id }}.html">
+          <b class="care-link__name" data-morph="care-{{ k.id }}">{{ k.name }}</b>
+          <span class="care-link__price"><b>{{ k.monthly | inr }}</b> / month</span>
+          <span class="care-link__more">{{ k.for }} <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <a class="care-link" href="/pricing/{{ pl.id }}.html" data-reveal>
+      <span class="mono">Package</span>
+      <b class="care-link__name" data-morph="plan-{{ pl.id }}">{{ pl.name }}</b>
+      <span class="care-link__price"><span class="mono">from</span> <b>{{ pl.from | inr }}</b> · {{ pl.weeks }} weeks</span>
+      <ul class="ticks" role="list">
+        {%- for f in pl.features | batch(3) | first %}<li>{{ f }}</li>{% endfor %}
+      </ul>
+      <span class="care-link__more">See what {{ pl.name }} includes <span aria-hidden="true">→</span></span>
+    </a>
+    {%- endif %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">How it goes</p>
+        <h2 class="section__title display" id="how-title">Five steps. No&nbsp;surprises.</h2>
+      </div>
+      <p class="section__text">You approve the plan and the design before we build, and you always know where things stand. <a href="/process.html">See every deliverable</a>.</p>
+    </div>
+    <div class="timeline" data-scene="line">
+      <span class="timeline__bar" aria-hidden="true"></span>
+      <ol class="timeline__list" role="list">
+        <li data-reveal style="--d: 0"><span class="mono">Step 1</span><h3>Discover</h3><p>The problem, the people it affects, and what "solved" looks like.</p></li>
+        <li data-reveal style="--d: 1"><span class="mono">Step 2</span><h3>Plan</h3><p>Scope, architecture and a fixed price, approved by you.</p></li>
+        <li data-reveal style="--d: 2"><span class="mono">Step 3</span><h3>Design</h3><p>Screens and flows you can click through before we build.</p></li>
+        <li data-reveal style="--d: 3"><span class="mono">Step 4</span><h3>Build</h3><p>Built in working slices, properly tested.</p></li>
+        <li data-reveal style="--d: 4"><span class="mono">Step 5</span><h3>Launch</h3><p>Deployed, monitored, and improved as you use it.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="related-title">
+  <div class="wrap">
+    <div class="rail__head" data-reveal>
+      <div>
+        <p class="eyebrow">Often built together</p>
+        <h2 class="section__title display section__title--sm" id="related-title">Related services.</h2>
+      </div>
+      <a class="link-arrow" href="/services.html">All {{ services | serviceCount }} services <span aria-hidden="true">→</span></a>
+    </div>
+    <ul class="related" role="list">
+      {%- for id in s.related %}
+      {%- set r = services | service(id) %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <a class="svc-card svc-card--flat" href="/services/{{ r.id }}.html">
+          {% glyph r.glyph, "svc-card__glyph" %}
+          <div>
+            <h3 class="svc-card__title" data-morph="svc-{{ r.id }}">{{ r.title }}</h3>
+            <p class="svc-card__text">{{ r.text }}</p>
+            <p class="svc-card__more">Details →</p>
+          </div>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+{%- set cta = {
+  eyebrow: "No spec needed",
+  lines: ["Tell us the problem.", "We'll build the system."],
+  text: "Describe what's going wrong in your own words. We'll come back within a day with honest thoughts on approach, timeline and budget, including whether " + (s.title | lower) + " is the right answer.",
+  primary: { label: "Tell us your problem", href: "/contact.html?service=" + s.id + "#enquiry" },
+  secondary: { label: "See pricing", href: "/pricing.html" }
+} %}
+{% include "cta.njk" %}

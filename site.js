@@ -4,9 +4,12 @@
     1. Nav state: border once scrolled, reading-progress bar
     2. Theme toggle: system → light → dark, remembered per browser
     3. Mobile menu: focus management, Escape, scroll lock
-    4. Scroll reveal: [data-reveal] elements rise in once
+    4. Scroll reveal: [data-reveal] elements rise in once; section rules draw
+       across as each section arrives; [data-count] figures count up to their
+       value the first time they're seen; cards get a pointer spotlight
     5. Scroll scenes, all driven from one rAF-throttled scroll loop:
-         [data-scene="stack"]     layer tower builds as you scroll (pinned)
+         [data-scene="stack"]     layer tower builds as you scroll (pinned), or
+                                  once, bottom layer first, on narrower screens
          [data-scene="rail"]      services track moves sideways (pinned)
          [data-scene="line"]      process timeline fills as it passes
          [data-scene="spy"]       process index highlights the step in view
@@ -115,6 +118,56 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
     $$('[data-reveal]').forEach(function (el) { revealObserver.observe(el); });
+
+    // Section rules: drawn once the section's top edge is on screen.
+    var ruleObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-seen');
+        ruleObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    $$('.section + .section').forEach(function (el) { ruleObserver.observe(el); });
+
+    // Count-ups: rupee figures run up to their value once. The markup always
+    // holds the real figure, so without this (or mid-count) nothing is wrong.
+    var rupees = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+    var easeOut = function (t) { return 1 - Math.pow(1 - t, 4); };
+    function countUp(el) {
+      var to = Number(el.getAttribute('data-count'));
+      if (!(to > 0)) return;
+      var final = el.textContent;
+      el.style.minWidth = el.getBoundingClientRect().width + 'px'; // no reflow while digits change
+      var start = null, DURATION = 1100;
+      function tick(now) {
+        if (start === null) start = now;
+        var t = Math.min(1, (now - start) / DURATION);
+        el.textContent = t < 1 ? rupees.format(Math.round((to * easeOut(t)) / 100) * 100) : final;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        countObserver.unobserve(entry.target);
+        countUp(entry.target);
+      });
+    }, { threshold: 0.8 });
+    $$('[data-count]').forEach(function (el) { countObserver.observe(el); });
+  }
+
+  /* Pointer spotlight: a soft light follows the pointer across cards. */
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var SPOT = '.price-card, .package, .care-card, .care-link, .plan-switch__item, .included__group, .fit__other, .principles li, .svc-card, .includes li, .gets__list li';
+    $$(SPOT).forEach(function (el) { el.classList.add('has-spot'); });
+    document.addEventListener('pointermove', function (e) {
+      var card = e.target.closest && e.target.closest('.has-spot');
+      if (!card) return;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
   }
 
   /* ---------------------------------------------------------------
@@ -134,13 +187,22 @@
   }
   function canPin() { return wide.matches && !reduceMotion.matches; }
 
-  /* Layer stack: 5 layers placed one per fifth of the pinned scroll */
+  /* Layer stack: 5 layers placed one per fifth of the pinned scroll. Below the
+     pinning width it builds once instead, bottom layer first, when it comes into view. */
   $$('[data-scene="stack"]').forEach(function (el) {
     var layers = $$('[data-layer]', el);
     var meter = $$('[data-meter] span', el);
-    var count = el.querySelector('[data-count]');
+    var count = el.querySelector('[data-stack-count]');
     var n = layers.length;
     var last = -1;
+    var built = false;
+    var flows = function () { return !canPin() && root.classList.contains('motion'); };
+    var builder = 'IntersectionObserver' in window && new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting || built || !flows()) return;
+      built = true;
+      layers.forEach(function (_, i) { setTimeout(function () { set(i); }, 180 + i * 190); });
+    }, { threshold: 0.45 });
+    if (builder) builder.observe(el.querySelector('.tower') || el);
 
     function set(k) {
       if (k === last) return;
@@ -158,7 +220,7 @@
       layout: function () {
         el.classList.toggle('is-pinned', canPin());
         last = -1;
-        if (!canPin()) set(n - 1);
+        if (!canPin()) set(flows() && !built ? -1 : n - 1);
       },
       update: function () {
         if (!canPin()) return;

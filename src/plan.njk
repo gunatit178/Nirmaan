@@ -1,0 +1,217 @@
+---
+layout: base.njk
+pagination:
+  data: pricing.packages
+  size: 1
+  addAllPagesToCollections: true
+  alias: p
+permalink: "/pricing/{{ p.id }}.html"
+nav: "pricing"
+eleventyComputed:
+  title: "{{ p.name }}: from {{ p.from | inr }} — Nirmaan pricing"
+  description: "{{ p.for }} What the {{ p.name }} package includes, what it doesn't, how the {{ p.weeks }} weeks run, and how payments work. From {{ p.from | inr }}, fixed quote before we start."
+---
+{%- set care = pricing | care(p.care) %}
+{%- set other = pricing | plan(p.notFit.plan) %}
+{%- set head = {
+  eyebrow: p.name + " package · " + p.weeks + " weeks",
+  lines: [p.name],
+  accent: -1,
+  lede: p.intro,
+  glyph: p.glyph,
+  morph: "plan-" + p.id,
+  crumbs: [{ label: "Pricing", href: "/pricing.html" }],
+  current: p.name,
+  actions: [
+    { label: "Start with " + p.name, href: "/contact.html?plan=" + p.id + "#enquiry", style: "primary" },
+    { label: "Compare all plans", href: "/pricing.html#plans" }
+  ]
+} %}
+{% include "page-head.njk" %}
+
+<section class="section section--tight" aria-label="{{ p.name }} at a glance">
+  <div class="wrap">
+    <dl class="facts facts--plan" data-reveal>
+      <div><dt class="mono">From</dt><dd><span class="facts__big" data-count="{{ p.from }}">{{ p.from | inr }}</span></dd></div>
+      <div><dt class="mono">Timeline</dt><dd><span class="facts__big">{{ p.weeks }}</span> weeks</dd></div>
+      <div><dt class="mono">Payments</dt><dd>{% for s in pricing.schedule %}{{ s.percent }}{% if not loop.last %} / {% endif %}{% endfor %}, as it progresses</dd></div>
+      <div><dt class="mono">Typical for</dt><dd>{{ p.examples }}</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="fit-title">
+  <div class="wrap fit">
+    <div data-reveal>
+      <p class="eyebrow">Is it right for you?</p>
+      <h2 class="section__title display" id="fit-title">A good fit&nbsp;if…</h2>
+    </div>
+    <div class="fit__body">
+      <ol class="fit__list" role="list">
+        {%- for f in p.fit %}
+        <li data-reveal style="--d: {{ loop.index0 }}"><span class="mono">{{ "0" + loop.index }}</span><p>{{ f }}</p></li>
+        {%- endfor %}
+      </ol>
+      <a class="fit__other" href="/pricing/{{ other.id }}.html" data-reveal>
+        <span class="mono">Not quite?</span>
+        <span class="fit__q">{{ p.notFit.text }}</span>
+        <span class="fit__plan"><b data-morph="plan-{{ other.id }}">{{ other.name }}</b> from {{ other.from | inr }} <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="included-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">What's included</p>
+        <h2 class="section__title display" id="included-title">Everything in the&nbsp;box.</h2>
+      </div>
+      <p class="section__text">What the starting price covers. Your fixed quote lists the same things for your project, plus anything specific to it.</p>
+    </div>
+    <div class="included">
+      {%- for g in p.included %}
+      <div class="included__group" data-reveal style="--d: {{ loop.index0 }}">
+        <h3>{{ g.title }}</h3>
+        <ul class="ticks" role="list">
+          {%- for i in g.items %}<li>{{ i }}</li>{% endfor %}
+        </ul>
+      </div>
+      {%- endfor %}
+    </div>
+    <div class="excluded" data-reveal>
+      <h3 class="mono">Not included, so there are no surprises</h3>
+      <ul role="list">
+        {%- for x in p.excluded %}<li>{{ x }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="runs-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">How the {{ p.weeks }} weeks run</p>
+        <h2 class="section__title display" id="runs-title">You see it before it's&nbsp;built.</h2>
+      </div>
+      <p class="section__text">You approve the plan and the design before the build starts, and you review a working version before launch. <a href="/process.html">The full process</a>.</p>
+    </div>
+    <div class="plan-steps" data-scene="line">
+    <span class="plan-steps__bar" aria-hidden="true"></span>
+    <ol class="plan-steps__list" role="list">
+      {%- for s in p.timeline %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <span class="mono">{{ s.when }}</span>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.text }}</p>
+      </li>
+      {%- endfor %}
+    </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="pay-title">
+  <div class="wrap pay">
+    <div data-reveal>
+      <p class="eyebrow">What you'll pay</p>
+      <h2 class="section__title display" id="pay-title">Three payments. No&nbsp;meter.</h2>
+      <p class="section__text pay__note">Shown at the starting price of {{ p.from | inr }}, before GST. Your fixed quote sets the real figures, and they don't change unless you ask for something new.</p>
+    </div>
+    <div class="pay__body" data-reveal>
+      <ol class="paybar" role="list">
+        {%- for s in pricing.schedule %}
+        <li style="--w: {{ s.percent }}">
+          <span class="paybar__fill" aria-hidden="true"></span>
+          <span class="mono">{{ s.percent }}% · {{ s.when }}</span>
+          <b class="paybar__amount" data-count="{{ p.from | share(s.percent) }}">{{ p.from | share(s.percent) | inr }}</b>
+          <span class="paybar__text">{{ s.text }}</span>
+        </li>
+        {%- endfor %}
+      </ol>
+      <div class="pay__extras">
+        <p class="mono">Common additions, priced in your quote</p>
+        <ul class="tags" role="list">
+          {%- for x in p.extras %}<li>{{ x }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="after-title">
+  <div class="wrap after">
+    <div data-reveal>
+      <p class="eyebrow">After launch (optional)</p>
+      <h2 class="section__title display" id="after-title">We usually pair it with {{ care.name }}&nbsp;care.</h2>
+      <p class="section__text">{{ care.intro }}</p>
+    </div>
+    <a class="care-link" href="/pricing/care/{{ care.id }}.html" data-reveal>
+      <span class="mono">Care plan</span>
+      <b class="care-link__name" data-morph="care-{{ care.id }}">{{ care.name }}</b>
+      <span class="care-link__price"><b>{{ care.monthly | inr }}</b> / month</span>
+      <ul class="ticks" role="list">
+        {%- for f in care.features | batch(3) | first %}<li>{{ f }}</li>{% endfor %}
+      </ul>
+      <span class="care-link__more">See what's covered <span aria-hidden="true">→</span></span>
+    </a>
+  </div>
+</section>
+
+{%- set fits = serviceList | forPlan(p.id) %}
+{%- if fits | length %}
+<section class="section section--tight" aria-labelledby="fits-title">
+  <div class="wrap">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">Services that usually start here</p>
+      <h2 class="section__title display section__title--sm" id="fits-title">What people build with {{ p.name }}.</h2>
+    </div>
+    <ul class="svc-chips" role="list">
+      {%- for s in fits %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <a href="/services/{{ s.id }}.html">
+          {% glyph s.glyph, "svc-chips__glyph" %}
+          <span data-morph="svc-{{ s.id }}">{{ s.title }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+{%- endif %}
+
+<section class="section" aria-labelledby="plan-faq-title">
+  <div class="wrap faq-layout">
+    <div data-reveal>
+      <p class="eyebrow">{{ p.name }} questions</p>
+      <h2 class="section__title display" id="plan-faq-title">Asked often.</h2>
+    </div>
+    <div class="faq" data-reveal>
+      {%- for item in p.faq %}
+      <details{% if loop.first %} open{% endif %}>
+        <summary>{{ item.q }}<span class="faq__icon" aria-hidden="true"></span></summary>
+        <p class="faq__answer">{{ item.a }}</p>
+      </details>
+      {%- endfor %}
+      <details>
+        <summary>Why is it a "from" price?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <p class="faq__answer">{{ (pricing.faq | first).a }}</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+{% set current = p.id %}
+{% include "plan-switch.njk" %}
+
+{%- set cta = {
+  eyebrow: "Ready when you are",
+  lines: ["Start with " + p.name + ".", "Or tell us the problem."],
+  text: "Tell us what's going wrong. If " + p.name + " isn't the right fit, we'll say so and recommend what is, before you commit to anything.",
+  primary: { label: "Start with " + p.name, href: "/contact.html?plan=" + p.id + "#enquiry" },
+  secondary: { label: "Compare all plans", href: "/pricing.html#plans" }
+} %}
+{% include "cta.njk" %}

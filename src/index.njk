@@ -97,7 +97,7 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         <div class="stack__meter" data-meter aria-hidden="true">
           {%- for l in layers %}<span></span>{% endfor %}
         </div>
-        <p class="mono stack__count" data-count aria-hidden="true">{{ layers | length }} / {{ layers | length }}</p>
+        <p class="mono stack__count" data-stack-count aria-hidden="true">{{ layers | length }} / {{ layers | length }}</p>
       </div>
 
       <ol class="tower" role="list" aria-label="The layers of a build, from the ground up">
@@ -133,10 +133,10 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         {%- for f in services.featured %}
         {%- set s = services | service(f.id) %}
         <li>
-          <a class="svc-card" href="/services.html#{{ f.id }}">
+          <a class="svc-card" href="/services/{{ f.id }}.html">
             {% glyph s.glyph, "svc-card__glyph" %}
             <div>
-              <h3 class="svc-card__title">{{ f.title }}</h3>
+              <h3 class="svc-card__title" data-morph="svc-{{ f.id }}">{{ f.title }}</h3>
               <p class="svc-card__text">{{ f.text }}</p>
               <p class="svc-card__more">Details →</p>
             </div>
@@ -254,22 +254,22 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         <p class="eyebrow">Pricing</p>
         <h2 class="section__title display" id="packages-title">Honest prices, fixed before we&nbsp;start.</h2>
       </div>
-      <p class="section__text">Starting prices below. Your project gets one fixed quote after a free conversation, paid in three steps as it progresses. <a href="/pricing.html">Full pricing and care plans</a>.</p>
+      <p class="section__text">Starting prices below. Your project gets one fixed quote after a free conversation, paid in three steps as it progresses. <a href="/pricing.html">Full pricing, care plans and an estimator</a>.</p>
     </div>
 
     <ul class="packages packages--4" role="list">
       {%- for p in pricing.packages %}
-      <li class="package" data-reveal style="--d: {{ loop.index0 }}">
+      <li class="package{% if p.highlight %} package--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
         {% glyph p.glyph, "package__glyph" %}
         <div>
-          <h3 class="package__name">{{ p.name }}</h3>
+          <h3 class="package__name"><a href="/pricing/{{ p.id }}.html" data-morph="plan-{{ p.id }}">{{ p.name }}</a></h3>
           <p class="package__for">{{ p.for }}</p>
-          <p class="package__price"><span>from</span><b>{{ p.from | inr }}</b></p>
+          <p class="package__price"><span>from</span><b data-count="{{ p.from }}">{{ p.from | inr }}</b></p>
         </div>
         <ul class="ticks" role="list">
           {%- for f in p.features | batch(3) | first %}<li>{{ f }}</li>{% endfor %}
         </ul>
-        <a class="btn btn--ghost" href="/pricing.html">See what's included</a>
+        <a class="btn{% if not p.highlight %} btn--ghost{% endif %}" href="/pricing/{{ p.id }}.html">See what's in {{ p.name }}<span class="visually-hidden"> (from {{ p.from | inr }})</span></a>
       </li>
       {%- endfor %}
     </ul>

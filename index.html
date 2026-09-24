@@ -46,7 +46,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preload" href="/assets/motion/build-landscape.svg" as="image" type="image/svg+xml" media="(orientation: landscape)" />
+  <link rel="preload" href="/assets/motion/build-portrait.svg" as="image" type="image/svg+xml" media="(orientation: portrait)" />
+  <script type="speculationrules">{"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}</script>
   <script src="/page-transitions.js"></script>
   <script src="/site.js" defer></script>
   <script src="/hero.js" defer></script>
@@ -165,7 +167,7 @@
         <p class="section__text">Most studios hand over a website. We build what sits underneath it too: five layers, one system, one team accountable for all of it.</p>
         <div class="stack__meter" data-meter aria-hidden="true"><span></span><span></span><span></span><span></span><span></span>
         </div>
-        <p class="mono stack__count" data-count aria-hidden="true">5 / 5</p>
+        <p class="mono stack__count" data-stack-count aria-hidden="true">5 / 5</p>
       </div>
 
       <ol class="tower" role="list" aria-label="The layers of a build, from the ground up">
@@ -221,80 +223,80 @@
     <div class="rail__viewport" data-rail-viewport>
       <ul class="rail__track" data-rail-track role="list">
         <li>
-          <a class="svc-card" href="/services.html#custom-websites">
+          <a class="svc-card" href="/services/custom-websites.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="4" y="3" width="1" height="1" style="--i:6"/><rect x="0" y="2" width="1" height="1" style="--i:7"/><rect x="4" y="2" width="1" height="1" style="--i:8"/><rect x="0" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="1" width="1" height="1" style="--i:10"/><rect x="2" y="1" width="1" height="1" style="--i:11"/><rect x="3" y="1" width="1" height="1" style="--i:12"/><rect x="4" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="1" y="0" width="1" height="1" style="--i:15"/><rect x="2" y="0" width="1" height="1" style="--i:16"/><rect x="3" y="0" width="1" height="1" style="--i:17"/><rect x="4" y="0" width="1" height="1" style="--i:18"/></svg>
             <div>
-              <h3 class="svc-card__title">Websites</h3>
+              <h3 class="svc-card__title" data-morph="svc-custom-websites">Websites</h3>
               <p class="svc-card__text">Fast, mobile-first websites that bring in enquiries.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#web-applications">
+          <a class="svc-card" href="/services/web-applications.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="4" y="4" width="1" height="1" style="--i:3"/><rect x="0" y="3" width="1" height="1" style="--i:4"/><rect x="1" y="3" width="1" height="1" style="--i:5"/><rect x="3" y="3" width="1" height="1" style="--i:6"/><rect x="4" y="3" width="1" height="1" style="--i:7"/><rect x="0" y="1" width="1" height="1" style="--i:8"/><rect x="1" y="1" width="1" height="1" style="--i:9"/><rect x="3" y="1" width="1" height="1" style="--i:10"/><rect x="4" y="1" width="1" height="1" style="--i:11"/><rect x="0" y="0" width="1" height="1" style="--i:12"/><rect x="1" y="0" width="1" height="1" style="--i:13"/><rect x="3" y="0" width="1" height="1" style="--i:14"/><rect x="4" y="0" width="1" height="1" style="--i:15"/></svg>
             <div>
-              <h3 class="svc-card__title">Web Applications</h3>
+              <h3 class="svc-card__title" data-morph="svc-web-applications">Web Applications</h3>
               <p class="svc-card__text">Portals, platforms and SaaS tools that do real work.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#internal-tools">
+          <a class="svc-card" href="/services/internal-tools.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="2" y="3" width="1" height="1" style="--i:6"/><rect x="4" y="3" width="1" height="1" style="--i:7"/><rect x="0" y="2" width="1" height="1" style="--i:8"/><rect x="1" y="2" width="1" height="1" style="--i:9"/><rect x="2" y="2" width="1" height="1" style="--i:10"/><rect x="3" y="2" width="1" height="1" style="--i:11"/><rect x="4" y="2" width="1" height="1" style="--i:12"/><rect x="0" y="1" width="1" height="1" style="--i:13"/><rect x="2" y="1" width="1" height="1" style="--i:14"/><rect x="4" y="1" width="1" height="1" style="--i:15"/><rect x="0" y="0" width="1" height="1" style="--i:16"/><rect x="1" y="0" width="1" height="1" style="--i:17"/><rect x="2" y="0" width="1" height="1" style="--i:18"/><rect x="3" y="0" width="1" height="1" style="--i:19"/><rect x="4" y="0" width="1" height="1" style="--i:20"/></svg>
             <div>
-              <h3 class="svc-card__title">Internal Tools</h3>
+              <h3 class="svc-card__title" data-morph="svc-internal-tools">Internal Tools</h3>
               <p class="svc-card__text">Replace the spreadsheet-and-WhatsApp workflow.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#automation">
+          <a class="svc-card" href="/services/automation.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="0" y="3" width="1" height="1" style="--i:3"/><rect x="4" y="3" width="1" height="1" style="--i:4"/><rect x="0" y="2" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="4" y="2" width="1" height="1" style="--i:7"/><rect x="0" y="1" width="1" height="1" style="--i:8"/><rect x="4" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="0" width="1" height="1" style="--i:10"/><rect x="2" y="0" width="1" height="1" style="--i:11"/><rect x="3" y="0" width="1" height="1" style="--i:12"/></svg>
             <div>
-              <h3 class="svc-card__title">Workflow Automation</h3>
+              <h3 class="svc-card__title" data-morph="svc-automation">Workflow Automation</h3>
               <p class="svc-card__text">Follow-ups, reports and syncs that run themselves.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#ai-systems">
+          <a class="svc-card" href="/services/ai-systems.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="4" y="4" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="2" y="3" width="1" height="1" style="--i:4"/><rect x="3" y="3" width="1" height="1" style="--i:5"/><rect x="0" y="2" width="1" height="1" style="--i:6"/><rect x="1" y="2" width="1" height="1" style="--i:7"/><rect x="2" y="2" width="1" height="1" style="--i:8"/><rect x="3" y="2" width="1" height="1" style="--i:9"/><rect x="4" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="1" width="1" height="1" style="--i:11"/><rect x="2" y="1" width="1" height="1" style="--i:12"/><rect x="3" y="1" width="1" height="1" style="--i:13"/><rect x="0" y="0" width="1" height="1" style="--i:14"/><rect x="2" y="0" width="1" height="1" style="--i:15"/><rect x="4" y="0" width="1" height="1" style="--i:16"/></svg>
             <div>
-              <h3 class="svc-card__title">AI Systems</h3>
+              <h3 class="svc-card__title" data-morph="svc-ai-systems">AI Systems</h3>
               <p class="svc-card__text">Practical AI in your workflow, with a person in the loop.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#mobile-apps">
+          <a class="svc-card" href="/services/mobile-apps.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="1" y="4" width="1" height="1" style="--i:0"/><rect x="2" y="4" width="1" height="1" style="--i:1"/><rect x="3" y="4" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="2" y="3" width="1" height="1" style="--i:4"/><rect x="3" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="2" width="1" height="1" style="--i:7"/><rect x="1" y="1" width="1" height="1" style="--i:8"/><rect x="3" y="1" width="1" height="1" style="--i:9"/><rect x="1" y="0" width="1" height="1" style="--i:10"/><rect x="2" y="0" width="1" height="1" style="--i:11"/><rect x="3" y="0" width="1" height="1" style="--i:12"/></svg>
             <div>
-              <h3 class="svc-card__title">Mobile Apps</h3>
+              <h3 class="svc-card__title" data-morph="svc-mobile-apps">Mobile Apps</h3>
               <p class="svc-card__text">Apps for the people who work away from a desk.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#integrations">
+          <a class="svc-card" href="/services/integrations.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="3" y="4" width="1" height="1" style="--i:0"/><rect x="4" y="4" width="1" height="1" style="--i:1"/><rect x="0" y="3" width="1" height="1" style="--i:2"/><rect x="1" y="3" width="1" height="1" style="--i:3"/><rect x="3" y="3" width="1" height="1" style="--i:4"/><rect x="4" y="3" width="1" height="1" style="--i:5"/><rect x="2" y="2" width="1" height="1" style="--i:6"/><rect x="0" y="1" width="1" height="1" style="--i:7"/><rect x="1" y="1" width="1" height="1" style="--i:8"/><rect x="3" y="1" width="1" height="1" style="--i:9"/><rect x="4" y="1" width="1" height="1" style="--i:10"/><rect x="0" y="0" width="1" height="1" style="--i:11"/><rect x="1" y="0" width="1" height="1" style="--i:12"/></svg>
             <div>
-              <h3 class="svc-card__title">Integrations</h3>
+              <h3 class="svc-card__title" data-morph="svc-integrations">Integrations</h3>
               <p class="svc-card__text">Payments, CRM and accounting, connected.</p>
               <p class="svc-card__more">Details →</p>
             </div>
           </a>
         </li>
         <li>
-          <a class="svc-card" href="/services.html#dashboards">
+          <a class="svc-card" href="/services/dashboards.html">
             <svg class="glyph svc-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="3" y="3" width="1" height="1" style="--i:7"/><rect x="4" y="3" width="1" height="1" style="--i:8"/><rect x="1" y="2" width="1" height="1" style="--i:9"/><rect x="3" y="2" width="1" height="1" style="--i:10"/><rect x="4" y="2" width="1" height="1" style="--i:11"/><rect x="3" y="1" width="1" height="1" style="--i:12"/><rect x="4" y="1" width="1" height="1" style="--i:13"/><rect x="4" y="0" width="1" height="1" style="--i:14"/></svg>
             <div>
-              <h3 class="svc-card__title">Dashboards &amp; Data</h3>
+              <h3 class="svc-card__title" data-morph="svc-dashboards">Dashboards &amp; Data</h3>
               <p class="svc-card__text">Live numbers instead of month-end guesswork.</p>
               <p class="svc-card__more">Details →</p>
             </div>
@@ -417,53 +419,53 @@
         <p class="eyebrow">Pricing</p>
         <h2 class="section__title display" id="packages-title">Honest prices, fixed before we&nbsp;start.</h2>
       </div>
-      <p class="section__text">Starting prices below. Your project gets one fixed quote after a free conversation, paid in three steps as it progresses. <a href="/pricing.html">Full pricing and care plans</a>.</p>
+      <p class="section__text">Starting prices below. Your project gets one fixed quote after a free conversation, paid in three steps as it progresses. <a href="/pricing.html">Full pricing, care plans and an estimator</a>.</p>
     </div>
 
     <ul class="packages packages--4" role="list">
       <li class="package" data-reveal style="--d: 0">
         <svg class="glyph package__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/></svg>
         <div>
-          <h3 class="package__name">Starter</h3>
+          <h3 class="package__name"><a href="/pricing/starter.html" data-morph="plan-starter">Starter</a></h3>
           <p class="package__for">A professional presence that brings in enquiries.</p>
-          <p class="package__price"><span>from</span><b>₹15,000</b></p>
+          <p class="package__price"><span>from</span><b data-count="15000">₹15,000</b></p>
         </div>
         <ul class="ticks" role="list"><li>Custom-designed website, up to 6 pages</li><li>Mobile-first and fast</li><li>Enquiry forms, WhatsApp and maps</li>
         </ul>
-        <a class="btn btn--ghost" href="/pricing.html">See what's included</a>
+        <a class="btn btn--ghost" href="/pricing/starter.html">See what's in Starter<span class="visually-hidden"> (from ₹15,000)</span></a>
       </li>
       <li class="package" data-reveal style="--d: 1">
         <svg class="glyph package__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/></svg>
         <div>
-          <h3 class="package__name">Growth</h3>
+          <h3 class="package__name"><a href="/pricing/growth.html" data-morph="plan-growth">Growth</a></h3>
           <p class="package__for">Sell online or manage more than a brochure.</p>
-          <p class="package__price"><span>from</span><b>₹35,000</b></p>
+          <p class="package__price"><span>from</span><b data-count="35000">₹35,000</b></p>
         </div>
         <ul class="ticks" role="list"><li>Everything in Starter</li><li>Online store or booking flow</li><li>Payments and order management</li>
         </ul>
-        <a class="btn btn--ghost" href="/pricing.html">See what's included</a>
+        <a class="btn btn--ghost" href="/pricing/growth.html">See what's in Growth<span class="visually-hidden"> (from ₹35,000)</span></a>
       </li>
-      <li class="package" data-reveal style="--d: 2">
+      <li class="package package--featured" data-reveal style="--d: 2">
         <svg class="glyph package__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/><rect x="0" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="2" width="1" height="1" style="--i:11"/><rect x="2" y="2" width="1" height="1" style="--i:12"/><rect x="3" y="2" width="1" height="1" style="--i:13"/><rect x="4" y="2" width="1" height="1" style="--i:14"/></svg>
         <div>
-          <h3 class="package__name">System</h3>
+          <h3 class="package__name"><a href="/pricing/system.html" data-morph="plan-system">System</a></h3>
           <p class="package__for">Replace the spreadsheet-and-WhatsApp workflow.</p>
-          <p class="package__price"><span>from</span><b>₹60,000</b></p>
+          <p class="package__price"><span>from</span><b data-count="60000">₹60,000</b></p>
         </div>
         <ul class="ticks" role="list"><li>Web application built around your process</li><li>Accounts, roles and permissions</li><li>Your data in a real database</li>
         </ul>
-        <a class="btn btn--ghost" href="/pricing.html">See what's included</a>
+        <a class="btn" href="/pricing/system.html">See what's in System<span class="visually-hidden"> (from ₹60,000)</span></a>
       </li>
       <li class="package" data-reveal style="--d: 3">
         <svg class="glyph package__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/><rect x="0" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="2" width="1" height="1" style="--i:11"/><rect x="2" y="2" width="1" height="1" style="--i:12"/><rect x="3" y="2" width="1" height="1" style="--i:13"/><rect x="4" y="2" width="1" height="1" style="--i:14"/><rect x="0" y="1" width="1" height="1" style="--i:15"/><rect x="1" y="1" width="1" height="1" style="--i:16"/><rect x="2" y="1" width="1" height="1" style="--i:17"/><rect x="3" y="1" width="1" height="1" style="--i:18"/><rect x="4" y="1" width="1" height="1" style="--i:19"/><rect x="0" y="0" width="1" height="1" style="--i:20"/><rect x="1" y="0" width="1" height="1" style="--i:21"/><rect x="2" y="0" width="1" height="1" style="--i:22"/><rect x="3" y="0" width="1" height="1" style="--i:23"/><rect x="4" y="0" width="1" height="1" style="--i:24"/></svg>
         <div>
-          <h3 class="package__name">Platform</h3>
+          <h3 class="package__name"><a href="/pricing/platform.html" data-morph="plan-platform">Platform</a></h3>
           <p class="package__for">The engine behind a business: many users, many parts.</p>
-          <p class="package__price"><span>from</span><b>₹80,000</b></p>
+          <p class="package__price"><span>from</span><b data-count="80000">₹80,000</b></p>
         </div>
         <ul class="ticks" role="list"><li>Frontend, backend and database, end to end</li><li>APIs and third-party integrations</li><li>AI features where they genuinely help</li>
         </ul>
-        <a class="btn btn--ghost" href="/pricing.html">See what's included</a>
+        <a class="btn btn--ghost" href="/pricing/platform.html">See what's in Platform<span class="visually-hidden"> (from ₹80,000)</span></a>
       </li>
     </ul>
   </div>
@@ -504,14 +506,14 @@
       <nav class="footer__col" aria-label="Services">
         <p class="footer__heading mono">Services</p>
         <ul role="list">
-          <li><a href="/services.html#custom-websites">Websites</a></li>
-          <li><a href="/services.html#web-applications">Web Applications</a></li>
-          <li><a href="/services.html#internal-tools">Internal Tools</a></li>
-          <li><a href="/services.html#automation">Workflow Automation</a></li>
-          <li><a href="/services.html#ai-systems">AI Systems</a></li>
-          <li><a href="/services.html#mobile-apps">Mobile Apps</a></li>
-          <li><a href="/services.html#integrations">Integrations</a></li>
-          <li><a href="/services.html#dashboards">Dashboards &amp; Data</a></li>
+          <li><a href="/services/custom-websites.html">Websites</a></li>
+          <li><a href="/services/web-applications.html">Web Applications</a></li>
+          <li><a href="/services/internal-tools.html">Internal Tools</a></li>
+          <li><a href="/services/automation.html">Workflow Automation</a></li>
+          <li><a href="/services/ai-systems.html">AI Systems</a></li>
+          <li><a href="/services/mobile-apps.html">Mobile Apps</a></li>
+          <li><a href="/services/integrations.html">Integrations</a></li>
+          <li><a href="/services/dashboards.html">Dashboards &amp; Data</a></li>
         </ul>
       </nav>
 

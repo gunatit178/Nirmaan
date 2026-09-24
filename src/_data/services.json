@@ -1,4 +1,5 @@
 {
+  "_comment": "The service catalogue. Each item renders on services.html and gets its own page at /services/<id>.html. problems: 'you might need this if' lines; plan: the package it usually falls into (a pricing.json package id, or 'care' for care plans); related: other item ids.",
   "groups": [
     {
       "id": "websites",
@@ -15,6 +16,17 @@
             "SEO-ready structure",
             "Fast load times",
             "Contact forms & integrations"
+          ],
+          "problems": [
+            "Your current site looks dated or breaks on phones",
+            "People find you online but don't get in touch",
+            "A template can't show what makes you different"
+          ],
+          "plan": "starter",
+          "related": [
+            "business-websites",
+            "redesign",
+            "performance"
           ]
         },
         {
@@ -27,6 +39,17 @@
             "Lead capture forms",
             "Google Maps & directions",
             "WhatsApp & call integration"
+          ],
+          "problems": [
+            "Customers check you online before they call",
+            "You need to look as established as you are",
+            "Enquiries arrive scattered across calls, email and WhatsApp"
+          ],
+          "plan": "starter",
+          "related": [
+            "custom-websites",
+            "maintenance",
+            "integrations"
           ]
         },
         {
@@ -39,6 +62,17 @@
             "Content migration",
             "Performance improvements",
             "SEO preservation"
+          ],
+          "problems": [
+            "The site works but looks years old",
+            "You're worried a rebuild will cost you your Google rankings",
+            "Every small update needs a developer"
+          ],
+          "plan": "starter",
+          "related": [
+            "performance",
+            "custom-websites",
+            "maintenance"
           ]
         },
         {
@@ -51,6 +85,17 @@
             "Secure payment integration",
             "Order management",
             "Mobile-first checkout"
+          ],
+          "problems": [
+            "You sell through WhatsApp or Instagram and track orders by hand",
+            "Marketplace fees are eating your margin",
+            "Payments, stock and delivery live in different places"
+          ],
+          "plan": "growth",
+          "related": [
+            "integrations",
+            "dashboards",
+            "mobile-apps"
           ]
         },
         {
@@ -63,6 +108,17 @@
             "Image & asset optimisation",
             "Caching & CDN setup",
             "Technical SEO fixes"
+          ],
+          "problems": [
+            "Pages take more than a few seconds to load on a phone",
+            "Search Console flags Core Web Vitals problems",
+            "Visitors leave before the page finishes loading"
+          ],
+          "plan": "starter",
+          "related": [
+            "redesign",
+            "maintenance",
+            "custom-websites"
           ]
         },
         {
@@ -75,6 +131,17 @@
             "Security monitoring",
             "Content changes & edits",
             "Priority support"
+          ],
+          "problems": [
+            "Nobody owns updates, backups or security",
+            "Small changes take weeks because the original developer is gone",
+            "You'd only find out the site was down from a customer"
+          ],
+          "plan": "care",
+          "related": [
+            "performance",
+            "redesign",
+            "backend-apis"
           ]
         }
       ]
@@ -94,6 +161,17 @@
             "Real-time data & updates",
             "Complex business logic",
             "Third-party integrations"
+          ],
+          "problems": [
+            "Your team runs the business on spreadsheets and WhatsApp",
+            "Customers need to log in to see orders, bookings or documents",
+            "Off-the-shelf software forces you to change how you work"
+          ],
+          "plan": "system",
+          "related": [
+            "backend-apis",
+            "databases",
+            "internal-tools"
           ]
         },
         {
@@ -106,6 +184,17 @@
             "Server-side business logic",
             "Payment gateway integration",
             "Webhooks & event systems"
+          ],
+          "problems": [
+            "Your website or app needs real business logic behind it",
+            "Other systems need to exchange data with yours",
+            "The current backend is fragile and nobody wants to touch it"
+          ],
+          "plan": "system",
+          "related": [
+            "databases",
+            "integrations",
+            "web-applications"
           ]
         },
         {
@@ -118,6 +207,17 @@
             "PostgreSQL & MySQL",
             "Query optimisation",
             "Security & backups"
+          ],
+          "problems": [
+            "Your data lives in scattered spreadsheets with no single truth",
+            "Reports take hours because the data isn't structured",
+            "You're not sure your data is backed up or secure"
+          ],
+          "plan": "system",
+          "related": [
+            "dashboards",
+            "backend-apis",
+            "modernisation"
           ]
         },
         {
@@ -130,6 +230,17 @@
             "Report generation",
             "Data import & export",
             "Scheduled tasks & triggers"
+          ],
+          "problems": [
+            "Someone spends hours a week copying data between tools",
+            "Follow-ups and reminders depend on someone remembering",
+            "Reports are put together by hand every week"
+          ],
+          "plan": "system",
+          "related": [
+            "integrations",
+            "ai-systems",
+            "internal-tools"
           ]
         },
         {
@@ -142,6 +253,17 @@
             "Data tables & analytics",
             "Create, edit & manage records",
             "Exports & reporting"
+          ],
+          "problems": [
+            "You only learn how the month went after it ends",
+            "The same numbers live in five places and never agree",
+            "Managers ask for the same report every week"
+          ],
+          "plan": "system",
+          "related": [
+            "databases",
+            "automation",
+            "internal-tools"
           ]
         },
         {
@@ -154,6 +276,17 @@
             "Cross-browser testing",
             "Touch-friendly interfaces",
             "Tuned for every device"
+          ],
+          "problems": [
+            "Most of your users are on phones but the product was built for desktop",
+            "Forms and tables break on small screens",
+            "It feels slow on the phones your customers actually use"
+          ],
+          "plan": "growth",
+          "related": [
+            "performance",
+            "mobile-apps",
+            "web-applications"
           ]
         }
       ]
@@ -173,6 +306,17 @@
             "Assistants grounded in your own data",
             "Classification and routing",
             "Cost and quality monitoring"
+          ],
+          "problems": [
+            "Your team reads, sorts or retypes documents all day",
+            "The same customer questions get answered by hand, again and again",
+            "You want to use AI, but it has to be accurate and safe"
+          ],
+          "plan": "platform",
+          "related": [
+            "automation",
+            "integrations",
+            "internal-tools"
           ]
         },
         {
@@ -185,6 +329,17 @@
             "Works with patchy connectivity",
             "Push notifications",
             "Connected to your backend"
+          ],
+          "problems": [
+            "Your staff or customers work away from a desk",
+            "You need offline use, the camera, location or notifications",
+            "A mobile website isn't enough for daily use"
+          ],
+          "plan": "platform",
+          "related": [
+            "backend-apis",
+            "web-applications",
+            "integrations"
           ]
         },
         {
@@ -197,6 +352,17 @@
             "CRM and accounting sync",
             "WhatsApp and email notifications",
             "Webhooks and scheduled syncs"
+          ],
+          "problems": [
+            "Your tools don't talk to each other, so people retype data",
+            "Payments, accounting and CRM are out of sync",
+            "A partner or supplier needs to exchange data with you"
+          ],
+          "plan": "system",
+          "related": [
+            "automation",
+            "backend-apis",
+            "ecommerce"
           ]
         },
         {
@@ -209,6 +375,17 @@
             "Approvals and workflows",
             "Search, filters and exports",
             "Audit trail of who changed what"
+          ],
+          "problems": [
+            "Approvals and requests happen in chats and get lost",
+            "Staff juggle several apps to do one job",
+            "You need a record of who changed what, and when"
+          ],
+          "plan": "system",
+          "related": [
+            "web-applications",
+            "automation",
+            "dashboards"
           ]
         },
         {
@@ -221,6 +398,17 @@
             "Incremental migration",
             "Data migration with verification",
             "Documentation and handover"
+          ],
+          "problems": [
+            "An old system still runs a critical part of the business",
+            "Only one person understands how it works",
+            "It can't connect to the tools you use now"
+          ],
+          "plan": "platform",
+          "related": [
+            "databases",
+            "backend-apis",
+            "integrations"
           ]
         }
       ]
@@ -266,6 +454,24 @@
       "id": "dashboards",
       "title": "Dashboards & Data",
       "text": "Live numbers instead of month-end guesswork."
+    }
+  ],
+  "standard": [
+    {
+      "title": "Mobile-first",
+      "text": "Designed for phones first, then scaled up to tablets and desktops."
+    },
+    {
+      "title": "Search-ready",
+      "text": "Clean structure, metadata and speed that search engines reward."
+    },
+    {
+      "title": "Yours to keep",
+      "text": "Once paid for, you own the code, the database and every asset."
+    },
+    {
+      "title": "Supported",
+      "text": "Maintenance, fixes and improvements after launch, on request."
     }
   ]
 }

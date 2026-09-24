@@ -52,6 +52,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
 
+  {#- The page-transition mask, fetched early so the first transition never waits for it. #}
+  <link rel="preload" href="/assets/motion/build-landscape.svg" as="image" type="image/svg+xml" media="(orientation: landscape)" />
+  <link rel="preload" href="/assets/motion/build-portrait.svg" as="image" type="image/svg+xml" media="(orientation: portrait)" />
+  {#- Fetch a page as soon as someone shows intent (hover or touch), so it opens instantly. #}
+  <script type="speculationrules">{"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}</script>
   <script src="/page-transitions.js"></script>
   <script src="/site.js" defer></script>
   {%- for script in scripts %}

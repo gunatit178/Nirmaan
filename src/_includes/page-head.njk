@@ -1,6 +1,9 @@
 {#- Inner-page opener, driven entirely by the page's `head` front matter:
       head.eyebrow, head.lines (array; the line at head.accent is set in blue),
-      head.lede, head.glyph (5x5 pattern), head.actions ([{label, href, style}]) -#}
+      head.lede, head.glyph (5x5 pattern), head.actions ([{label, href, style}]),
+      head.crumbs ([{label, href}] between Home and this page; defaults to the
+      nav section) and head.morph (a key shared with the card that links here,
+      so its title can morph into this heading; see page-transitions.js) -#}
 <section class="page-head" aria-labelledby="page-title">
   <div class="page-head__grid" aria-hidden="true"></div>
   <div class="wrap page-head__inner">
@@ -8,11 +11,18 @@
       <nav aria-label="Breadcrumb" class="crumbs mono">
         <ol role="list">
           <li><a href="/">Home</a></li>
+          {%- if head.crumbs %}
+          {%- for c in head.crumbs %}
+          <li><a href="{{ c.href }}">{{ c.label }}</a></li>
+          {%- endfor %}
+          <li aria-current="page">{{ head.current }}</li>
+          {%- else %}
           <li aria-current="page">{% for link in navLinks %}{% if link.slug == nav %}{{ link.label }}{% endif %}{% endfor %}</li>
+          {%- endif %}
         </ol>
       </nav>
       <p class="eyebrow">{{ head.eyebrow }}</p>
-      <h1 class="page-head__title display" id="page-title">
+      <h1 class="page-head__title display" id="page-title"{% if head.morph %} data-morph="{{ head.morph }}"{% endif %}>
         {%- for line in head.lines %}
         <span class="line"><span{% if loop.index0 == head.accent %} class="accent"{% endif %}>{{ line | safe }}</span></span>
         {%- endfor %}

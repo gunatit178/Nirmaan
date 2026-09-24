@@ -46,7 +46,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preload" href="/assets/motion/build-landscape.svg" as="image" type="image/svg+xml" media="(orientation: landscape)" />
+  <link rel="preload" href="/assets/motion/build-portrait.svg" as="image" type="image/svg+xml" media="(orientation: portrait)" />
+  <script type="speculationrules">{"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}</script>
   <script src="/page-transitions.js"></script>
   <script src="/site.js" defer></script>
 </head>
@@ -321,14 +323,14 @@
       <nav class="footer__col" aria-label="Services">
         <p class="footer__heading mono">Services</p>
         <ul role="list">
-          <li><a href="/services.html#custom-websites">Websites</a></li>
-          <li><a href="/services.html#web-applications">Web Applications</a></li>
-          <li><a href="/services.html#internal-tools">Internal Tools</a></li>
-          <li><a href="/services.html#automation">Workflow Automation</a></li>
-          <li><a href="/services.html#ai-systems">AI Systems</a></li>
-          <li><a href="/services.html#mobile-apps">Mobile Apps</a></li>
-          <li><a href="/services.html#integrations">Integrations</a></li>
-          <li><a href="/services.html#dashboards">Dashboards &amp; Data</a></li>
+          <li><a href="/services/custom-websites.html">Websites</a></li>
+          <li><a href="/services/web-applications.html">Web Applications</a></li>
+          <li><a href="/services/internal-tools.html">Internal Tools</a></li>
+          <li><a href="/services/automation.html">Workflow Automation</a></li>
+          <li><a href="/services/ai-systems.html">AI Systems</a></li>
+          <li><a href="/services/mobile-apps.html">Mobile Apps</a></li>
+          <li><a href="/services/integrations.html">Integrations</a></li>
+          <li><a href="/services/dashboards.html">Dashboards &amp; Data</a></li>
         </ul>
       </nav>
 

@@ -47,6 +47,7 @@ function userPromptFor(lead: {
   budgetRange: string | null;
   timeline: string | null;
   urgency: string | null;
+  interest?: string | null;
 }): string {
   const context = Object.entries({
     "What the business does": lead.business,
@@ -59,6 +60,7 @@ function userPromptFor(lead: {
     "Budget range": lead.budgetRange,
     Timeline: lead.timeline,
     Urgency: lead.urgency,
+    "Was looking at (on our website)": lead.interest,
   })
     .filter(([, v]) => v && v.trim())
     .map(([k, v]) => `- ${k}: ${v}`)
