@@ -34,7 +34,7 @@
     name: 'Please tell us your name.',
     email: 'That email address doesn’t look right. Please check it.',
     notConnected: 'This form isn’t connected yet, so your message was not sent.' + reachUs,
-    network: 'We couldn’t reach the server. Check your connection and try again.',
+    network: 'Your message didn’t go through. Check your connection and try again.' + reachUs,
     server: 'Something went wrong on our side, so your message was not sent. Please try again in a moment.' + reachUs,
   };
 
