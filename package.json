@@ -5,7 +5,8 @@
   "scripts": {
     "build": "eleventy",
     "watch": "eleventy --serve",
-    "assets": "node scripts/render-assets.mjs"
+    "assets": "node scripts/render-assets.mjs",
+    "masks": "node scripts/build-mask.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6"

@@ -1,0 +1,146 @@
+---
+layout: base.njk
+pagination:
+  data: pricing.care
+  size: 1
+  addAllPagesToCollections: true
+  alias: c
+permalink: "/pricing/care/{{ c.id }}.html"
+nav: "pricing"
+eleventyComputed:
+  title: "{{ c.name }} care plan: {{ c.monthly | inr }} a month — Nirmaan"
+  description: "{{ c.for }} What the {{ c.name }} care plan covers, response times, monthly hours and what isn't included. {{ c.monthly | inr }} a month, cancel any time."
+---
+{%- set head = {
+  eyebrow: "Care plan · month to month",
+  lines: [c.name + " care"],
+  accent: -1,
+  lede: c.intro,
+  glyph: "01110/10001/10101/10001/01110",
+  morph: "care-" + c.id,
+  crumbs: [{ label: "Pricing", href: "/pricing.html" }, { label: "Care plans", href: "/pricing.html#care" }],
+  current: c.name,
+  actions: [
+    { label: "Ask about " + c.name + " care", href: "/contact.html?care=" + c.id + "#enquiry", style: "primary" },
+    { label: "Compare care plans", href: "#compare" }
+  ]
+} %}
+{% include "page-head.njk" %}
+
+<section class="section section--tight" aria-label="{{ c.name }} care at a glance">
+  <div class="wrap">
+    <dl class="facts facts--plan" data-reveal>
+      <div><dt class="mono">Price</dt><dd><span class="facts__big" data-count="{{ c.monthly }}">{{ c.monthly | inr }}</span> / month</dd></div>
+      <div><dt class="mono">Changes included</dt><dd><span class="facts__big">{{ c.hours }}</span> hours / month</dd></div>
+      <div><dt class="mono">We reply within</dt><dd>{{ c.response }}</dd></div>
+      <div><dt class="mono">Commitment</dt><dd>None. Month to month, cancel any time</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="fit-title">
+  <div class="wrap fit">
+    <div data-reveal>
+      <p class="eyebrow">Made for</p>
+      <h2 class="section__title display" id="fit-title">Who picks {{ c.name }}.</h2>
+    </div>
+    <div class="fit__body">
+      <ol class="fit__list" role="list">
+        {%- for f in c.goodFor %}
+        <li data-reveal style="--d: {{ loop.index0 }}"><span class="mono">{{ "0" + loop.index }}</span><p>{{ f }}</p></li>
+        {%- endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="covers-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">What's covered</p>
+        <h2 class="section__title display" id="covers-title">Every month, without&nbsp;asking.</h2>
+      </div>
+      <p class="section__text">Care plans are for systems we've built or reviewed, so the people looking after it already know the code.</p>
+    </div>
+    <div class="included">
+      {%- for g in c.covers %}
+      <div class="included__group" data-reveal style="--d: {{ loop.index0 }}">
+        <h3>{{ g.title }}</h3>
+        <ul class="ticks" role="list">
+          {%- for i in g.items %}<li>{{ i }}</li>{% endfor %}
+        </ul>
+      </div>
+      {%- endfor %}
+    </div>
+    <div class="excluded" data-reveal>
+      <h3 class="mono">Not covered, so there are no surprises</h3>
+      <ul role="list">
+        {%- for x in c.notCovered %}<li>{{ x }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="compare" aria-labelledby="compare-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Compare</p>
+        <h2 class="section__title display" id="compare-title">Three plans, side by&nbsp;side.</h2>
+      </div>
+      <p class="section__text">Switch up or down from the next month. Unused hours don't roll over; bigger changes are quoted as small projects.</p>
+    </div>
+    <div class="compare-wrap" data-reveal>
+      <table class="compare">
+        <caption class="visually-hidden">Care plans compared</caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Feature</span></th>
+            {%- for k in pricing.care %}
+            <th scope="col"{% if k.id == c.id %} class="is-current" aria-current="true"{% endif %}>
+              {%- if k.id == c.id %}{{ k.name }}<span class="mono compare__here">This plan</span>
+              {%- else %}<a href="/pricing/care/{{ k.id }}.html"><span data-morph="care-{{ k.id }}">{{ k.name }}</span> <span aria-hidden="true">→</span></a>{% endif -%}
+            </th>
+            {%- endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Per month</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}><b>{{ k.monthly | inr }}</b></td>{% endfor %}</tr>
+          <tr><th scope="row">Changes included</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>{{ k.hours if k.hours else "None" }}{% if k.hours %} hours{% endif %}</td>{% endfor %}</tr>
+          <tr><th scope="row">We reply within</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>{{ k.response }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Hosting, backups, security</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>Yes</td>{% endfor %}</tr>
+          <tr><th scope="row">Monthly report</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>{{ "No" if k.hours == 0 else "Yes" }}</td>{% endfor %}</tr>
+          <tr><th scope="row">AI and API usage monitoring</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>{{ "Yes" if k.hours >= 12 else "No" }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Roadmap session</th>{% for k in pricing.care %}<td{% if k.id == c.id %} class="is-current"{% endif %}>{{ "Quarterly" if k.hours >= 12 else "No" }}</td>{% endfor %}</tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="care-faq-title">
+  <div class="wrap faq-layout">
+    <div data-reveal>
+      <p class="eyebrow">Care plan questions</p>
+      <h2 class="section__title display" id="care-faq-title">Asked often.</h2>
+    </div>
+    <div class="faq" data-reveal>
+      {%- for item in pricing.careFaq %}
+      <details{% if loop.first %} open{% endif %}>
+        <summary>{{ item.q }}<span class="faq__icon" aria-hidden="true"></span></summary>
+        <p class="faq__answer">{{ item.a }}</p>
+      </details>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+{%- set cta = {
+  eyebrow: "Already live, or about to be?",
+  lines: [c.name + " care,", "from next month."],
+  text: "Tell us about the system you want looked after. If we built it, you can start straight away; if we didn't, we'll review it first and tell you honestly what shape it's in.",
+  primary: { label: "Ask about " + c.name + " care", href: "/contact.html?care=" + c.id + "#enquiry" },
+  secondary: { label: "Back to pricing", href: "/pricing.html#care" }
+} %}
+{% include "cta.njk" %}

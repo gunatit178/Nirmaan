@@ -33,6 +33,7 @@ const OPTIONAL_FIELDS = {
   budgetRange: INTAKE_LIMITS.short,
   timeline: INTAKE_LIMITS.short,
   urgency: INTAKE_LIMITS.short,
+  interest: INTAKE_LIMITS.short,
   company: INTAKE_LIMITS.short,
   contactPhone: INTAKE_LIMITS.phone,
 } as const;
@@ -52,6 +53,8 @@ export interface IntakeData {
   budgetRange?: string;
   timeline?: string;
   urgency?: string;
+  /** The package, care plan or service the visitor was looking at on the website. */
+  interest?: string;
   company?: string;
   contactPhone?: string;
 }

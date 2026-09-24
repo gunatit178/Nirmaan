@@ -6,6 +6,9 @@
     {% logo "class" %}              the Nirmaan pixel-N mark as inline SVG
     {% glyph "10001/…", "class" %}  any 5x5 pixel glyph in the same visual
                                     language as the logo (5 rows of 5 bits)
+
+  Detail pages are paginated from data: /pricing/<package>.html (plan.njk),
+  /pricing/care/<plan>.html (care.njk) and /services/<id>.html (service.njk).
 */
 const GLYPH = /^[01]{5}(\/[01]{5}){4}$/;
 
@@ -56,6 +59,42 @@ module.exports = function (eleventyConfig) {
   // {{ 15000 | inr }} → "₹15,000" (Indian digit grouping).
   const INR = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
   eleventyConfig.addFilter('inr', (amount) => INR.format(Number(amount)));
+
+  // {% set p = pricing | plan(id) %} / {% set c = pricing | care(id) %}: look up a package or care plan.
+  eleventyConfig.addFilter('plan', (pricing, id) => {
+    const hit = pricing.packages.find((p) => p.id === id);
+    if (!hit) throw new Error(`plan: no package with id "${id}"`);
+    return hit;
+  });
+  eleventyConfig.addFilter('care', (pricing, id) => {
+    const hit = pricing.care.find((c) => c.id === id || c.name === id);
+    if (!hit) throw new Error(`care: no care plan "${id}"`);
+    return hit;
+  });
+
+  // {{ serviceList | forPlan('system') }}: the services that usually fall into a package.
+  eleventyConfig.addFilter('forPlan', (list, id) => list.filter((s) => s.plan === id));
+
+  // {{ 35000 | share(40) }} → 14000: a percentage of an amount, in whole rupees.
+  eleventyConfig.addFilter('share', (amount, percent) => Math.round((Number(amount) * Number(percent)) / 100));
+
+  // {{ pricing | interests(serviceList) }}: what contact.html can say it's
+  // "about" when a visitor arrives from a plan, care plan or service page
+  // (?plan=, ?care=, ?service=), and the budget range that fits it.
+  const BUDGETS = [[25000, 'Under ₹25,000'], [75000, '₹25,000 – ₹75,000'], [200000, '₹75,000 – ₹2,00,000'], [500000, '₹2,00,000 – ₹5,00,000']];
+  const budgetFor = (amount) => (BUDGETS.find(([max]) => amount < max) || [0, '₹5,00,000+'])[1];
+  eleventyConfig.addFilter('interests', (pricing, serviceList) => {
+    const byId = Object.fromEntries(pricing.packages.map((p) => [p.id, p]));
+    const map = (list, fn) => Object.fromEntries(list.map((x) => [x.id, fn(x)]));
+    return {
+      plan: map(pricing.packages, (p) => ({ label: `${p.name} package`, detail: `from ${INR.format(p.from)} · ${p.weeks} weeks`, href: `/pricing/${p.id}.html`, budget: budgetFor(p.from) })),
+      care: map(pricing.care, (c) => ({ label: `${c.name} care plan`, detail: `${INR.format(c.monthly)} / month`, href: `/pricing/care/${c.id}.html` })),
+      service: map(serviceList, (s) => {
+        const p = byId[s.plan];
+        return { label: s.title, detail: p ? `usually ${p.name}, from ${INR.format(p.from)}` : 'a monthly care plan', href: `/services/${s.id}.html`, budget: p ? budgetFor(p.from) : '' };
+      }),
+    };
+  });
 
   // {{ services | serviceCount }}: how many services the catalogue offers.
   eleventyConfig.addFilter('serviceCount', (services) =>

@@ -1,78 +1,663 @@
 {
-  "_comment": "Single source of truth for every price on the website: the pricing page, the homepage packages and the estimator all read from here. Amounts are whole rupees, before GST. Build prices come from the original estimator; care-plan prices were proposed on 2026-09-24 and should be confirmed by the founder.",
+  "_comment": "Single source of truth for every price on the website: the pricing page, the homepage packages and the estimator all read from here. Amounts are whole rupees, before GST. Build prices come from the original estimator; care-plan prices were proposed on 2026-09-24 and should be confirmed by the founder. Plan and care-plan detail copy (intro, fit, included, timeline, faq) powers /pricing/<id>.html and /pricing/care/<id>.html; it was written on 2026-09-24 and should be reviewed by the founder.",
   "note": "Prices in INR, before GST where applicable. Every project gets a fixed quote after a free discovery conversation.",
   "packages": [
     {
-      "id": "starter", "name": "Starter", "estimator": "Business website",
-      "from": 15000, "weeks": "1–2", "glyph": "00000/00000/00000/00000/11111",
+      "id": "starter",
+      "name": "Starter",
+      "estimator": "Business website",
+      "from": 15000,
+      "weeks": "1–2",
+      "glyph": "00000/00000/00000/00000/11111",
       "for": "A professional presence that brings in enquiries.",
       "examples": "Clinics, consultants, service businesses",
-      "features": ["Custom-designed website, up to 6 pages", "Mobile-first and fast", "Enquiry forms, WhatsApp and maps", "Search-ready structure and metadata", "Launch, domain and SSL setup"]
+      "features": [
+        "Custom-designed website, up to 6 pages",
+        "Mobile-first and fast",
+        "Enquiry forms, WhatsApp and maps",
+        "Search-ready structure and metadata",
+        "Launch, domain and SSL setup"
+      ],
+      "intro": "For businesses whose customers look them up before they call. We design and build a fast, custom site around the questions your customers actually ask, so visits turn into enquiries. No templates, and no page builder to wrestle with.",
+      "fit": [
+        "You need a professional site, or the one you have is holding you back",
+        "Customers mostly reach you by phone, WhatsApp or a form",
+        "What you offer fits on a handful of clear pages"
+      ],
+      "notFit": {
+        "text": "Need customers to buy or book online?",
+        "plan": "growth"
+      },
+      "included": [
+        {
+          "title": "Design",
+          "items": [
+            "Custom design around your brand, not a template",
+            "Up to 6 pages, planned around what customers ask",
+            "Designed for phones first, then desktop"
+          ]
+        },
+        {
+          "title": "Build",
+          "items": [
+            "Hand-coded, fast-loading pages",
+            "Enquiry form that lands in your inbox",
+            "WhatsApp, call and Google Maps buttons"
+          ]
+        },
+        {
+          "title": "Launch",
+          "items": [
+            "Domain and SSL setup",
+            "Search-ready structure, titles and metadata",
+            "A walkthrough of how to ask for changes"
+          ]
+        }
+      ],
+      "excluded": [
+        "Online payments, bookings or accounts (that's Growth)",
+        "Writing all your copy from scratch: we shape and edit what you give us",
+        "Ads and ongoing SEO campaigns"
+      ],
+      "timeline": [
+        {
+          "when": "Days 1–2",
+          "title": "Discover",
+          "text": "A call about your customers and what they need to see. We agree the pages and the content."
+        },
+        {
+          "when": "Days 3–6",
+          "title": "Design",
+          "text": "The home page first, for your approval, then the other pages in the same style."
+        },
+        {
+          "when": "Days 6–10",
+          "title": "Build and launch",
+          "text": "Built, tested on real phones, connected to your domain and launched."
+        }
+      ],
+      "care": "Essential",
+      "extras": [
+        "Extra pages",
+        "A blog or news section",
+        "A second language"
+      ],
+      "faq": [
+        {
+          "q": "Can I update the site myself?",
+          "a": "If you want to, yes: we can make the text and images you change often editable. Otherwise send changes to us; they're part of a care plan, or quoted individually."
+        },
+        {
+          "q": "I already have a domain. Can we keep it?",
+          "a": "Yes. We connect the new site to your existing domain and keep your email working while we switch over."
+        },
+        {
+          "q": "Will it show up on Google?",
+          "a": "It's built to be found: clean structure, fast pages, proper titles and descriptions. Ranking also depends on competition and content over time, so we won't promise a position."
+        }
+      ]
     },
     {
-      "id": "growth", "name": "Growth", "estimator": "E-commerce store",
-      "from": 35000, "weeks": "3–4", "glyph": "00000/00000/00000/11111/11111",
+      "id": "growth",
+      "name": "Growth",
+      "estimator": "E-commerce store",
+      "from": 35000,
+      "weeks": "3–4",
+      "glyph": "00000/00000/00000/11111/11111",
       "for": "Sell online or manage more than a brochure.",
       "examples": "Shops, restaurants, schools, D2C brands",
-      "features": ["Everything in Starter", "Online store or booking flow", "Payments and order management", "Content you can edit yourself", "Performance tuning"]
+      "features": [
+        "Everything in Starter",
+        "Online store or booking flow",
+        "Payments and order management",
+        "Content you can edit yourself",
+        "Performance tuning"
+      ],
+      "intro": "For businesses that need the website to do work, not just describe it: take orders, accept bookings, collect payments, and let you manage it all without calling a developer.",
+      "fit": [
+        "Customers want to buy, book or pay online",
+        "Orders or bookings are tracked by hand today",
+        "You want to update products, prices and content yourself"
+      ],
+      "notFit": {
+        "text": "Need staff logins, roles and your own workflow?",
+        "plan": "system"
+      },
+      "included": [
+        {
+          "title": "Everything in Starter",
+          "items": [
+            "Custom design, mobile-first",
+            "Search-ready and fast",
+            "Domain, SSL and launch"
+          ]
+        },
+        {
+          "title": "Selling or booking",
+          "items": [
+            "An online store or booking flow built around how you sell",
+            "Secure payments through an Indian payment gateway",
+            "Order or booking management with email notifications"
+          ]
+        },
+        {
+          "title": "Run it yourself",
+          "items": [
+            "Edit products, prices and content yourself",
+            "Performance tuning for real phones and networks",
+            "Training so your team can run it from day one"
+          ]
+        }
+      ],
+      "excluded": [
+        "Staff accounts with different permissions (that's System)",
+        "Complex stock across several warehouses or channels",
+        "Payment-gateway fees, which the gateway charges you directly"
+      ],
+      "timeline": [
+        {
+          "when": "Week 1",
+          "title": "Discover and design",
+          "text": "How you sell today, what customers need at checkout, and the designs for the key pages."
+        },
+        {
+          "when": "Weeks 2–3",
+          "title": "Build",
+          "text": "Store or booking flow, payments and admin, shown to you as a working version as it comes together."
+        },
+        {
+          "when": "Week 4",
+          "title": "Test and launch",
+          "text": "Real test orders and payments, your team trained, then launch."
+        }
+      ],
+      "care": "Growth",
+      "extras": [
+        "Delivery and shipping integrations",
+        "Discount codes and offers",
+        "WhatsApp order notifications"
+      ],
+      "faq": [
+        {
+          "q": "Which payment gateways do you work with?",
+          "a": "The common Indian gateways, such as Razorpay, Cashfree or PayU. We'll recommend one based on your fees and how you get paid out."
+        },
+        {
+          "q": "Can I move from Instagram or WhatsApp orders?",
+          "a": "That's the most common reason people come to us. We import your products and set up an order flow your team can actually follow."
+        },
+        {
+          "q": "How many products can it handle?",
+          "a": "Hundreds without any special work. If you have thousands of products or complex variants, we'll say so in the quote."
+        }
+      ]
     },
     {
-      "id": "system", "name": "System", "estimator": "Web application",
-      "from": 60000, "weeks": "4–6", "glyph": "00000/00000/11111/11111/11111",
+      "id": "system",
+      "name": "System",
+      "estimator": "Web application",
+      "from": 60000,
+      "weeks": "4–6",
+      "glyph": "00000/00000/11111/11111/11111",
       "for": "Replace the spreadsheet-and-WhatsApp workflow.",
       "examples": "Order tracking, internal tools, client portals",
-      "features": ["Web application built around your process", "Accounts, roles and permissions", "Your data in a real database", "Dashboards and exports", "Automations and reminders"],
-      "highlight": true
+      "features": [
+        "Web application built around your process",
+        "Accounts, roles and permissions",
+        "Your data in a real database",
+        "Dashboards and exports",
+        "Automations and reminders"
+      ],
+      "highlight": true,
+      "intro": "For the workflow that's outgrown spreadsheets and WhatsApp groups. We build a web application around the way your business actually works: your data in a real database, the right people seeing the right things, and the reminders and reports that nobody should do by hand.",
+      "fit": [
+        "Important work lives in spreadsheets, chats and people's memory",
+        "Several people or teams need to see and update the same information",
+        "Things fall through the cracks, and you can't see what's late"
+      ],
+      "notFit": {
+        "text": "Many user types, integrations and AI in one platform?",
+        "plan": "platform"
+      },
+      "included": [
+        {
+          "title": "The application",
+          "items": [
+            "A web app designed around your process, not a generic tool",
+            "Accounts, roles and permissions for staff and customers",
+            "Works on phones, tablets and desktops"
+          ]
+        },
+        {
+          "title": "Data",
+          "items": [
+            "Your data in a real, backed-up database",
+            "Import of your existing spreadsheets",
+            "Dashboards and exports to Excel and PDF"
+          ]
+        },
+        {
+          "title": "Automation",
+          "items": [
+            "Reminders and notifications by email or WhatsApp",
+            "Status tracking so nothing sits unnoticed",
+            "A record of who changed what, and when"
+          ]
+        }
+      ],
+      "excluded": [
+        "Native mobile apps (a mobile-friendly web app is included)",
+        "Connections to many outside systems at once (that's Platform)",
+        "Paid messaging costs such as WhatsApp templates, billed to you at cost"
+      ],
+      "timeline": [
+        {
+          "when": "Week 1",
+          "title": "Discover",
+          "text": "We map the workflow as it really runs today, then agree what the first version must do."
+        },
+        {
+          "when": "Week 2",
+          "title": "Plan and design",
+          "text": "Screens, data model and permissions, approved by you before we build."
+        },
+        {
+          "when": "Weeks 3–5",
+          "title": "Build",
+          "text": "Built in slices you can click through, with your data, as they're ready."
+        },
+        {
+          "when": "Week 6",
+          "title": "Test and launch",
+          "text": "Tested against the agreed scenarios, your team trained, data moved over, launched."
+        }
+      ],
+      "care": "Growth",
+      "extras": [
+        "A customer-facing portal",
+        "Integration with Tally, Zoho or your CRM",
+        "Scheduled reports by email"
+      ],
+      "faq": [
+        {
+          "q": "Why not just use an off-the-shelf tool?",
+          "a": "Sometimes you should, and we'll tell you. Custom makes sense when the tools force you to change a process that works, or when you're paying for five tools to do one job."
+        },
+        {
+          "q": "What happens to our existing spreadsheets?",
+          "a": "We import them. Part of discovery is cleaning up the data so the new system starts with a single, trustworthy version."
+        },
+        {
+          "q": "Can it grow later?",
+          "a": "Yes. It's built as a proper application with a real database, so new features are added to it rather than bolted on."
+        }
+      ]
     },
     {
-      "id": "platform", "name": "Platform", "estimator": "Full-stack system",
-      "from": 80000, "weeks": "6–8", "glyph": "11111/11111/11111/11111/11111",
+      "id": "platform",
+      "name": "Platform",
+      "estimator": "Full-stack system",
+      "from": 80000,
+      "weeks": "6–8",
+      "glyph": "11111/11111/11111/11111/11111",
       "for": "The engine behind a business: many users, many parts.",
       "examples": "SaaS products, marketplaces, AI-assisted operations",
-      "features": ["Frontend, backend and database, end to end", "APIs and third-party integrations", "AI features where they genuinely help", "Admin panel and reporting", "Security review before launch"]
+      "features": [
+        "Frontend, backend and database, end to end",
+        "APIs and third-party integrations",
+        "AI features where they genuinely help",
+        "Admin panel and reporting",
+        "Security review before launch"
+      ],
+      "intro": "For the software a business runs on: many users, several moving parts, outside systems to talk to, and sometimes AI doing the tedious work. Frontend, backend, database and integrations, designed as one system and built by one team.",
+      "fit": [
+        "You're building a product, marketplace or multi-party platform",
+        "It has to connect to payments, accounting, messaging or partners",
+        "Reliability and security matter as much as features"
+      ],
+      "notFit": {
+        "text": "One team, one workflow?",
+        "plan": "system"
+      },
+      "included": [
+        {
+          "title": "End to end",
+          "items": [
+            "Frontend, backend and database designed together",
+            "Admin panel and reporting",
+            "Accounts and permissions for every kind of user"
+          ]
+        },
+        {
+          "title": "Connected",
+          "items": [
+            "APIs for your apps, partners or customers",
+            "Integrations with payment, accounting, CRM and messaging tools",
+            "AI features where they genuinely help, with a person able to check them"
+          ]
+        },
+        {
+          "title": "Production-ready",
+          "items": [
+            "Security review before launch",
+            "Monitoring, error alerts and tested backups",
+            "Documentation and a clean handover"
+          ]
+        }
+      ],
+      "excluded": [
+        "Native iOS and Android apps, which are quoted separately",
+        "Third-party subscription and usage costs (AI models, SMS, hosting at scale), agreed up front and billed at cost",
+        "Marketing, content and customer support operations"
+      ],
+      "timeline": [
+        {
+          "when": "Weeks 1–2",
+          "title": "Discover and plan",
+          "text": "Users, workflows and integrations mapped; architecture and scope approved by you."
+        },
+        {
+          "when": "Weeks 2–3",
+          "title": "Design",
+          "text": "Key screens and flows designed and approved before the heavy build."
+        },
+        {
+          "when": "Weeks 3–7",
+          "title": "Build in milestones",
+          "text": "Working milestones you can use and review, each one tested before the next."
+        },
+        {
+          "when": "Week 8",
+          "title": "Harden and launch",
+          "text": "Security review, load checks, monitoring and backups in place, then launch."
+        }
+      ],
+      "care": "Priority",
+      "extras": [
+        "Native mobile apps",
+        "Multi-language and multi-currency",
+        "A public API for partners"
+      ],
+      "faq": [
+        {
+          "q": "Is ₹80,000 really enough for a platform?",
+          "a": "For the simplest real version, yes, which is what the \"from\" price means. Most platforms cost more; the fixed quote after discovery tells you exactly how much, and why."
+        },
+        {
+          "q": "Can we launch in phases?",
+          "a": "We recommend it. A first version that solves the core problem goes live sooner, and the next phases are shaped by how people actually use it."
+        },
+        {
+          "q": "How do you handle AI costs?",
+          "a": "Every AI feature has a budget and its usage is measured. You see what it costs to run before you commit to it."
+        }
+      ]
     }
   ],
   "estimator": {
     "scales": [
-      { "value": "1", "mult": "1", "name": "Simple", "note": "Standard features" },
-      { "value": "1.5", "mult": "1.5", "name": "Medium", "note": "More pages, some custom logic" },
-      { "value": "2.5", "mult": "2", "name": "Complex", "note": "Intricate logic, lots of data" }
+      {
+        "value": "1",
+        "mult": "1",
+        "name": "Simple",
+        "note": "Standard features"
+      },
+      {
+        "value": "1.5",
+        "mult": "1.5",
+        "name": "Medium",
+        "note": "More pages, some custom logic"
+      },
+      {
+        "value": "2.5",
+        "mult": "2",
+        "name": "Complex",
+        "note": "Intricate logic, lots of data"
+      }
     ],
     "addons": [
-      { "value": "10000", "weeks": "1", "name": "User login" },
-      { "value": "15000", "weeks": "2", "name": "Admin dashboard" },
-      { "value": "8000", "weeks": "1", "name": "Payments" }
+      {
+        "value": "10000",
+        "weeks": "1",
+        "name": "User login"
+      },
+      {
+        "value": "15000",
+        "weeks": "2",
+        "name": "Admin dashboard"
+      },
+      {
+        "value": "8000",
+        "weeks": "1",
+        "name": "Payments"
+      }
     ]
   },
   "care": [
     {
-      "name": "Essential", "monthly": 2500,
+      "name": "Essential",
+      "monthly": 2500,
       "for": "Keep it online, safe and backed up.",
-      "features": ["Managed hosting", "Daily backups with tested restores", "Security and dependency updates", "Uptime monitoring and alerts", "Response within 2 business days"]
+      "features": [
+        "Managed hosting",
+        "Daily backups with tested restores",
+        "Security and dependency updates",
+        "Uptime monitoring and alerts",
+        "Response within 2 business days"
+      ],
+      "id": "essential",
+      "intro": "The basics a live system needs, handled: it stays online, it's backed up, and it's patched when security updates come out. For sites and systems that don't change much.",
+      "response": "2 business days",
+      "hours": 0,
+      "goodFor": [
+        "Websites that rarely change",
+        "Systems that are stable and working well",
+        "Owners who want peace of mind, not a roadmap"
+      ],
+      "covers": [
+        {
+          "title": "Hosting",
+          "items": [
+            "Managed hosting for normal traffic",
+            "SSL certificates renewed automatically"
+          ]
+        },
+        {
+          "title": "Safety",
+          "items": [
+            "Daily backups, with restores tested",
+            "Security and dependency updates",
+            "Uptime monitoring with alerts to us"
+          ]
+        },
+        {
+          "title": "Support",
+          "items": [
+            "Fixes when something we built breaks",
+            "A reply within 2 business days"
+          ]
+        }
+      ],
+      "notCovered": [
+        "Changes and new features (quoted individually, or choose Growth)",
+        "Domain renewal fees",
+        "Problems caused by third-party services outside our control"
+      ]
     },
     {
-      "name": "Growth", "monthly": 6000,
+      "name": "Growth",
+      "monthly": 6000,
       "for": "Keep improving it every month.",
-      "features": ["Everything in Essential", "4 hours of changes each month", "Monthly performance and usage report", "Search and speed tuning", "Response within 1 business day"],
-      "highlight": true
+      "features": [
+        "Everything in Essential",
+        "4 hours of changes each month",
+        "Monthly performance and usage report",
+        "Search and speed tuning",
+        "Response within 1 business day"
+      ],
+      "highlight": true,
+      "id": "growth",
+      "intro": "For businesses that keep improving their system every month. Everything in Essential, plus a monthly block of hours for changes and a report on how it's performing.",
+      "response": "1 business day",
+      "hours": 4,
+      "goodFor": [
+        "Stores and booking sites that change often",
+        "Systems with a list of small improvements",
+        "Teams that want a developer who already knows the code"
+      ],
+      "covers": [
+        {
+          "title": "Everything in Essential",
+          "items": [
+            "Hosting, backups and security updates",
+            "Uptime monitoring"
+          ]
+        },
+        {
+          "title": "Improvements",
+          "items": [
+            "4 hours of changes each month",
+            "Search and speed tuning",
+            "A monthly performance and usage report"
+          ]
+        },
+        {
+          "title": "Support",
+          "items": [
+            "A reply within 1 business day",
+            "Priority over one-off requests"
+          ]
+        }
+      ],
+      "notCovered": [
+        "Work beyond the monthly hours (quoted first, never billed as a surprise)",
+        "Large new features, which are quoted as projects",
+        "Domain renewal and third-party subscription fees"
+      ]
     },
     {
-      "name": "Priority", "monthly": 15000,
+      "name": "Priority",
+      "monthly": 15000,
       "for": "For systems the business runs on.",
-      "features": ["Everything in Growth", "12 hours of changes each month", "Same-business-day response", "AI and API usage monitoring", "Quarterly roadmap session"]
+      "features": [
+        "Everything in Growth",
+        "12 hours of changes each month",
+        "Same-business-day response",
+        "AI and API usage monitoring",
+        "Quarterly roadmap session"
+      ],
+      "id": "priority",
+      "intro": "For systems the business can't run without. More hours, same-day responses, monitoring of AI and API usage, and a quarterly session to plan what comes next.",
+      "response": "Same business day",
+      "hours": 12,
+      "goodFor": [
+        "Operations that stop when the system stops",
+        "Platforms with AI features or many integrations",
+        "Businesses that want a planned roadmap"
+      ],
+      "covers": [
+        {
+          "title": "Everything in Growth",
+          "items": [
+            "Hosting, backups, security and monitoring",
+            "Monthly report"
+          ]
+        },
+        {
+          "title": "Capacity",
+          "items": [
+            "12 hours of changes each month",
+            "AI and API usage monitored against budget"
+          ]
+        },
+        {
+          "title": "Partnership",
+          "items": [
+            "Same-business-day response",
+            "A quarterly roadmap session"
+          ]
+        }
+      ],
+      "notCovered": [
+        "Work beyond the monthly hours (quoted first)",
+        "Infrastructure costs above normal traffic, agreed first and billed at cost",
+        "Third-party AI, SMS and API usage fees, billed at cost"
+      ]
     }
   ],
   "steps": [
-    { "title": "Free first conversation", "text": "Tell us the problem. We ask questions, separate facts from assumptions, and tell you honestly if you don't need custom software at all." },
-    { "title": "One fixed price", "text": "A written proposal with what's in scope, what isn't, the timeline and the price. No hourly meter running." },
-    { "title": "Pay as it progresses", "text": "40% on approval, 40% when you review the working version, 20% on delivery." },
-    { "title": "Changes priced up front", "text": "New ideas mid-project are welcome. Each one comes with its cost and time before any work starts." }
+    {
+      "title": "Free first conversation",
+      "text": "Tell us the problem. We ask questions, separate facts from assumptions, and tell you honestly if you don't need custom software at all."
+    },
+    {
+      "title": "One fixed price",
+      "text": "A written proposal with what's in scope, what isn't, the timeline and the price. No hourly meter running."
+    },
+    {
+      "title": "Pay as it progresses",
+      "text": "40% on approval, 40% when you review the working version, 20% on delivery."
+    },
+    {
+      "title": "Changes priced up front",
+      "text": "New ideas mid-project are welcome. Each one comes with its cost and time before any work starts."
+    }
   ],
   "faq": [
-    { "q": "Why \"from\" prices?", "a": "Because the problem sets the price, not the page count. The \"from\" price is what the simplest version of that kind of project costs. You get a fixed quote after we understand what you need, before you commit to anything." },
-    { "q": "Do prices include GST?", "a": "Prices are shown before GST. Where GST applies, it's added on the invoice and shown separately in your proposal." },
-    { "q": "What if my budget is lower?", "a": "Tell us. We'll usually suggest a smaller first version that solves the most painful part of the problem, and grow it later." },
-    { "q": "Is a care plan required?", "a": "No. It's optional and you can start or stop it at any time. If you'd rather host and maintain the system yourself, we hand over everything you need." },
-    { "q": "Who owns the code?", "a": "You do, once the project is paid for: source code, database and every asset." }
+    {
+      "q": "Why \"from\" prices?",
+      "a": "Because the problem sets the price, not the page count. The \"from\" price is what the simplest version of that kind of project costs. You get a fixed quote after we understand what you need, before you commit to anything."
+    },
+    {
+      "q": "Do prices include GST?",
+      "a": "Prices are shown before GST. Where GST applies, it's added on the invoice and shown separately in your proposal."
+    },
+    {
+      "q": "What if my budget is lower?",
+      "a": "Tell us. We'll usually suggest a smaller first version that solves the most painful part of the problem, and grow it later."
+    },
+    {
+      "q": "Is a care plan required?",
+      "a": "No. It's optional and you can start or stop it at any time. If you'd rather host and maintain the system yourself, we hand over everything you need."
+    },
+    {
+      "q": "Who owns the code?",
+      "a": "You do, once the project is paid for: source code, database and every asset."
+    }
+  ],
+  "careFaq": [
+    {
+      "q": "Can I cancel any time?",
+      "a": "Yes. Plans are month to month. If you stop, we hand over everything you need to host and maintain the system yourself."
+    },
+    {
+      "q": "Do unused hours roll over?",
+      "a": "No. Hours reset each month, which is what keeps the price low. If you know a bigger change is coming, we'll quote it as a small project instead."
+    },
+    {
+      "q": "Can I switch plans?",
+      "a": "Yes, up or down, from the next month."
+    },
+    {
+      "q": "Do I need a care plan if you didn't build the system?",
+      "a": "We only offer care plans for systems we've built or reviewed. For anything else, we look at it first and tell you honestly what shape it's in."
+    }
+  ],
+  "schedule": [
+    {
+      "percent": 40,
+      "when": "On approval",
+      "text": "When you approve the written proposal and we start."
+    },
+    {
+      "percent": 40,
+      "when": "Working version",
+      "text": "When you've reviewed a working version of the system."
+    },
+    {
+      "percent": 20,
+      "when": "Delivery",
+      "text": "When it's launched and handed over."
+    }
   ]
 }

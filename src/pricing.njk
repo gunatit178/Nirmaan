@@ -13,7 +13,7 @@ head:
   lede: "Starting prices for the kinds of systems we build, one fixed quote for yours, and payments that follow progress. No hourly meter, no surprise invoices."
   glyph: "00100/01110/00100/01110/00100"
   actions:
-    - { label: "Tell us your problem", href: "/contact.html", style: "primary" }
+    - { label: "Compare plans", href: "#plans", style: "primary" }
     - { label: "Estimate a budget", href: "#estimator" }
 cta:
   eyebrow: "Not sure which one fits?"
@@ -22,7 +22,7 @@ cta:
   primary: { label: "Tell us your problem", href: "/contact.html" }
   secondary: { label: "How we work", href: "/process.html" }
 ---
-<section class="section" aria-labelledby="build-title">
+<section class="section" id="plans" aria-labelledby="build-title">
   <div class="wrap">
     <div class="section__head section__head--split" data-reveal>
       <div>
@@ -37,18 +37,21 @@ cta:
       <li class="price-card{% if p.highlight %} price-card--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
         <div class="price-card__top">
           {% glyph p.glyph, "price-card__glyph" %}
-          <h3 class="price-card__name">{{ p.name }}</h3>
+          <h3 class="price-card__name"><a href="/pricing/{{ p.id }}.html" data-morph="plan-{{ p.id }}">{{ p.name }}</a></h3>
           <p class="price-card__for">{{ p.for }}</p>
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount">{{ p.from | inr }}</span>
+          <span class="price-card__amount" data-count="{{ p.from }}">{{ p.from | inr }}</span>
         </p>
         <p class="price-card__meta mono">{{ p.weeks }} weeks · {{ p.examples }}</p>
         <ul class="ticks" role="list">
           {%- for f in p.features %}<li>{{ f }}</li>{% endfor %}
         </ul>
-        <a class="btn{% if not p.highlight %} btn--ghost{% endif %} price-card__cta" href="/contact.html">Tell us your problem</a>
+        <div class="price-card__actions">
+          <a class="btn{% if not p.highlight %} btn--ghost{% endif %} price-card__cta" href="/pricing/{{ p.id }}.html">See what's in {{ p.name }}</a>
+          <a class="price-card__start" href="/contact.html?plan={{ p.id }}#enquiry">or start with {{ p.name }} <span aria-hidden="true">→</span></a>
+        </div>
       </li>
       {%- endfor %}
     </ul>
@@ -89,12 +92,13 @@ cta:
     <ul class="care-grid" role="list">
       {%- for c in pricing.care %}
       <li class="care-card{% if c.highlight %} care-card--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
-        <h3 class="care-card__name">{{ c.name }}</h3>
+        <h3 class="care-card__name"><a href="/pricing/care/{{ c.id }}.html" data-morph="care-{{ c.id }}">{{ c.name }}</a></h3>
         <p class="care-card__for">{{ c.for }}</p>
-        <p class="care-card__price"><span class="price-card__amount">{{ c.monthly | inr }}</span><span class="care-card__per">/ month</span></p>
+        <p class="care-card__price"><span class="price-card__amount" data-count="{{ c.monthly }}">{{ c.monthly | inr }}</span><span class="care-card__per">/ month</span></p>
         <ul class="ticks" role="list">
           {%- for f in c.features %}<li>{{ f }}</li>{% endfor %}
         </ul>
+        <a class="btn btn--ghost care-card__cta" href="/pricing/care/{{ c.id }}.html">What {{ c.name }} covers</a>
       </li>
       {%- endfor %}
     </ul>

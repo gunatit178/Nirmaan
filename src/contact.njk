@@ -28,6 +28,19 @@ head:
         <p class="form__intro">No spec needed. Describe what's going wrong in your own words and we'll work out what should be built. We reply within 24 hours.</p>
       </div>
 
+      {#- What the visitor clicked to get here (?plan=, ?care=, ?service=), shown
+          so they know we know, and sent with the enquiry as `interest`. -#}
+      <script type="application/json" data-interests>{{ pricing | interests(serviceList) | dump | safe }}</script>
+      <div class="interest" data-interest hidden>
+        <div class="interest__copy">
+          <span class="mono">You're asking about</span>
+          <a class="interest__name" href="/pricing.html" data-interest-link></a>
+          <span class="interest__detail" data-interest-detail></span>
+        </div>
+        <button class="interest__clear" type="button" data-interest-clear>Not sure yet</button>
+        <input type="hidden" name="interest" data-interest-input />
+      </div>
+
       <div class="hp-field" aria-hidden="true">
         <label for="gotcha">Leave this empty</label>
         <input type="text" id="gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />

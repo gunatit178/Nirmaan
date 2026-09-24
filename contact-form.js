@@ -150,6 +150,8 @@
       .then(function (res) {
         if (res.ok) {
           form.reset();
+          var sent = form.querySelector('[data-interest]');
+          if (sent) { sent.hidden = true; sent.querySelector('[data-interest-input]').value = ''; }
           show(steps.length - 1, false);
           ok.hidden = false;
           ok.focus();
@@ -166,17 +168,50 @@
       .then(function () { busy(false); });
   });
 
-  // Arriving from the pricing page's estimator: pre-select that ballpark.
-  try {
-    var estimate = new URLSearchParams(location.search).get('estimate');
-    var budget = form.querySelector('#budgetRange');
-    if (estimate && budget) {
-      var option = document.createElement('option');
-      option.value = option.textContent = estimate.slice(0, 200);
-      budget.appendChild(option);
-      budget.value = option.value;
+  /* ---- Where the visitor came from ----
+     ?plan=, ?care= or ?service= (a "Start with…" button elsewhere on the
+     site) shows what they're asking about and sends it as `interest`;
+     ?estimate= (the estimator, which also sends ?plan=) replaces the
+     plan's budget range with that exact ballpark. */
+  var params;
+  try { params = new URLSearchParams(location.search); } catch (e) { params = null; }
+  var budget = form.querySelector('#budgetRange');
+
+  function chooseBudget(text) {
+    if (!budget || !text || budget.value) return;
+    var match = Array.prototype.find.call(budget.options, function (o) { return o.text === text; });
+    if (!match) {
+      match = document.createElement('option');
+      match.textContent = text.slice(0, 200);
+      budget.appendChild(match);
     }
-  } catch (e) { /* no URLSearchParams: the field simply stays on "Not sure yet" */ }
+    match.selected = true;
+  }
+
+  var box = form.querySelector('[data-interest]');
+  var interests = {};
+  try { interests = JSON.parse(form.querySelector('[data-interests]').textContent); } catch (e) { /* no context available */ }
+  var kind = params && ['plan', 'care', 'service'].filter(function (k) { return params.get(k); })[0];
+  var chosen = kind && interests[kind] && interests[kind][params.get(kind)];
+  if (box && chosen) {
+    box.querySelector('[data-interest-link]').textContent = chosen.label;
+    box.querySelector('[data-interest-link]').href = chosen.href;
+    box.querySelector('[data-interest-detail]').textContent = chosen.detail;
+    box.querySelector('[data-interest-input]').value = chosen.label + ' (' + chosen.detail + ')';
+    box.hidden = false;
+    chooseBudget(chosen.budget);
+    box.querySelector('[data-interest-clear]').addEventListener('click', function () {
+      box.querySelector('[data-interest-input]').value = '';
+      box.hidden = true;
+      if (budget && budget.value === chosen.budget) budget.value = '';
+      var problem = form.querySelector('#problem');
+      if (problem) problem.focus();
+    });
+  }
+  if (params && params.get('estimate')) {
+    budget.value = '';
+    chooseBudget(params.get('estimate'));
+  }
 
   show(0, false);
 })();

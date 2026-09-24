@@ -63,6 +63,7 @@ export default async function LeadPage({ params }: PageProps<"/os/leads/[id]">) 
     ["Budget", lead.budgetRange],
     ["Timeline", lead.timeline],
     ["Urgency", lead.urgency],
+    ["Asked about", lead.interest],
   ];
   const openItems = lead.discovery.filter((d) => d.status === "OPEN").length;
 

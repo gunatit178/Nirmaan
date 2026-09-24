@@ -285,6 +285,9 @@ model Lead {
   budgetRange     String?
   timeline        String?
   urgency         String?
+  // What the visitor clicked before asking: a package, care plan or service
+  // from the public site (e.g. "Growth package (from ₹35,000 · 3–4 weeks)").
+  interest        String?
   contactName     String
   contactEmail    String
   contactPhone    String?

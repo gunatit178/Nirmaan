@@ -16,7 +16,7 @@
           <div class="choice-grid">
             {%- for t in pricing.packages %}
             <label class="choice">
-              <input type="radio" name="est-type" value="{{ t.from }}" data-weeks="{{ t.weeks | replace('–', '-') }}"{% if loop.first %} checked{% endif %} />
+              <input type="radio" name="est-type" value="{{ t.from }}" data-plan="{{ t.id }}" data-plan-name="{{ t.name }}" data-weeks="{{ t.weeks | replace('–', '-') }}"{% if loop.first %} checked{% endif %} />
               <span class="choice__box"><b>{{ t.estimator }}</b><span>{{ t.name }} · from {{ t.from | inr }}</span></span>
             </label>
             {%- endfor %}
@@ -58,6 +58,8 @@
         </div>
         <button class="btn btn--inverse" type="submit">Use this estimate {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</button>
         <p class="estimator__fine">Takes this ballpark into your enquiry. Final pricing depends on the problem, scope and integrations.</p>
+        {%- set firstPlan = pricing.packages | first %}
+        <a class="link-arrow link-arrow--inverse estimator__plan" href="/pricing/{{ firstPlan.id }}.html" data-est-plan>See what's in {{ firstPlan.name }} <span aria-hidden="true">→</span></a>
       </div>
     </form>
   </div>

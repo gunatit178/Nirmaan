@@ -1,5 +1,5 @@
 /*
-  estimator.js: the ballpark budget & timeline estimator on contact.html.
+  estimator.js: the ballpark budget & timeline estimator on pricing.html.
 
   All prices and durations live in the markup (data-* on each option), so
   changing an offer never means touching this file:
@@ -20,6 +20,7 @@
     price: form.querySelector('[data-est-price]'),
     weeks: form.querySelector('[data-est-weeks]'),
     bar: form.querySelector('[data-est-bar]'),
+    plan: form.querySelector('[data-est-plan]'),
   };
   var UPPER = 1.3;
   var rupees = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
@@ -70,6 +71,12 @@
     }
     out.bar.replaceChildren(frag);
     out.bar.setAttribute('aria-label', 'Timeline: ' + out.weeks.textContent);
+
+    // The package this estimate falls under, one click away.
+    if (out.plan) {
+      out.plan.href = '/pricing/' + e.type.getAttribute('data-plan') + '.html';
+      out.plan.firstChild.textContent = "See what's in " + e.type.getAttribute('data-plan-name') + ' ';
+    }
   }
 
   // "Use this estimate": carry the ballpark into the intake's budget field.
@@ -85,7 +92,8 @@
       (e.addons.length ? ', + ' + e.addons.map(label).join(', ').toLowerCase() : '') + ')';
 
     if (!enquiry) {
-      location.href = '/contact.html?estimate=' + encodeURIComponent(summary.slice(0, 200)) + '#enquiry';
+      location.href = '/contact.html?plan=' + encodeURIComponent(e.type.getAttribute('data-plan') || '') +
+        '&estimate=' + encodeURIComponent(summary.slice(0, 200)) + '#enquiry';
       return;
     }
     var budget = enquiry.querySelector('#budgetRange');

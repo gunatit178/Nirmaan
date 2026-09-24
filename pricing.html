@@ -46,7 +46,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preload" href="/assets/motion/build-landscape.svg" as="image" type="image/svg+xml" media="(orientation: landscape)" />
+  <link rel="preload" href="/assets/motion/build-portrait.svg" as="image" type="image/svg+xml" media="(orientation: portrait)" />
+  <script type="speculationrules">{"prefetch": [{"where": {"and": [{"href_matches": "/*"}, {"not": {"href_matches": "/*.xml"}}]}, "eagerness": "moderate"}]}</script>
   <script src="/page-transitions.js"></script>
   <script src="/site.js" defer></script>
   <script src="/estimator.js" defer></script>
@@ -123,7 +125,7 @@
       </h1>
       <p class="lede">Starting prices for the kinds of systems we build, one fixed quote for yours, and payments that follow progress. No hourly meter, no surprise invoices.</p>
       <div class="actions">
-        <a class="btn" href="/contact.html">Tell us your problem <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></a>
+        <a class="btn" href="#plans">Compare plans <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></a>
         <a class="link-arrow" href="#estimator">Estimate a budget <span aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -133,7 +135,7 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="build-title">
+<section class="section" id="plans" aria-labelledby="build-title">
   <div class="wrap">
     <div class="section__head section__head--split" data-reveal>
       <div>
@@ -147,62 +149,74 @@
       <li class="price-card" data-reveal style="--d: 0">
         <div class="price-card__top">
           <svg class="glyph price-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/></svg>
-          <h3 class="price-card__name">Starter</h3>
+          <h3 class="price-card__name"><a href="/pricing/starter.html" data-morph="plan-starter">Starter</a></h3>
           <p class="price-card__for">A professional presence that brings in enquiries.</p>
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount">₹15,000</span>
+          <span class="price-card__amount" data-count="15000">₹15,000</span>
         </p>
         <p class="price-card__meta mono">1–2 weeks · Clinics, consultants, service businesses</p>
         <ul class="ticks" role="list"><li>Custom-designed website, up to 6 pages</li><li>Mobile-first and fast</li><li>Enquiry forms, WhatsApp and maps</li><li>Search-ready structure and metadata</li><li>Launch, domain and SSL setup</li>
         </ul>
-        <a class="btn btn--ghost price-card__cta" href="/contact.html">Tell us your problem</a>
+        <div class="price-card__actions">
+          <a class="btn btn--ghost price-card__cta" href="/pricing/starter.html">See what's in Starter</a>
+          <a class="price-card__start" href="/contact.html?plan=starter#enquiry">or start with Starter <span aria-hidden="true">→</span></a>
+        </div>
       </li>
       <li class="price-card" data-reveal style="--d: 1">
         <div class="price-card__top">
           <svg class="glyph price-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/></svg>
-          <h3 class="price-card__name">Growth</h3>
+          <h3 class="price-card__name"><a href="/pricing/growth.html" data-morph="plan-growth">Growth</a></h3>
           <p class="price-card__for">Sell online or manage more than a brochure.</p>
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount">₹35,000</span>
+          <span class="price-card__amount" data-count="35000">₹35,000</span>
         </p>
         <p class="price-card__meta mono">3–4 weeks · Shops, restaurants, schools, D2C brands</p>
         <ul class="ticks" role="list"><li>Everything in Starter</li><li>Online store or booking flow</li><li>Payments and order management</li><li>Content you can edit yourself</li><li>Performance tuning</li>
         </ul>
-        <a class="btn btn--ghost price-card__cta" href="/contact.html">Tell us your problem</a>
+        <div class="price-card__actions">
+          <a class="btn btn--ghost price-card__cta" href="/pricing/growth.html">See what's in Growth</a>
+          <a class="price-card__start" href="/contact.html?plan=growth#enquiry">or start with Growth <span aria-hidden="true">→</span></a>
+        </div>
       </li>
       <li class="price-card price-card--featured" data-reveal style="--d: 2">
         <div class="price-card__top">
           <svg class="glyph price-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/><rect x="0" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="2" width="1" height="1" style="--i:11"/><rect x="2" y="2" width="1" height="1" style="--i:12"/><rect x="3" y="2" width="1" height="1" style="--i:13"/><rect x="4" y="2" width="1" height="1" style="--i:14"/></svg>
-          <h3 class="price-card__name">System</h3>
+          <h3 class="price-card__name"><a href="/pricing/system.html" data-morph="plan-system">System</a></h3>
           <p class="price-card__for">Replace the spreadsheet-and-WhatsApp workflow.</p>
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount">₹60,000</span>
+          <span class="price-card__amount" data-count="60000">₹60,000</span>
         </p>
         <p class="price-card__meta mono">4–6 weeks · Order tracking, internal tools, client portals</p>
         <ul class="ticks" role="list"><li>Web application built around your process</li><li>Accounts, roles and permissions</li><li>Your data in a real database</li><li>Dashboards and exports</li><li>Automations and reminders</li>
         </ul>
-        <a class="btn price-card__cta" href="/contact.html">Tell us your problem</a>
+        <div class="price-card__actions">
+          <a class="btn price-card__cta" href="/pricing/system.html">See what's in System</a>
+          <a class="price-card__start" href="/contact.html?plan=system#enquiry">or start with System <span aria-hidden="true">→</span></a>
+        </div>
       </li>
       <li class="price-card" data-reveal style="--d: 3">
         <div class="price-card__top">
           <svg class="glyph price-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/><rect x="0" y="3" width="1" height="1" style="--i:5"/><rect x="1" y="3" width="1" height="1" style="--i:6"/><rect x="2" y="3" width="1" height="1" style="--i:7"/><rect x="3" y="3" width="1" height="1" style="--i:8"/><rect x="4" y="3" width="1" height="1" style="--i:9"/><rect x="0" y="2" width="1" height="1" style="--i:10"/><rect x="1" y="2" width="1" height="1" style="--i:11"/><rect x="2" y="2" width="1" height="1" style="--i:12"/><rect x="3" y="2" width="1" height="1" style="--i:13"/><rect x="4" y="2" width="1" height="1" style="--i:14"/><rect x="0" y="1" width="1" height="1" style="--i:15"/><rect x="1" y="1" width="1" height="1" style="--i:16"/><rect x="2" y="1" width="1" height="1" style="--i:17"/><rect x="3" y="1" width="1" height="1" style="--i:18"/><rect x="4" y="1" width="1" height="1" style="--i:19"/><rect x="0" y="0" width="1" height="1" style="--i:20"/><rect x="1" y="0" width="1" height="1" style="--i:21"/><rect x="2" y="0" width="1" height="1" style="--i:22"/><rect x="3" y="0" width="1" height="1" style="--i:23"/><rect x="4" y="0" width="1" height="1" style="--i:24"/></svg>
-          <h3 class="price-card__name">Platform</h3>
+          <h3 class="price-card__name"><a href="/pricing/platform.html" data-morph="plan-platform">Platform</a></h3>
           <p class="price-card__for">The engine behind a business: many users, many parts.</p>
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount">₹80,000</span>
+          <span class="price-card__amount" data-count="80000">₹80,000</span>
         </p>
         <p class="price-card__meta mono">6–8 weeks · SaaS products, marketplaces, AI-assisted operations</p>
         <ul class="ticks" role="list"><li>Frontend, backend and database, end to end</li><li>APIs and third-party integrations</li><li>AI features where they genuinely help</li><li>Admin panel and reporting</li><li>Security review before launch</li>
         </ul>
-        <a class="btn btn--ghost price-card__cta" href="/contact.html">Tell us your problem</a>
+        <div class="price-card__actions">
+          <a class="btn btn--ghost price-card__cta" href="/pricing/platform.html">See what's in Platform</a>
+          <a class="price-card__start" href="/contact.html?plan=platform#enquiry">or start with Platform <span aria-hidden="true">→</span></a>
+        </div>
       </li>
     </ul>
     <p class="price-note">Prices in INR, before GST where applicable. Every project gets a fixed quote after a free discovery conversation.</p>
@@ -254,25 +268,28 @@
     </div>
     <ul class="care-grid" role="list">
       <li class="care-card" data-reveal style="--d: 0">
-        <h3 class="care-card__name">Essential</h3>
+        <h3 class="care-card__name"><a href="/pricing/care/essential.html" data-morph="care-essential">Essential</a></h3>
         <p class="care-card__for">Keep it online, safe and backed up.</p>
-        <p class="care-card__price"><span class="price-card__amount">₹2,500</span><span class="care-card__per">/ month</span></p>
+        <p class="care-card__price"><span class="price-card__amount" data-count="2500">₹2,500</span><span class="care-card__per">/ month</span></p>
         <ul class="ticks" role="list"><li>Managed hosting</li><li>Daily backups with tested restores</li><li>Security and dependency updates</li><li>Uptime monitoring and alerts</li><li>Response within 2 business days</li>
         </ul>
+        <a class="btn btn--ghost care-card__cta" href="/pricing/care/essential.html">What Essential covers</a>
       </li>
       <li class="care-card care-card--featured" data-reveal style="--d: 1">
-        <h3 class="care-card__name">Growth</h3>
+        <h3 class="care-card__name"><a href="/pricing/care/growth.html" data-morph="care-growth">Growth</a></h3>
         <p class="care-card__for">Keep improving it every month.</p>
-        <p class="care-card__price"><span class="price-card__amount">₹6,000</span><span class="care-card__per">/ month</span></p>
+        <p class="care-card__price"><span class="price-card__amount" data-count="6000">₹6,000</span><span class="care-card__per">/ month</span></p>
         <ul class="ticks" role="list"><li>Everything in Essential</li><li>4 hours of changes each month</li><li>Monthly performance and usage report</li><li>Search and speed tuning</li><li>Response within 1 business day</li>
         </ul>
+        <a class="btn btn--ghost care-card__cta" href="/pricing/care/growth.html">What Growth covers</a>
       </li>
       <li class="care-card" data-reveal style="--d: 2">
-        <h3 class="care-card__name">Priority</h3>
+        <h3 class="care-card__name"><a href="/pricing/care/priority.html" data-morph="care-priority">Priority</a></h3>
         <p class="care-card__for">For systems the business runs on.</p>
-        <p class="care-card__price"><span class="price-card__amount">₹15,000</span><span class="care-card__per">/ month</span></p>
+        <p class="care-card__price"><span class="price-card__amount" data-count="15000">₹15,000</span><span class="care-card__per">/ month</span></p>
         <ul class="ticks" role="list"><li>Everything in Growth</li><li>12 hours of changes each month</li><li>Same-business-day response</li><li>AI and API usage monitoring</li><li>Quarterly roadmap session</li>
         </ul>
+        <a class="btn btn--ghost care-card__cta" href="/pricing/care/priority.html">What Priority covers</a>
       </li>
     </ul>
   </div>
@@ -294,19 +311,19 @@
           <legend>Project type</legend>
           <div class="choice-grid">
             <label class="choice">
-              <input type="radio" name="est-type" value="15000" data-weeks="1-2" checked />
+              <input type="radio" name="est-type" value="15000" data-plan="starter" data-plan-name="Starter" data-weeks="1-2" checked />
               <span class="choice__box"><b>Business website</b><span>Starter · from ₹15,000</span></span>
             </label>
             <label class="choice">
-              <input type="radio" name="est-type" value="35000" data-weeks="3-4" />
+              <input type="radio" name="est-type" value="35000" data-plan="growth" data-plan-name="Growth" data-weeks="3-4" />
               <span class="choice__box"><b>E-commerce store</b><span>Growth · from ₹35,000</span></span>
             </label>
             <label class="choice">
-              <input type="radio" name="est-type" value="60000" data-weeks="4-6" />
+              <input type="radio" name="est-type" value="60000" data-plan="system" data-plan-name="System" data-weeks="4-6" />
               <span class="choice__box"><b>Web application</b><span>System · from ₹60,000</span></span>
             </label>
             <label class="choice">
-              <input type="radio" name="est-type" value="80000" data-weeks="6-8" />
+              <input type="radio" name="est-type" value="80000" data-plan="platform" data-plan-name="Platform" data-weeks="6-8" />
               <span class="choice__box"><b>Full-stack system</b><span>Platform · from ₹80,000</span></span>
             </label>
           </div>
@@ -359,6 +376,7 @@
         </div>
         <button class="btn btn--inverse" type="submit">Use this estimate <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></button>
         <p class="estimator__fine">Takes this ballpark into your enquiry. Final pricing depends on the problem, scope and integrations.</p>
+        <a class="link-arrow link-arrow--inverse estimator__plan" href="/pricing/starter.html" data-est-plan>See what's in Starter <span aria-hidden="true">→</span></a>
       </div>
     </form>
   </div>
@@ -431,14 +449,14 @@
       <nav class="footer__col" aria-label="Services">
         <p class="footer__heading mono">Services</p>
         <ul role="list">
-          <li><a href="/services.html#custom-websites">Websites</a></li>
-          <li><a href="/services.html#web-applications">Web Applications</a></li>
-          <li><a href="/services.html#internal-tools">Internal Tools</a></li>
-          <li><a href="/services.html#automation">Workflow Automation</a></li>
-          <li><a href="/services.html#ai-systems">AI Systems</a></li>
-          <li><a href="/services.html#mobile-apps">Mobile Apps</a></li>
-          <li><a href="/services.html#integrations">Integrations</a></li>
-          <li><a href="/services.html#dashboards">Dashboards &amp; Data</a></li>
+          <li><a href="/services/custom-websites.html">Websites</a></li>
+          <li><a href="/services/web-applications.html">Web Applications</a></li>
+          <li><a href="/services/internal-tools.html">Internal Tools</a></li>
+          <li><a href="/services/automation.html">Workflow Automation</a></li>
+          <li><a href="/services/ai-systems.html">AI Systems</a></li>
+          <li><a href="/services/mobile-apps.html">Mobile Apps</a></li>
+          <li><a href="/services/integrations.html">Integrations</a></li>
+          <li><a href="/services/dashboards.html">Dashboards &amp; Data</a></li>
         </ul>
       </nav>
 

@@ -1,0 +1,22 @@
+{#- Every package side by side, linking to each plan page. `current` marks the
+    one being viewed (or none, on the pricing page). -#}
+<section class="section section--tight plan-switch" aria-labelledby="switch-title">
+  <div class="wrap">
+    <div class="plan-switch__head" data-reveal>
+      <h2 class="mono" id="switch-title">{{ "Other plans" if current else "Every plan" }}</h2>
+      <a class="link-arrow" href="/pricing.html#estimator">Estimate a budget <span aria-hidden="true">→</span></a>
+    </div>
+    <ul class="plan-switch__list" role="list">
+      {%- for q in pricing.packages %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <a class="plan-switch__item" href="/pricing/{{ q.id }}.html"{% if q.id == current %} aria-current="page"{% endif %}>
+          {% glyph q.glyph, "plan-switch__glyph" %}
+          <b{% if q.id != current %} data-morph="plan-{{ q.id }}"{% endif %}>{{ q.name }}</b>
+          <span class="plan-switch__price">from {{ q.from | inr }} · {{ q.weeks }} wk</span>
+          <span class="plan-switch__here mono">{{ "You're here" if q.id == current else "View →" }}</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>

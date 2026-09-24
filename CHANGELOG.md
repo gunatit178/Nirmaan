@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-09-25: Website: page flow and a page for every plan and service
+
+- Page transitions rebuilt: the next page is laid over the old one block by
+  block (a stepped mask, portrait and landscape), the old page steps back the
+  way you're travelling, and a clicked card's title flies into the next
+  page's heading. Browsers without view transitions get the same block build
+  from a small overlay. Links are prefetched on intent.
+- Scroll motion on every screen size: headings uncover from the baseline,
+  section rules draw across, prices count up, payment bars fill, cards get a
+  pointer spotlight, and the homepage tower builds on phones too.
+- New pages: /pricing/<plan>.html (4), /pricing/care/<plan>.html (3) and
+  /services/<service>.html (17), each with fit, what's included and not,
+  timeline, payments at the starting price, related plans or services, FAQ.
+  Every card and "see more" link now opens its own page.
+- Contact form knows where you came from (?plan=, ?care=, ?service=), shows
+  it, pre-selects a budget range and sends it as `interest` (new
+  `Lead.interest` column in the OS, shown on the lead page).
+
 ## 2026-09-24: Nirmaan OS, Phase 5 (Productization signals)
 
 - `/os/patterns`: won projects grouped by kind of work, scored against the
