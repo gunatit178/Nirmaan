@@ -38,13 +38,20 @@ draws the logo, and each service in `services.json` has its own pattern. All col
 are CSS custom properties at the top of `styles.css`, each defined once for light
 and again for dark.
 
+## Fonts
+
+Archivo, Hanken Grotesk and JetBrains Mono come from Google Fonts. The Gujarati
+name (નિર્માણ / નિર્માન) is set in **Khastakshar** by Bhaumik Suthar, self-hosted
+at `assets/fonts/khastakshar.woff2` under CC BY-ND 4.0: keep it unmodified (no
+subsetting) and keep the footer credit. See `assets/fonts/README.md`.
+
 ## Scripts
 
 | File | Purpose |
 | --- | --- |
 | `contact-form.js` | Contact page. The three-step, problem-first intake: problem → optional context → timing and contact. Arriving from a plan, care plan or service (`?plan=`, `?care=`, `?service=`) shows what they're asking about and sends it as `interest`. Posts JSON to the Nirmaan OS intake API (`intakeEndpoint` in `site.json`). Until that's set, it honestly says the form isn't connected and shows the email address. |
 | `site.js` | Every page. Nav state and reading-progress bar, theme toggle (system / light / dark, remembered), mobile menu, scroll reveal, drawn section rules, price count-ups, the card spotlight, and the scroll scenes (the layer stack and services rail that pin on wide screens, the process timeline, the step index). |
-| `hero.js` | Homepage only. The pixel N assembling on the construction grid. |
+| `hero.js` | Homepage only. The pixel N assembling on the construction grid, left of the headline. |
 | `estimator.js` | Pricing page. The budget and timeline estimator. Prices and durations are `data-*` attributes written from `pricing.json`. |
 | `page-transitions.js` | Every page. Pages are built block by block: a stepped mask (`assets/motion/`, from `npm run masks`) with direction from the menu order, plus the title morph from a card into its page's heading. Browsers without view transitions get the same block build from an overlay. |
 
