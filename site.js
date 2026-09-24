@@ -256,17 +256,23 @@
     viewport.addEventListener('scroll', function () { schedule(); }, { passive: true });
   });
 
-  /* Timeline line: fills as the list crosses the middle of the screen */
+  /* Timeline line: fills as the list crosses the middle of the screen, and
+     marks each step .is-reached once the line gets to it. */
   $$('[data-scene="line"]').forEach(function (el) {
+    var steps = $$('ol > li', el);
+    function reach(p) {
+      steps.forEach(function (li, i) { li.classList.toggle('is-reached', p >= (i + 0.35) / steps.length); });
+    }
     scenes.push({
       el: el,
       layout: function () {},
       update: function () {
-        if (reduceMotion.matches) { el.style.setProperty('--progress-line', '1'); return; }
+        if (reduceMotion.matches) { el.style.setProperty('--progress-line', '1'); reach(1); return; }
         var r = el.getBoundingClientRect();
         var vh = window.innerHeight;
         var p = clamp01((vh * 0.8 - r.top) / (r.height + vh * 0.35));
         el.style.setProperty('--progress-line', p.toFixed(4));
+        reach(p);
       },
     });
   });

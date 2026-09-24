@@ -114,11 +114,19 @@
   <div class="hero__grid-fallback" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
+    <div class="hero__side">
+      <div class="hero__slot" data-hero-slot>
+        <svg class="logo hero__mark-fallback" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path d="M0 0h1v5H0zM4 0h1v5H4zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3z"/></svg>
+      </div>
+    </div>
+
     <div class="hero__copy">
-      <p class="eyebrow">
-        <span>Software studio</span>
-        <span class="eyebrow__sep" aria-hidden="true">·</span>
-        <span><span lang="hi">निर्माण</span> <span class="visually-hidden">(nirmaan)</span>means “to build”</span>
+      <p class="hero__meaning">
+        <span class="hero__meaning-item">Software studio</span>
+        <span class="hero__meaning-sep" aria-hidden="true"></span>
+        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માણ</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">to build</span></span>
+        <span class="hero__meaning-sep" aria-hidden="true"></span>
+        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માન</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">without ego</span></span>
       </p>
       <h1 class="hero__title display" id="hero-title">
         <span class="line"><span>You bring</span></span>
@@ -126,27 +134,11 @@
         <span class="line"><span class="accent">We build</span></span>
         <span class="line"><span class="accent">the system.</span></span>
       </h1>
-      <p class="lede hero__lede">From websites and apps to automation, AI systems and custom business software, Nirmaan turns <strong>real-world problems into reliable software</strong>.</p>
+      <p class="lede hero__lede">Websites, apps, automation, AI and custom business software, turning <strong>real-world problems into reliable systems</strong>.</p>
       <div class="actions">
         <a class="btn" href="/contact.html">Tell us your problem <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></a>
-        <a class="link-arrow" href="#services">See what we build <span aria-hidden="true">↓</span></a>
+        <a class="link-arrow" href="#process">How it works <span aria-hidden="true">↓</span></a>
       </div>
-    </div>
-
-    <div class="hero__side">
-      <div class="hero__slot" data-hero-slot>
-        <svg class="logo hero__mark-fallback" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path d="M0 0h1v5H0zM4 0h1v5H4zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3z"/></svg>
-      </div>
-      <figure class="buildlog" aria-label="How a problem becomes a system at Nirmaan">
-        <div class="buildlog__bar"><span>problem → system</span><span>nirmaan</span></div>
-        <div class="buildlog__row buildlog__cmd">"We keep losing orders in WhatsApp."</div>
-        <div class="buildlog__row"><b>✓</b> problem<span class="fill" aria-hidden="true"></span>understood</div>
-        <div class="buildlog__row"><b>✓</b> requirements<span class="fill" aria-hidden="true"></span>confirmed</div>
-        <div class="buildlog__row"><b>✓</b> system<span class="fill" aria-hidden="true"></span>designed</div>
-        <div class="buildlog__row"><b>✓</b> build<span class="fill" aria-hidden="true"></span>tested</div>
-        <div class="buildlog__row"><b>✓</b> launch<span class="fill" aria-hidden="true"></span>monitored</div>
-        <div class="buildlog__row">→ you approve every key step <span class="buildlog__caret" aria-hidden="true"></span></div>
-      </figure>
     </div>
   </div>
   <div class="ticker" aria-label="What we build">
@@ -399,17 +391,51 @@
       </div>
       <p class="section__text">You approve the plan and the design before we build, and you always know where things stand. <a href="/process.html">See every deliverable</a>.</p>
     </div>
+    <figure class="journey__from" data-reveal>
+      <figcaption class="mono">It starts in your words</figcaption>
+      <blockquote class="journey__quote display">“We keep losing orders in&nbsp;WhatsApp.”</blockquote>
+    </figure>
 
-    <div class="timeline" data-scene="line">
+    <div class="timeline timeline--journey" data-scene="line">
       <span class="timeline__bar" aria-hidden="true"></span>
       <ol class="timeline__list" role="list">
-        <li><span class="mono">Step 1</span><h3>Discover</h3><p>Your business, audience, goals and technical scope.</p></li>
-        <li><span class="mono">Step 2</span><h3>Plan</h3><p>Architecture, feature specs and stack, approved by you.</p></li>
-        <li><span class="mono">Step 3</span><h3>Design</h3><p>Layouts and flows built for clarity and conversion.</p></li>
-        <li><span class="mono">Step 4</span><h3>Build</h3><p>Frontend, backend, APIs and database, properly tested.</p></li>
-        <li><span class="mono">Step 5</span><h3>Launch</h3><p>Deploy, monitor, and keep improving after go-live.</p></li>
+        <li>
+          <span class="mono">Step 1</span>
+          <h3>Discover</h3>
+          <p>Your business, the people affected, and what solved looks like.</p>
+          <span class="stamp"><span aria-hidden="true">✓</span> problem understood</span>
+        </li>
+        <li>
+          <span class="mono">Step 2</span>
+          <h3>Plan</h3>
+          <p>Scope, architecture and one fixed price.</p>
+          <span class="stamp stamp--approve"><span aria-hidden="true">✓</span> requirements confirmed</span>
+        </li>
+        <li>
+          <span class="mono">Step 3</span>
+          <h3>Design</h3>
+          <p>Screens and flows you can click through.</p>
+          <span class="stamp stamp--approve"><span aria-hidden="true">✓</span> system designed</span>
+        </li>
+        <li>
+          <span class="mono">Step 4</span>
+          <h3>Build</h3>
+          <p>Frontend, backend, APIs and database, properly tested.</p>
+          <span class="stamp"><span aria-hidden="true">✓</span> built and tested</span>
+        </li>
+        <li>
+          <span class="mono">Step 5</span>
+          <h3>Launch</h3>
+          <p>Deployed, monitored and improved after go-live.</p>
+          <span class="stamp stamp--approve"><span aria-hidden="true">✓</span> live and monitored</span>
+        </li>
       </ol>
     </div>
+
+    <p class="journey__to" data-reveal>
+      <span class="mono">It ends with</span>
+      <span>A system your team runs on. <b>You approve every key step</b>, so nothing is built that you didn't agree to.</span>
+    </p>
   </div>
 </section>
 <section class="section" id="packages" aria-labelledby="packages-title">
@@ -542,9 +568,10 @@
 
     <div class="footer__base mono">
       <span>© 2026 Nirmaan</span>
-      <span>Built block by block</span>
+      <span>Built block by block · <span class="gu gu--inline" lang="gu">નિર્માણ</span></span>
       <a href="#top" class="footer__top" data-to-top>Back to top <span aria-hidden="true">↑</span></a>
     </div>
+    <p class="footer__credit">Gujarati lettering: <a href="https://creativecommons.org/licenses/by-nd/4.0/" rel="license noopener noreferrer" target="_blank">Khastakshar by Bhaumik Suthar, CC BY-ND 4.0<span class="visually-hidden"> (opens in a new tab)</span></a></p>
   </div>
 </footer>
 

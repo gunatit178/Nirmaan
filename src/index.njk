@@ -25,6 +25,12 @@ principles:
   - { glyph: "00001/00011/01011/11011/11111", title: "Measured by business results", text: "We optimise for enquiries, conversions, speed and security, not for how the portfolio shot looks." }
   - { glyph: "11011/11011/00000/11011/11011", title: "Clean, handover-ready code", text: "Modular, documented code you own outright, simple for us or anyone else to extend later." }
   - { glyph: "01110/10001/10101/10001/01110", title: "Here after launch", text: "Maintenance, improvements and new features as you grow. We don't disappear at go-live." }
+journey:
+  - { title: "Discover", text: "Your business, the people affected, and what solved looks like.", stamp: "problem understood" }
+  - { title: "Plan", text: "Scope, architecture and one fixed price.", stamp: "requirements confirmed", approve: true }
+  - { title: "Design", text: "Screens and flows you can click through.", stamp: "system designed", approve: true }
+  - { title: "Build", text: "Frontend, backend, APIs and database, properly tested.", stamp: "built and tested" }
+  - { title: "Launch", text: "Deployed, monitored and improved after go-live.", stamp: "live and monitored", approve: true }
 tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Python", "REST APIs", "PostgreSQL", "MySQL", "Git", "Cloud hosting"]
 ---
 {#- ============================================================
@@ -35,11 +41,21 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
   <div class="hero__grid-fallback" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
+    <div class="hero__side">
+      <div class="hero__slot" data-hero-slot>
+        {% logo "hero__mark-fallback" %}
+      </div>
+    </div>
+
     <div class="hero__copy">
-      <p class="eyebrow">
-        <span>Software studio</span>
-        <span class="eyebrow__sep" aria-hidden="true">·</span>
-        <span><span lang="hi">निर्माण</span> <span class="visually-hidden">(nirmaan)</span>means “to build”</span>
+      {#- The studio's name, twice: નિર્માણ (nirmaan) is "to build", and
+          નિર્માન (nir-maan) is "without ego". Set in Khastakshar. #}
+      <p class="hero__meaning">
+        <span class="hero__meaning-item">Software studio</span>
+        <span class="hero__meaning-sep" aria-hidden="true"></span>
+        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માણ</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">to build</span></span>
+        <span class="hero__meaning-sep" aria-hidden="true"></span>
+        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માન</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">without ego</span></span>
       </p>
       <h1 class="hero__title display" id="hero-title">
         <span class="line"><span>You bring</span></span>
@@ -47,27 +63,11 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         <span class="line"><span class="accent">We build</span></span>
         <span class="line"><span class="accent">the system.</span></span>
       </h1>
-      <p class="lede hero__lede">From websites and apps to automation, AI systems and custom business software, Nirmaan turns <strong>real-world problems into reliable software</strong>.</p>
+      <p class="lede hero__lede">Websites, apps, automation, AI and custom business software, turning <strong>real-world problems into reliable systems</strong>.</p>
       <div class="actions">
         <a class="btn" href="/contact.html">Tell us your problem {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</a>
-        <a class="link-arrow" href="#services">See what we build <span aria-hidden="true">↓</span></a>
+        <a class="link-arrow" href="#process">How it works <span aria-hidden="true">↓</span></a>
       </div>
-    </div>
-
-    <div class="hero__side">
-      <div class="hero__slot" data-hero-slot>
-        {% logo "hero__mark-fallback" %}
-      </div>
-      <figure class="buildlog" aria-label="How a problem becomes a system at Nirmaan">
-        <div class="buildlog__bar"><span>problem → system</span><span>nirmaan</span></div>
-        <div class="buildlog__row buildlog__cmd">"We keep losing orders in WhatsApp."</div>
-        <div class="buildlog__row"><b>✓</b> problem<span class="fill" aria-hidden="true"></span>understood</div>
-        <div class="buildlog__row"><b>✓</b> requirements<span class="fill" aria-hidden="true"></span>confirmed</div>
-        <div class="buildlog__row"><b>✓</b> system<span class="fill" aria-hidden="true"></span>designed</div>
-        <div class="buildlog__row"><b>✓</b> build<span class="fill" aria-hidden="true"></span>tested</div>
-        <div class="buildlog__row"><b>✓</b> launch<span class="fill" aria-hidden="true"></span>monitored</div>
-        <div class="buildlog__row">→ you approve every key step <span class="buildlog__caret" aria-hidden="true"></span></div>
-      </figure>
     </div>
   </div>
 
@@ -231,16 +231,31 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
       <p class="section__text">You approve the plan and the design before we build, and you always know where things stand. <a href="/process.html">See every deliverable</a>.</p>
     </div>
 
-    <div class="timeline" data-scene="line">
+    {#- Problem → system, with the customer's own words as the starting point.
+        Each step stamps its outcome as the line reaches it (site.js). #}
+    <figure class="journey__from" data-reveal>
+      <figcaption class="mono">It starts in your words</figcaption>
+      <blockquote class="journey__quote display">“We keep losing orders in&nbsp;WhatsApp.”</blockquote>
+    </figure>
+
+    <div class="timeline timeline--journey" data-scene="line">
       <span class="timeline__bar" aria-hidden="true"></span>
       <ol class="timeline__list" role="list">
-        <li><span class="mono">Step 1</span><h3>Discover</h3><p>Your business, audience, goals and technical scope.</p></li>
-        <li><span class="mono">Step 2</span><h3>Plan</h3><p>Architecture, feature specs and stack, approved by you.</p></li>
-        <li><span class="mono">Step 3</span><h3>Design</h3><p>Layouts and flows built for clarity and conversion.</p></li>
-        <li><span class="mono">Step 4</span><h3>Build</h3><p>Frontend, backend, APIs and database, properly tested.</p></li>
-        <li><span class="mono">Step 5</span><h3>Launch</h3><p>Deploy, monitor, and keep improving after go-live.</p></li>
+        {%- for st in journey %}
+        <li>
+          <span class="mono">Step {{ loop.index }}</span>
+          <h3>{{ st.title }}</h3>
+          <p>{{ st.text }}</p>
+          <span class="stamp{% if st.approve %} stamp--approve{% endif %}"><span aria-hidden="true">✓</span> {{ st.stamp }}</span>
+        </li>
+        {%- endfor %}
       </ol>
     </div>
+
+    <p class="journey__to" data-reveal>
+      <span class="mono">It ends with</span>
+      <span>A system your team runs on. <b>You approve every key step</b>, so nothing is built that you didn't agree to.</span>
+    </p>
   </div>
 </section>
 
