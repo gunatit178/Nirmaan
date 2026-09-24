@@ -13,16 +13,6 @@
 */
 @layer reset, base, layout, components, pages, motion;
 
-/* Khastakshar by Bhaumik Suthar (CC BY-ND 4.0), unmodified; see assets/fonts/README.md.
-   Gujarati only: pages without Gujarati text never download it. */
-@font-face {
-  font-family: "Khastakshar";
-  src: url("/assets/fonts/khastakshar.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0A80-0AFF, U+200C-200D, U+25CC;
-}
 
 /* ----------------------------------------------------------------
    TOKENS
@@ -48,7 +38,6 @@
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body:    "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
   --mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --gujarati: "Khastakshar", "Noto Sans Gujarati", "Gujarati Sangam MN", "Shruti", sans-serif;
 
   /* Type scale — fluid between 360px and 1440px viewports */
   --fs-hero:  clamp(3rem, 1.6rem + 6.2vw, 8.25rem);
@@ -484,9 +473,6 @@
     margin-top: var(--s6); padding-top: var(--s3); border-top: 1px solid var(--line);
   }
   .footer__top { text-decoration: none; }
-  .footer__credit { margin-top: var(--s2); font-size: 0.75rem; color: var(--ink-3); }
-  .footer__credit a { color: inherit; }
-  .footer__credit a:hover { color: var(--ink); }
   .footer__top:hover { color: var(--ink); }
   @media (max-width: 60rem) {
     .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -532,8 +518,8 @@
   .js .hero__grid-fallback { display: none; }
   .hero__inner {
     position: relative;
-    display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    align-items: center; gap: var(--s5) clamp(2rem, 6vw, 7rem);
+    display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center; gap: var(--s5) clamp(2rem, 5vw, 5rem);
     padding-block: clamp(3.5rem, 2rem + 6vw, 8rem) clamp(3.5rem, 2rem + 5vw, 7rem);
     pointer-events: none;
   }
@@ -541,44 +527,40 @@
   .hero__copy { display: grid; gap: var(--s4); justify-items: start; container-type: inline-size; }
   /* Sized to its column so each line always fits on one line: the longest
      ("the problem.") is ~6.2em wide in Archivo 800 at 112% width. */
-  .hero__title { font-size: min(var(--fs-hero), 15.5cqi); }
+  /* The mark leads; the headline supports it. */
+  .hero__title { font-size: min(clamp(2.4rem, 1.2rem + 3.4vw, 5rem), 15.5cqi); }
   .hero__title .line { white-space: nowrap; }
   .hero__title .accent { color: var(--blue); }
   .hero__lede { max-width: 38ch; }
   .hero__lede strong { color: var(--ink); font-weight: 600; }
 
-  /* The name, twice: નિર્માણ "to build", નિર્માન "without ego" */
+  /* The name's two meanings: निर्माण "to build", निर्मान "without ego" */
   .hero__meaning {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.1rem;
+    display: grid; gap: 0.55rem; justify-items: start;
     font-family: var(--mono); font-size: clamp(0.8125rem, 0.75rem + 0.25vw, 0.9375rem);
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2);
   }
-  .hero__meaning-item { display: inline-flex; align-items: baseline; gap: 0.6rem; white-space: nowrap; }
+  .hero__meaning-pair { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
+  .hero__meaning-item { white-space: nowrap; }
+  .hero__meaning-item [lang="hi"] { letter-spacing: 0; text-transform: none; color: var(--ink); }
   .hero__meaning-sep { width: 0.45rem; height: 0.45rem; background: var(--blue); flex: none; }
-  .hero__meaning-gloss { color: var(--ink-3); }
-  .gu {
-    font-family: var(--gujarati); font-weight: 400; letter-spacing: 0; text-transform: none;
-    font-size: 1.9em; line-height: 1; color: var(--ink);
+  /* Where the two meanings can't share a line, they stack; a separator never dangles. */
+  @media (max-width: 80rem) {
+    .hero__meaning-pair { flex-direction: column; align-items: start; gap: 0.4rem; }
+    .hero__meaning-sep { display: none; }
   }
-  /* Same face, inline in running text (the footer). Here, not in components, so it wins over .gu. */
-  .gu--inline { font-size: 1.5em; vertical-align: -0.1em; color: inherit; }
 
   .hero__side { min-width: 0; align-self: stretch; display: grid; }
   /* The canvas draws the pixel N inside this box; CSS owns the layout. */
-  .hero__slot { min-height: clamp(12rem, 30vw, 26rem); --mark-align: start; }
-  .hero__mark-fallback { width: clamp(12rem, 26vw, 24rem); height: auto; color: var(--ink); align-self: center; }
+  .hero__slot { min-height: clamp(20rem, 44vw, 42rem); --mark-align: end; }
+  .hero__mark-fallback { width: clamp(18rem, 36vw, 34rem); height: auto; color: var(--ink); align-self: center; justify-self: end; }
   .js .hero__mark-fallback { display: none; }
 
-  @media (max-width: 40rem) {
-    /* Phones: the studio line on its own row, the two meanings side by side under it. */
-    .hero__meaning { display: grid; grid-template-columns: auto auto; justify-content: start; gap: 0.6rem 1.5rem; }
-    .hero__meaning-item:first-child { grid-column: 1 / -1; }
-    .hero__meaning-sep { display: none; }
-  }
   @media (max-width: 60rem) {
     .hero__inner { grid-template-columns: 1fr; gap: var(--s4); }
-    .hero__slot { min-height: 7.5rem; }
-    .hero__mark-fallback { width: 7.5rem; }
+    .hero__side { order: -1; }
+    .hero__slot { min-height: 12rem; --mark-align: start; }
+    .hero__mark-fallback { width: 12rem; justify-self: start; }
   }
 
   /* Capability ticker */

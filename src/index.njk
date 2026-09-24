@@ -41,21 +41,16 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
   <div class="hero__grid-fallback" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
-    <div class="hero__side">
-      <div class="hero__slot" data-hero-slot>
-        {% logo "hero__mark-fallback" %}
-      </div>
-    </div>
-
     <div class="hero__copy">
-      {#- The studio's name, twice: નિર્માણ (nirmaan) is "to build", and
-          નિર્માન (nir-maan) is "without ego". Set in Khastakshar. #}
+      {#- The studio's name has two meanings: निर्माण (nirmaan) "to build",
+          and निर्मान (nir-maan) "without ego". #}
       <p class="hero__meaning">
         <span class="hero__meaning-item">Software studio</span>
-        <span class="hero__meaning-sep" aria-hidden="true"></span>
-        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માણ</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">to build</span></span>
-        <span class="hero__meaning-sep" aria-hidden="true"></span>
-        <span class="hero__meaning-item"><span class="gu" lang="gu">નિર્માન</span><span class="visually-hidden"> (nirmaan)</span> <span class="hero__meaning-gloss">without ego</span></span>
+        <span class="hero__meaning-pair">
+          <span class="hero__meaning-item"><span lang="hi">निर्माण</span><span class="visually-hidden"> (nirmaan)</span> means “to build”</span>
+          <span class="hero__meaning-sep" aria-hidden="true"></span>
+          <span class="hero__meaning-item"><span lang="hi">निर्मान</span><span class="visually-hidden"> (nirmaan)</span> means “without ego”</span>
+        </span>
       </p>
       <h1 class="hero__title display" id="hero-title">
         <span class="line"><span>You bring</span></span>
@@ -67,6 +62,12 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
       <div class="actions">
         <a class="btn" href="/contact.html">Tell us your problem {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</a>
         <a class="link-arrow" href="#process">How it works <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="hero__side">
+      <div class="hero__slot" data-hero-slot>
+        {% logo "hero__mark-fallback" %}
       </div>
     </div>
   </div>
