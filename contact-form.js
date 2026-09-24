@@ -5,11 +5,14 @@
   JavaScript they appear one at a time; without it, all three show as one
   ordinary form, so nothing depends on this script to be usable.
 
-  WHERE IT SENDS
-    data-endpoint on the form, set from src/_data/site.json#intakeEndpoint.
-    That's the Nirmaan OS intake API (app/src/app/api/intake/route.ts), which
-    creates a LEAD- in the pipeline. data-format="json" sends JSON; without it
-    the form sends multipart form data (Formspree-style services).
+  WHERE IT SENDS (src/_data/site.json)
+    web3formsKey set    → data-format="web3forms": emailed through Web3Forms
+                          to the address the key belongs to, one readable
+                          email per enquiry, reply-to set to the customer.
+    intakeEndpoint set  → data-format="json": the Nirmaan OS intake API
+                          (app/src/app/api/intake/route.ts), which creates a
+                          LEAD- in the pipeline.
+    Without data-format the form sends multipart form data.
 
   Until an endpoint is set the form says plainly that it isn't connected and
   shows the email address instead. It never reports success for a message
@@ -115,6 +118,37 @@
   });
 
   /* ---- Submit ---- */
+  function sent() {
+    form.reset();
+    var about = form.querySelector('[data-interest]');
+    if (about) { about.hidden = true; about.querySelector('[data-interest-input]').value = ''; }
+    show(steps.length - 1, false);
+    ok.hidden = false;
+    ok.focus();
+  }
+
+  // One readable email: the form's own labels as keys, in the order asked.
+  function web3formsPayload() {
+    var name = form.elements.contactName.value.trim();
+    var payload = {
+      access_key: form.getAttribute('data-access-key'),
+      subject: 'New enquiry from ' + name + ' (nirmaan.online)',
+      from_name: 'Nirmaan website',
+      name: name,
+      email: form.elements.contactEmail.value.trim(), // Web3Forms makes this the reply-to
+      botcheck: '',
+    };
+    Array.prototype.forEach.call(form.querySelectorAll('input, select, textarea'), function (field) {
+      if (!field.name || field.name === '_gotcha' || field.name === 'contactName' || field.name === 'contactEmail') return;
+      var value = (field.value || '').trim();
+      if (!value) return;
+      var label = field.name === 'interest' ? 'Asking about' : field.labels && field.labels[0]
+        ? field.labels[0].textContent.replace(/\*|\(optional\)/g, '').trim()
+        : field.name;
+      payload[label] = value;
+    });
+    return payload;
+  }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     clearState();
@@ -131,13 +165,17 @@
 
     var endpoint = (form.getAttribute('data-endpoint') || '').trim();
     if (!endpoint) {
-      if (window.console) console.error('[contact-form] No endpoint set. Set intakeEndpoint in src/_data/site.json.');
+      if (window.console) console.error('[contact-form] Not connected. Set web3formsKey or intakeEndpoint in src/_data/site.json.');
       return showError(MSG.notConnected);
     }
 
     busy(true);
+    var format = form.getAttribute('data-format');
     var init = { method: 'POST', headers: { Accept: 'application/json' } };
-    if (form.getAttribute('data-format') === 'json') {
+    if (format === 'web3forms') {
+      init.headers['Content-Type'] = 'application/json';
+      init.body = JSON.stringify(web3formsPayload());
+    } else if (format === 'json') {
       var data = {};
       new FormData(form).forEach(function (v, k) { if (typeof v === 'string' && v.trim()) data[k] = v; });
       init.headers['Content-Type'] = 'application/json';
@@ -148,15 +186,15 @@
 
     fetch(endpoint, init)
       .then(function (res) {
-        if (res.ok) {
-          form.reset();
-          var sent = form.querySelector('[data-interest]');
-          if (sent) { sent.hidden = true; sent.querySelector('[data-interest-input]').value = ''; }
-          show(steps.length - 1, false);
-          ok.hidden = false;
-          ok.focus();
-          return;
+        if (format === 'web3forms') {
+          // Web3Forms answers { success, message }; only success means it was delivered.
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (res.ok && body.success) return sent();
+            if (window.console) console.error('[contact-form] Web3Forms:', res.status, body && body.message);
+            showError(MSG.server);
+          });
         }
+        if (res.ok) return sent();
         return res.json().catch(function () { return null; }).then(function (body) {
           var first = body && body.errors && body.errors[0];
           var field = first && first.field && form.elements[first.field];

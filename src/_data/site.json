@@ -10,6 +10,7 @@
     "github": "",
     "x": ""
   },
-  "_comment": "Fill in email / phone / whatsapp (digits only, with country code, e.g. 919800000000) and social URLs. Anything left empty is simply not rendered anywhere on the site. intakeEndpoint: the Nirmaan OS intake API once it's deployed, e.g. https://os.nirmaan.online/api/intake. Until it's set, the form tells visitors it isn't connected and shows the email address instead.",
-  "intakeEndpoint": ""
+  "_comment": "Fill in email / phone / whatsapp (digits only, with country code, e.g. 919800000000) and social URLs. Anything left empty is simply not rendered anywhere on the site. Where the enquiry form sends: web3formsKey (a Web3Forms access key, public by design) emails each enquiry to the address it was created for; when it's empty the form posts to intakeEndpoint, the Nirmaan OS intake API once deployed (e.g. https://os.nirmaan.online/api/intake). With neither set, the form says plainly that it isn't connected and shows the email address instead.",
+  "intakeEndpoint": "",
+  "web3formsKey": ""
 }
