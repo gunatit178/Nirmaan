@@ -9,7 +9,7 @@ test("team: only user:manage can create accounts; weak passwords and duplicates 
   const email = uniqueEmail();
   await assert.rejects(() => createUser(actorAs("CTO"), { email, name: "X", role: "ENGINEER", password: "a long enough password" }), /permission/);
   await assert.rejects(() => createUser(actorAs("FOUNDER"), { email, name: "X", role: "ENGINEER", password: "short" }), /at least 12/);
-  await assert.rejects(() => createUser(actorAs("FOUNDER"), { email, name: "X", role: "CLIENT_ADMIN", password: "a long enough password" }), /role/);
+  await assert.rejects(() => createUser(actorAs("FOUNDER"), { email, name: "X", role: "CLIENT_ADMIN", password: "a long enough password" }), /must belong to a client/);
   const user = await createUser(actorAs("FOUNDER"), { email, name: "Eng", role: "ENGINEER", password: "a long enough password" });
   try {
     await assert.rejects(() => createUser(actorAs("FOUNDER"), { email: email.toUpperCase(), name: "Y", role: "QA", password: "a long enough password" }), /already/);

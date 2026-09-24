@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db/client";
 import { can, ROLE_LABELS, ROLE_CAPABILITIES } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/web/session";
-import { INTERNAL_ROLES } from "@/lib/db/enums";
+import { CLIENT_ROLES, INTERNAL_ROLES } from "@/lib/db/enums";
 import { MIN_PASSWORD_LENGTH } from "@/lib/auth/password";
 import { ActionForm } from "../../_components/ActionForm";
 import { Badge, NoAccess, PageHead, when } from "../../_components/ui";
@@ -13,7 +13,10 @@ export const metadata: Metadata = { title: "Team" };
 export default async function TeamPage() {
   const user = await requireUser();
   if (!can(user.role, "user:manage")) return <NoAccess capability="user:manage" />;
-  const users = await prisma.user.findMany({ orderBy: [{ active: "desc" }, { name: "asc" }] });
+  const [users, clients] = await Promise.all([
+    prisma.user.findMany({ orderBy: [{ active: "desc" }, { name: "asc" }], include: { client: { select: { name: true } } } }),
+    prisma.client.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+  ]);
   return (
     <>
       <PageHead title="Team" eyebrow="Company" />
@@ -35,13 +38,14 @@ export default async function TeamPage() {
                     <td>
                       {u.name}
                       <div className="faint">{u.email}</div>
+                      {u.client && <div className="faint">client: {u.client.name}</div>}
                       {!u.active && <Badge value="inactive" tone="bad" />}
                     </td>
                     <td>
                       <ActionForm action={setRoleAction} submit="Change" variant="ghost sm" className="row">
                         <input type="hidden" name="userId" value={u.id} />
                         <select className="input" name="role" defaultValue={u.role} aria-label={`Role for ${u.name}`}>
-                          {INTERNAL_ROLES.map((r) => (
+                          {(u.clientId ? CLIENT_ROLES : INTERNAL_ROLES).map((r) => (
                             <option key={r} value={r}>
                               {ROLE_LABELS[r]}
                             </option>
@@ -93,6 +97,40 @@ export default async function TeamPage() {
               </label>
             </ActionForm>
           </section>
+          {clients.length > 0 && (
+            <section className="panel">
+              <h2>Give a client portal access</h2>
+              <p className="faint" style={{ fontSize: "0.8125rem" }}>
+                Client accounts see only their own projects, invoices and support requests. Admins can also request changes.
+              </p>
+              <ActionForm action={createUserAction} submit="Create client account">
+                <label className="field">
+                  <span className="label-text">Client</span>
+                  <select className="input" name="clientId" required>
+                    {clients.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="form-row">
+                  <input className="input" name="name" placeholder="Name" aria-label="Name" required />
+                  <input className="input" name="email" type="email" placeholder="Email" aria-label="Email" required />
+                </div>
+                <div className="form-row">
+                  <select className="input" name="role" defaultValue="CLIENT_ADMIN" aria-label="Access">
+                    {CLIENT_ROLES.map((r) => (
+                      <option key={r} value={r}>
+                        {ROLE_LABELS[r]}
+                      </option>
+                    ))}
+                  </select>
+                  <input className="input" name="password" type="password" minLength={MIN_PASSWORD_LENGTH} placeholder="Temporary password" aria-label="Temporary password" autoComplete="new-password" required />
+                </div>
+              </ActionForm>
+            </section>
+          )}
           <section className="panel">
             <details className="disclose">
               <summary>What each role can do</summary>

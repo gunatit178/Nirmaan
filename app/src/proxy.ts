@@ -16,5 +16,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/os/:path*"],
+  matcher: ["/os/:path*", "/portal/:path*"],
 };

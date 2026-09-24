@@ -61,6 +61,11 @@ export async function decideGate(actor: Actor, approvalId: string, status: "APPR
   assertCan(actor.role, "approval:decide");
   const current = await prisma.approval.findUniqueOrThrow({ where: { id: approvalId } });
   if (current.status !== "PENDING") throw new Error(`This ${current.gate} decision was already made.`);
+  // Every project teaches the next one: no handover without a post-mortem.
+  if (status === "APPROVED" && current.gate === "HANDOVER") {
+    const pm = await prisma.postMortem.findUnique({ where: { projectId: current.projectId } });
+    if (!pm) throw new Error("Record the project's post-mortem before approving handover.");
+  }
   const approval = await prisma.approval.update({
     where: { id: approvalId },
     data: { status, decidedBy: actor.label, decidedAt: new Date() },

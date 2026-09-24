@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/web/session";
+import { isClientRole } from "@/lib/db/enums";
 import { ActionForm } from "../_components/ActionForm";
 import { Logo } from "../_components/Logo";
 import { login } from "./actions";
@@ -8,7 +9,8 @@ import { login } from "./actions";
 export const metadata: Metadata = { title: "Sign in" };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  if (await getCurrentUser()) redirect("/os");
+  const current = await getCurrentUser();
+  if (current) redirect(isClientRole(current.role) ? "/portal" : "/os");
   const next = (await searchParams).next;
   return (
     <main className="auth">
@@ -31,7 +33,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           </div>
         </ActionForm>
         <p className="faint" style={{ fontSize: "0.8125rem" }}>
-          Team accounts only. Clients receive a private link instead.
+          Team and client accounts. Clients are taken to their portal.
         </p>
       </div>
     </main>

@@ -92,12 +92,18 @@ automated preview deploys.
 **PLANNED:** online payment collection (a gateway) and a scheduled job for
 recurring invoices (today: a "Create due invoices" button).
 
-### Phase 4: Knowledge and IP · PLANNED
+### Phase 4: Knowledge and IP · IMPLEMENTED
 
-- Reusable asset library (name, version, dependencies, maturity, projects using it).
-- Post-mortems generated at handover and fed into the knowledge base.
-- Client accounts (Client Admin / Client User) replacing capability links where
-  clients need ongoing access to deliverables and support.
+| Capability | Scope |
+|---|---|
+| IP library | `/os/ip`: reusable assets (IP-) with category, version, dependencies, owner, docs link and the projects using each. Maturity is computed, not claimed: experimental → used once → proven after 3 projects. |
+| Knowledge base | `/os/knowledge`: searchable articles (playbooks, lessons, decisions, post-mortems) with source and author; linked from each project. |
+| Post-mortems | Ten fixed questions; at least six answered. Saving snapshots the project's economics and publishes one POST_MORTEM article. The HANDOVER gate can't be approved without it. |
+| Client accounts | Client Admin / Client User logins bound to one client. `/portal` shows only their projects, progress, sent invoices and support; admins can also ask for changes (which arrive as change requests). Client roles never reach `/os`. |
+| Support | `/os/support`: client requests (SR-) with priority and status, answered by the team. |
+
+Capability links still work for proposals and status pages; accounts are for
+clients who need ongoing access.
 
 ### Phase 5: Productization · PROPOSED
 

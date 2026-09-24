@@ -56,6 +56,7 @@ export async function generateDueRecurringInvoices(actor: Actor, now = new Date(
   const due = await prisma.subscription.findMany({ where: { status: "ACTIVE", nextInvoiceDate: { lte: now } } });
   let created = 0;
   for (const sub of due) {
+    let createdForSub = 0;
     let period = sub.nextInvoiceDate;
     for (let i = 0; i < 12 && period <= now; i++) {
       const next = addMonths(period);
@@ -77,12 +78,13 @@ export async function generateDueRecurringInvoices(actor: Actor, now = new Date(
             },
           });
           created++;
+          createdForSub++;
         }
         await tx.subscription.update({ where: { id: sub.id }, data: { nextInvoiceDate: next } });
       });
       period = next;
     }
+    if (createdForSub) await audit(actor, "subscription.invoiced", "Subscription", sub.id, `${sub.code}: ${createdForSub} draft invoice(s)`);
   }
-  if (created) await audit(actor, "subscription.invoices_generated", "Subscription", "batch", `${created} draft invoice(s)`);
   return { created, plans: due.length };
 }

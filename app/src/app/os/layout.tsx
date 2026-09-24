@@ -11,9 +11,10 @@ import { logout } from "../login/actions";
 export default async function OsLayout({ children }: LayoutProps<"/os">) {
   const user = await requireUser();
   const role = user.role as Role;
-  const [pendingApprovals, newLeads] = await Promise.all([
+  const [pendingApprovals, newLeads, openSupport] = await Promise.all([
     can(role, "approval:decide") ? prisma.approval.count({ where: { status: "PENDING" } }) : Promise.resolve(0),
     can(role, "lead:read") ? prisma.lead.count({ where: { status: "NEW" } }) : Promise.resolve(0),
+    can(role, "support:write") ? prisma.supportRequest.count({ where: { status: "OPEN" } }) : Promise.resolve(0),
   ]);
 
   const items: NavItem[] = [
@@ -22,6 +23,9 @@ export default async function OsLayout({ children }: LayoutProps<"/os">) {
     can(role, "proposal:read") && { href: "/os/proposals", label: "Proposals", group: "Pipeline" },
     can(role, "project:read") && { href: "/os/projects", label: "Projects", group: "Delivery" },
     can(role, "approval:decide") && { href: "/os/approvals", label: "Approvals", count: pendingApprovals, group: "Delivery" },
+    can(role, "support:write") && { href: "/os/support", label: "Support", count: openSupport, group: "Delivery" },
+    can(role, "knowledge:read") && { href: "/os/knowledge", label: "Knowledge", group: "Knowledge & IP" },
+    can(role, "knowledge:read") && { href: "/os/ip", label: "IP library", group: "Knowledge & IP" },
     can(role, "finance:read") && { href: "/os/finance", label: "Finance", group: "Company" },
     can(role, "ai:read") && { href: "/os/ai", label: "AI usage", group: "Company" },
     can(role, "audit:read") && { href: "/os/audit", label: "Audit log", group: "Company" },

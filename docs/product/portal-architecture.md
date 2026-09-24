@@ -11,7 +11,7 @@ Two experiences, one data model, different permissions and UX.
 | Proposal review: approve / request changes / decline | OS `/p/<token>` | IMPLEMENTED |
 | Project progress | OS `/status/<token>` | IMPLEMENTED |
 | Invoices due and paid, with payment instructions | OS `/status/<token>` | IMPLEMENTED (Phase 3) |
-| Deliverables, support requests, multi-project view | OS client accounts | PLANNED (Phase 4) |
+| Deliverables, support requests, multi-project view | OS client accounts (`/portal`) | IMPLEMENTED (Phase 4) |
 
 ## Internal OS (`/os`)
 

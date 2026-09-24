@@ -6,7 +6,7 @@ Static checks (tsc, eslint) → unit → integration (real SQLite) → E2E (brow
 
 ## Nirmaan OS today · IMPLEMENTED
 
-- `npm test` in `/app`: **163 tests** (107 original, 42 Phase 1, 7 Phase 2, 7 Phase 3),
+- `npm test` in `/app`: **168 tests** (107 original, 42 Phase 1, 7 Phase 2, 7 Phase 3, 5 Phase 4),
   about 2 seconds. They cover auth, RBAC matrix invariants, sessions, IDs under
   concurrency, intake validation, the discovery promotion rule, proposal
   lifecycle (including two simultaneous approvals creating exactly one
