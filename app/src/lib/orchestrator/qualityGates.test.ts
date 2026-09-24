@@ -73,7 +73,7 @@ test("checkGate reports advanceable once the gate is APPROVED", async () => {
   }
 });
 
-test("checkGate reports no gate for a stage that isn't one of the six gated transitions", async () => {
+test("checkGate reports no gate for a stage that isn't one of the gated transitions", async () => {
   const project = await seedFixtureProject({ stage: "MONITORING" });
   try {
     const check = await checkGate(project.id);

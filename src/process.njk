@@ -9,7 +9,7 @@ head:
   eyebrow: "How we work"
   lines: ["A clear process.", "No surprises."]
   accent: 1
-  lede: "Every project follows the same structure, from understanding your goals through to launch and beyond. You'll always know where things stand."
+  lede: "It starts with your problem, not a solution. Every project then follows the same structure through launch and beyond, and you approve each key step."
   glyph: "00001/00011/00111/01111/11111"
 cta:
   eyebrow: "Let's begin"
@@ -19,7 +19,7 @@ cta:
 steps:
   - id: "discover"
     title: "Discover"
-    text: "We start by listening. Before any wireframe or line of code, we want to understand your business, your audience and your goals, and what success actually looks like for this project."
+    text: "We start with the problem, not a solution. Before any wireframe or line of code, we separate what you've told us from what we're assuming, ask about the gaps, and agree what success actually looks like."
     lists:
       - { label: "What we learn", items: ["Your business model and objectives", "Your audience and what they need", "The problems you want solved", "Timeline and budget expectations"] }
       - { label: "How we do it", items: ["Consultation call or chat", "Discovery questionnaire", "Competitor and market review", "Written requirements"] }
@@ -48,7 +48,14 @@ steps:
     lists:
       - { label: "At launch", items: ["Server deployment and configuration", "Domain and SSL setup", "Cross-device and browser testing", "Performance checks"] }
       - { label: "After launch", items: ["Ongoing maintenance", "Content updates on request", "New features as you grow", "Priority support"] }
+principles:
+  - { glyph: "01110/01110/00100/11111/10101", title: "You approve the key decisions", text: "Scope and price, the implementation plan, going live and handover each need your sign-off. Nothing irreversible happens on an assumption." }
+  - { glyph: "00001/00011/10110/11100/01000", title: "Evidence, not \"done\"", text: "Every requirement is linked to the tests that prove it. When we say something works, we show the results." }
+  - { glyph: "11111/10001/10101/10001/11111", title: "Changes in writing", text: "Anything outside the agreed scope comes to you as a change request with its cost and timeline, before any work starts." }
+  - { glyph: "10101/01110/11111/01110/10101", title: "AI-assisted, human-accountable", text: "We use AI to move faster on analysis, code and testing. A person reviews every deliverable and is accountable for it." }
 faq:
+  - q: "Do you use AI to build my project?"
+    a: "Yes, where it makes us faster or more thorough: analysing requirements, writing and reviewing code, and testing. It never replaces judgement. A person reviews every deliverable, and the key decisions (scope, plan, go-live, handover) are always yours to approve."
   - q: "How long does a project take?"
     a: "It depends on scope. A straightforward business website usually takes 2–4 weeks. A web application with a custom backend may take 6–12 weeks. You get a realistic timeline during planning, before any work begins."
   - q: "Do I need to provide design assets or content?"
@@ -94,6 +101,27 @@ faq:
       </li>
       {%- endfor %}
     </ol>
+  </div>
+</section>
+
+<section class="section" id="honest" aria-labelledby="honest-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">How we keep it honest</p>
+        <h2 class="section__title display" id="honest-title">Fast, and still&nbsp;accountable.</h2>
+      </div>
+      <p class="section__text">The rules every Nirmaan project runs on, whatever it's building.</p>
+    </div>
+    <ul class="principles principles--4" role="list">
+      {%- for p in principles %}
+      <li data-reveal style="--d: {{ loop.index0 % 2 }}">
+        {% glyph p.glyph %}
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.text }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
   </div>
 </section>
 

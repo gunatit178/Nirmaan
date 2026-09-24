@@ -1,9 +1,7 @@
 import matter from "gray-matter";
 import { loadAgent } from "./loadAgent";
 import { resolveModel, type TaskType, type ModelConfig } from "../model-router";
-import { ClaudeCodeCliProvider } from "../providers/claudeCodeCli";
-import { AnthropicProvider } from "../providers/anthropic";
-import { MockProvider } from "../providers/mock";
+import { providerFor } from "../ai/providers";
 import type { ModelProvider, TokenUsage } from "../providers/types";
 import type { HandoffMetadata } from "./types";
 import { writeVersionedArtifact, projectsRoot, stripUndefined } from "./artifactWriter";
@@ -116,13 +114,7 @@ function parseAgentResponse(
 export async function runAgent(input: RunAgentInput): Promise<RunAgentResult> {
   const agent = loadAgent(input.agentSlug);
   const modelConfig = resolveModel(input.taskType, input.modelOverrides);
-  const provider =
-    input.provider ??
-    (modelConfig.provider === "claude-code-cli"
-      ? new ClaudeCodeCliProvider()
-      : modelConfig.provider === "anthropic"
-        ? new AnthropicProvider()
-        : new MockProvider());
+  const provider = input.provider ?? providerFor(modelConfig);
 
   const completion = await provider.complete({
     systemPrompt: buildSystemPrompt(agent.role, agent.body),

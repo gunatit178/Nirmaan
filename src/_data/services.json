@@ -5,24 +5,78 @@
       "label": "Websites & Design",
       "summary": "The part your customers see: fast, clear, built from scratch around your brand.",
       "items": [
-        { "id": "custom-websites", "title": "Custom Website Development", "glyph": "11111/11111/10001/10001/11111",
+        {
+          "id": "custom-websites",
+          "title": "Custom Website Development",
+          "glyph": "11111/11111/10001/10001/11111",
           "text": "Hand-built websites that match your brand, goals and audience. No generic templates.",
-          "features": ["Mobile-first responsive design", "SEO-ready structure", "Fast load times", "Contact forms & integrations"] },
-        { "id": "business-websites", "title": "Business Websites", "glyph": "11111/10001/11111/10001/11111",
+          "features": [
+            "Mobile-first responsive design",
+            "SEO-ready structure",
+            "Fast load times",
+            "Contact forms & integrations"
+          ]
+        },
+        {
+          "id": "business-websites",
+          "title": "Business Websites",
+          "glyph": "11111/10001/11111/10001/11111",
           "text": "A professional presence for service businesses, consultants and organisations that need to earn trust and bring in enquiries.",
-          "features": ["Services, about & team pages", "Lead capture forms", "Google Maps & directions", "WhatsApp & call integration"] },
-        { "id": "redesign", "title": "Website Redesign", "glyph": "11100/11100/11111/00111/00111",
+          "features": [
+            "Services, about & team pages",
+            "Lead capture forms",
+            "Google Maps & directions",
+            "WhatsApp & call integration"
+          ]
+        },
+        {
+          "id": "redesign",
+          "title": "Website Redesign",
+          "glyph": "11100/11100/11111/00111/00111",
           "text": "Turn an outdated site into a modern, fast, conversion-focused one without losing your content or search rankings.",
-          "features": ["Modern design refresh", "Content migration", "Performance improvements", "SEO preservation"] },
-        { "id": "ecommerce", "title": "E-commerce Websites", "glyph": "01110/01010/11111/11111/11111",
+          "features": [
+            "Modern design refresh",
+            "Content migration",
+            "Performance improvements",
+            "SEO preservation"
+          ]
+        },
+        {
+          "id": "ecommerce",
+          "title": "E-commerce Websites",
+          "glyph": "01110/01010/11111/11111/11111",
           "text": "Online stores with product management, secure payments, inventory tracking and order management.",
-          "features": ["Product catalogue & search", "Secure payment integration", "Order management", "Mobile-first checkout"] },
-        { "id": "performance", "title": "Performance Optimisation", "glyph": "00110/01100/11111/00110/01100",
+          "features": [
+            "Product catalogue & search",
+            "Secure payment integration",
+            "Order management",
+            "Mobile-first checkout"
+          ]
+        },
+        {
+          "id": "performance",
+          "title": "Performance Optimisation",
+          "glyph": "00110/01100/11111/00110/01100",
           "text": "Speed up an existing site for better user experience, search rankings and conversion.",
-          "features": ["Core Web Vitals improvement", "Image & asset optimisation", "Caching & CDN setup", "Technical SEO fixes"] },
-        { "id": "maintenance", "title": "Maintenance & Support", "glyph": "11100/10100/11100/00010/00001",
+          "features": [
+            "Core Web Vitals improvement",
+            "Image & asset optimisation",
+            "Caching & CDN setup",
+            "Technical SEO fixes"
+          ]
+        },
+        {
+          "id": "maintenance",
+          "title": "Maintenance & Support",
+          "glyph": "11100/10100/11100/00010/00001",
           "text": "Keep your site secure, updated and running smoothly, with a team that already knows the code.",
-          "features": ["Regular updates & backups", "Security monitoring", "Content changes & edits", "Priority support"] }
+          "features": [
+            "Regular updates & backups",
+            "Security monitoring",
+            "Content changes & edits",
+            "Priority support"
+          ]
+        }
       ]
     },
     {
@@ -30,35 +84,188 @@
       "label": "Applications & Backend",
       "summary": "The part that does the work: logic, data and automation built around how you operate.",
       "items": [
-        { "id": "web-applications", "title": "Custom Web Applications", "glyph": "11011/11011/00000/11011/11011",
+        {
+          "id": "web-applications",
+          "title": "Custom Web Applications",
+          "glyph": "11011/11011/00000/11011/11011",
           "text": "Portals, platforms and tools shaped around your workflows. Far beyond what a standard website can do.",
-          "features": ["User accounts & roles", "Real-time data & updates", "Complex business logic", "Third-party integrations"] },
-        { "id": "backend-apis", "title": "Backend & API Development", "glyph": "01010/10001/10001/10001/01010",
+          "features": [
+            "User accounts & roles",
+            "Real-time data & updates",
+            "Complex business logic",
+            "Third-party integrations"
+          ]
+        },
+        {
+          "id": "backend-apis",
+          "title": "Backend & API Development",
+          "glyph": "01010/10001/10001/10001/01010",
           "text": "The engine behind the product: server-side logic, REST APIs and business-specific software.",
-          "features": ["REST API design", "Server-side business logic", "Payment gateway integration", "Webhooks & event systems"] },
-        { "id": "databases", "title": "Database Design", "glyph": "11111/00000/11111/00000/11111",
+          "features": [
+            "REST API design",
+            "Server-side business logic",
+            "Payment gateway integration",
+            "Webhooks & event systems"
+          ]
+        },
+        {
+          "id": "databases",
+          "title": "Database Design",
+          "glyph": "11111/00000/11111/00000/11111",
           "text": "Structured, scalable databases that store, query and protect your business data reliably.",
-          "features": ["Schema design & modelling", "PostgreSQL & MySQL", "Query optimisation", "Security & backups"] },
-        { "id": "automation", "title": "Business Automation", "glyph": "01110/10001/10101/10001/01110",
+          "features": [
+            "Schema design & modelling",
+            "PostgreSQL & MySQL",
+            "Query optimisation",
+            "Security & backups"
+          ]
+        },
+        {
+          "id": "automation",
+          "title": "Business Automation",
+          "glyph": "01110/10001/10101/10001/01110",
           "text": "Automate repetitive tasks, notifications and internal processes so your team can focus on real work.",
-          "features": ["Email & notification workflows", "Report generation", "Data import & export", "Scheduled tasks & triggers"] },
-        { "id": "dashboards", "title": "Admin Panels & Dashboards", "glyph": "00001/00011/01011/11011/11111",
+          "features": [
+            "Email & notification workflows",
+            "Report generation",
+            "Data import & export",
+            "Scheduled tasks & triggers"
+          ]
+        },
+        {
+          "id": "dashboards",
+          "title": "Admin Panels & Dashboards",
+          "glyph": "00001/00011/01011/11011/11111",
           "text": "Purpose-built admin panels and data dashboards with full visibility and control over your platform.",
-          "features": ["Role-based access control", "Data tables & analytics", "Create, edit & manage records", "Exports & reporting"] },
-        { "id": "responsive", "title": "Mobile-First Development", "glyph": "01110/01010/01010/01010/01110",
+          "features": [
+            "Role-based access control",
+            "Data tables & analytics",
+            "Create, edit & manage records",
+            "Exports & reporting"
+          ]
+        },
+        {
+          "id": "responsive",
+          "title": "Mobile-First Development",
+          "glyph": "01110/01010/01010/01010/01110",
           "text": "Every build is made mobile-first, so it works properly on every screen your customers use.",
-          "features": ["Mobile-first development", "Cross-browser testing", "Touch-friendly interfaces", "Tuned for every device"] }
+          "features": [
+            "Mobile-first development",
+            "Cross-browser testing",
+            "Touch-friendly interfaces",
+            "Tuned for every device"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-mobile-integration",
+      "label": "AI, Mobile & Integration",
+      "summary": "The parts that connect: AI where it genuinely helps, apps where people work, and systems that talk to each other.",
+      "items": [
+        {
+          "id": "ai-systems",
+          "title": "AI Systems",
+          "glyph": "10101/01110/11111/01110/10101",
+          "text": "Practical AI inside your workflow: reading documents, answering routine questions, sorting requests. Always with a person able to check the result.",
+          "features": [
+            "Document and data extraction",
+            "Assistants grounded in your own data",
+            "Classification and routing",
+            "Cost and quality monitoring"
+          ]
+        },
+        {
+          "id": "mobile-apps",
+          "title": "Mobile Applications",
+          "glyph": "01110/01010/01010/01110/01110",
+          "text": "Apps for the people who work away from a desk: field staff, delivery teams, customers on the move.",
+          "features": [
+            "Android and iOS from one codebase",
+            "Works with patchy connectivity",
+            "Push notifications",
+            "Connected to your backend"
+          ]
+        },
+        {
+          "id": "integrations",
+          "title": "Integrations",
+          "glyph": "11000/11011/00100/11011/00011",
+          "text": "Connect the tools you already pay for (payments, CRM, accounting, messaging) so data moves without copy-pasting.",
+          "features": [
+            "Payment gateways",
+            "CRM and accounting sync",
+            "WhatsApp and email notifications",
+            "Webhooks and scheduled syncs"
+          ]
+        },
+        {
+          "id": "internal-tools",
+          "title": "Internal Tools & Portals",
+          "glyph": "11111/10101/11111/10101/11111",
+          "text": "Back-office tools, staff portals and customer portals built around how your team actually works, replacing spreadsheet workflows.",
+          "features": [
+            "Role-based access",
+            "Approvals and workflows",
+            "Search, filters and exports",
+            "Audit trail of who changed what"
+          ]
+        },
+        {
+          "id": "modernisation",
+          "title": "Modernisation",
+          "glyph": "11100/10000/11111/00001/00111",
+          "text": "Take an old or fragile system and make it reliable, maintainable and secure without stopping the business to do it.",
+          "features": [
+            "Codebase and risk assessment",
+            "Incremental migration",
+            "Data migration with verification",
+            "Documentation and handover"
+          ]
+        }
       ]
     }
   ],
   "featured": [
-    { "id": "custom-websites",  "title": "Custom Websites",     "text": "Mobile-first websites built around your brand, audience and goals." },
-    { "id": "web-applications", "title": "Web Applications",    "text": "Portals, platforms and SaaS tools that do real work." },
-    { "id": "backend-apis",     "title": "Backend & APIs",      "text": "Server logic, REST APIs, payments and third-party integrations." },
-    { "id": "databases",        "title": "Database Systems",    "text": "SQL and NoSQL data, designed for speed and security." },
-    { "id": "automation",       "title": "Business Automation", "text": "Workflows, notifications and reports that run themselves." },
-    { "id": "ecommerce",        "title": "E-commerce",          "text": "Stores with fast checkout, inventory and analytics." },
-    { "id": "dashboards",       "title": "Dashboards & Admin",  "text": "Admin portals and live data views for full oversight." },
-    { "id": "maintenance",      "title": "Maintenance & SEO",   "text": "Performance tuning, security patches and search visibility." }
+    {
+      "id": "custom-websites",
+      "title": "Websites",
+      "text": "Fast, mobile-first websites that bring in enquiries."
+    },
+    {
+      "id": "web-applications",
+      "title": "Web Applications",
+      "text": "Portals, platforms and SaaS tools that do real work."
+    },
+    {
+      "id": "internal-tools",
+      "title": "Internal Tools",
+      "text": "Replace the spreadsheet-and-WhatsApp workflow."
+    },
+    {
+      "id": "automation",
+      "title": "Workflow Automation",
+      "text": "Follow-ups, reports and syncs that run themselves."
+    },
+    {
+      "id": "ai-systems",
+      "title": "AI Systems",
+      "text": "Practical AI in your workflow, with a person in the loop."
+    },
+    {
+      "id": "mobile-apps",
+      "title": "Mobile Apps",
+      "text": "Apps for the people who work away from a desk."
+    },
+    {
+      "id": "integrations",
+      "title": "Integrations",
+      "text": "Payments, CRM and accounting, connected."
+    },
+    {
+      "id": "dashboards",
+      "title": "Dashboards & Data",
+      "text": "Live numbers instead of month-end guesswork."
+    }
   ]
 }

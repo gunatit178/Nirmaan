@@ -10,17 +10,35 @@ import fs from "node:fs";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { encodeStringList } from "../src/lib/db/json";
+import { nextCode } from "../src/lib/ids";
 
 const prisma = new PrismaClient();
 
 const PROJECT_ID_SLUG = "demo-project";
 
 async function main() {
+  // Phase 1 tables first (children before parents). Users, sessions and the
+  // id Counter are deliberately kept: re-seeding must not lock anyone out or
+  // hand out an id (REQ-012, PRJ-003...) a second time.
+  await prisma.auditLog.deleteMany({});
+  await prisma.aiUsage.deleteMany({});
+  await prisma.evidence.deleteMany({});
+  await prisma.testCase.deleteMany({});
+  await prisma.traceLink.deleteMany({});
+  await prisma.feature.deleteMany({});
+  await prisma.changeRequest.deleteMany({});
+  await prisma.deployment.deleteMany({});
+  await prisma.requirement.deleteMany({});
+  await prisma.leadNote.deleteMany({});
+  await prisma.discoveryItem.deleteMany({});
+
   await prisma.event.deleteMany({});
   await prisma.approval.deleteMany({});
   await prisma.artifact.deleteMany({});
   await prisma.task.deleteMany({});
   await prisma.project.deleteMany({});
+  await prisma.proposal.deleteMany({});
+  await prisma.lead.deleteMany({});
   await prisma.client.deleteMany({});
   await prisma.agent.deleteMany({});
 
@@ -154,7 +172,31 @@ async function main() {
     );
   }
 
-  console.log(`Seeded project "${project.name}" (${project.id})`);
+  // A demo inbound lead (fixture, not a real enquiry) so the discovery flow
+  // has something to work on right after seeding.
+  const leadCode = await nextCode("LEAD");
+  await prisma.lead.create({
+    data: {
+      code: leadCode,
+      source: "WEBSITE",
+      problem:
+        "We take catering orders over WhatsApp and phone calls, then copy them into an Excel sheet. Orders get missed, we forget deposit follow-ups, and on busy weekends nobody knows which orders are confirmed.",
+      business: "Home catering business, 6 staff",
+      currentSolution: "WhatsApp, phone calls and one shared Excel sheet",
+      frequency: "About 15 orders a week, 40+ in wedding season",
+      desiredOutcome: "Every order confirmed, paid and delivered on time without chasing people",
+      budgetRange: "Not sure yet",
+      contactName: "Demo Customer (fixture)",
+      contactEmail: "demo-customer@example.test",
+      company: "Demo Caterers (fixture)",
+    },
+  });
+
+  console.log(`Seeded project "${project.name}" (${project.id}) and demo lead ${leadCode}.`);
+  const users = await prisma.user.count();
+  if (!users) {
+    console.log('No team accounts yet. Create the founder account with:\n  NIRMAAN_PASSWORD=\'a long passphrase\' npm run user:create -- you@example.com "Your Name" FOUNDER');
+  }
 }
 
 main()

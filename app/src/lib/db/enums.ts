@@ -47,13 +47,22 @@ export type AgentStatus = (typeof AGENT_STATUSES)[number];
 // (IMPLEMENTATION_PLAN/DEPLOYMENT instead of IMPLEMENTATION/QA/PRODUCTION)
 // that didn't line up with Section H. Fixed in Phase 6, which needed the
 // two to actually match to write gate-enforcement code.
+//
+// Phase 1 (Nirmaan OS) adds three business gates from the operating model:
+// PROPOSAL (the client approves scope and price), PLAN (the implementation
+// plan is approved before design work starts) and HANDOVER (the client
+// accepts delivery before the project moves into monitoring). The original
+// six keep their exact transitions; see orchestrator/qualityGates.ts.
 export const APPROVAL_GATES = [
   "REQUIREMENTS",
+  "PROPOSAL",
+  "PLAN",
   "DESIGN",
   "ARCHITECTURE",
   "IMPLEMENTATION",
   "QA",
   "PRODUCTION",
+  "HANDOVER",
 ] as const;
 export type ApprovalGate = (typeof APPROVAL_GATES)[number];
 
@@ -71,3 +80,79 @@ export const DEPLOYMENT_STATUSES = [
   "ROLLED_BACK",
 ] as const;
 export type DeploymentStatus = (typeof DEPLOYMENT_STATUSES)[number];
+
+// ---------------------------------------------------------------------
+// Phase 1: Business OS
+// ---------------------------------------------------------------------
+
+/** Internal roles. CLIENT_* roles are defined for the permission model but
+ * have no accounts in Phase 1 — clients act through capability links. */
+export const INTERNAL_ROLES = [
+  "FOUNDER",
+  "CTO",
+  "PROJECT_MANAGER",
+  "ENGINEER",
+  "DESIGNER",
+  "QA",
+  "FINANCE",
+  "SUPPORT",
+] as const;
+export const CLIENT_ROLES = ["CLIENT_ADMIN", "CLIENT_USER"] as const;
+export const ROLES = [...INTERNAL_ROLES, ...CLIENT_ROLES] as const;
+export type InternalRole = (typeof INTERNAL_ROLES)[number];
+export type Role = (typeof ROLES)[number];
+
+export const LEAD_STATUSES = ["NEW", "DISCOVERY", "QUALIFIED", "PROPOSAL", "WON", "LOST", "SPAM"] as const;
+export type LeadStatus = (typeof LEAD_STATUSES)[number];
+/** Statuses a lead is still being worked in. */
+export const OPEN_LEAD_STATUSES: readonly LeadStatus[] = ["NEW", "DISCOVERY", "QUALIFIED", "PROPOSAL"];
+
+export const LEAD_SOURCES = ["WEBSITE", "MANUAL", "REFERRAL"] as const;
+export type LeadSource = (typeof LEAD_SOURCES)[number];
+
+export const DISCOVERY_KINDS = ["FACT", "ASSUMPTION", "QUESTION", "RECOMMENDATION"] as const;
+export type DiscoveryKind = (typeof DISCOVERY_KINDS)[number];
+export const DISCOVERY_SOURCES = ["CLIENT", "AGENT", "TEAM"] as const;
+export type DiscoverySource = (typeof DISCOVERY_SOURCES)[number];
+export const DISCOVERY_STATUSES = ["OPEN", "CONFIRMED", "REJECTED", "ANSWERED"] as const;
+export type DiscoveryStatus = (typeof DISCOVERY_STATUSES)[number];
+
+export const REQUIREMENT_KINDS = ["BUSINESS", "FUNCTIONAL", "NON_FUNCTIONAL", "CONSTRAINT"] as const;
+export type RequirementKind = (typeof REQUIREMENT_KINDS)[number];
+export const REQUIREMENT_PRIORITIES = ["MUST", "SHOULD", "COULD", "WONT"] as const;
+export type RequirementPriority = (typeof REQUIREMENT_PRIORITIES)[number];
+export const REQUIREMENT_STATUSES = ["DRAFT", "APPROVED", "CHANGED", "DROPPED"] as const;
+export type RequirementStatus = (typeof REQUIREMENT_STATUSES)[number];
+
+export const FEATURE_STATUSES = ["PLANNED", "IN_PROGRESS", "DONE"] as const;
+export type FeatureStatus = (typeof FEATURE_STATUSES)[number];
+
+export const TEST_LEVELS = ["STATIC", "UNIT", "INTEGRATION", "E2E", "SECURITY", "PERFORMANCE", "SMOKE", "QA"] as const;
+export type TestLevel = (typeof TEST_LEVELS)[number];
+
+export const EVIDENCE_RESULTS = ["PASS", "FAIL"] as const;
+export type EvidenceResult = (typeof EVIDENCE_RESULTS)[number];
+
+export const TRACE_RELATIONS = ["SATISFIED_BY", "IMPLEMENTED_BY", "VERIFIED_BY", "SHIPPED_IN"] as const;
+export type TraceRelation = (typeof TRACE_RELATIONS)[number];
+
+export const PROPOSAL_STATUSES = [
+  "DRAFT",
+  "SENT",
+  "CLARIFICATION_REQUESTED",
+  "APPROVED",
+  "REJECTED",
+  "SUPERSEDED",
+] as const;
+export type ProposalStatus = (typeof PROPOSAL_STATUSES)[number];
+
+export const CHANGE_REQUEST_STATUSES = ["OPEN", "ASSESSED", "APPROVED", "REJECTED", "CONVERTED"] as const;
+export type ChangeRequestStatus = (typeof CHANGE_REQUEST_STATUSES)[number];
+
+export const AUDIT_ACTOR_TYPES = ["USER", "CLIENT_LINK", "SYSTEM", "AGENT", "PUBLIC"] as const;
+export type AuditActorType = (typeof AUDIT_ACTOR_TYPES)[number];
+
+/** Narrowing helper: is `value` one of `allowed`? */
+export function isOneOf<T extends string>(allowed: readonly T[], value: unknown): value is T {
+  return typeof value === "string" && (allowed as readonly string[]).includes(value);
+}

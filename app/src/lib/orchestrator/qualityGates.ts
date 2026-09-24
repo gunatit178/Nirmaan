@@ -3,16 +3,17 @@ import { logEvent } from "../db/logEvent";
 import type { ApprovalGate, ProjectStage } from "../db/enums";
 
 /**
- * The six gated stage transitions, taken verbatim from the architecture
- * plan's Section G: "the six quality gates map onto the stage transitions
+ * The gated stage transitions. The original six come verbatim from the
+ * architecture plan's Section G ("the six quality gates map onto the stage transitions
  * that actually matter (Requirements→Planning, Design→Architecture,
  * Architecture→Implementation, Implementation→QA, QA→Security Review,
- * Security Review→Deployment)."
+ * Security Review→Deployment).")
  *
  * Every OTHER stage transition (LEAD→DISCOVERY, DISCOVERY→REQUIREMENTS,
  * ESTIMATION→PROPOSAL, etc.) has no formal quality gate in this system —
  * that's a deliberate reading of Section H, not an oversight. This module
- * only knows how to advance a project through these six transitions.
+ * only knows how to advance a project through these transitions (six from
+ * the original plan plus three Phase 1 business gates).
  *
  * What "enforced" means here, deliberately: a gate is satisfied when a
  * human (or reviewing agent) has recorded an explicit APPROVED Approval
@@ -22,6 +23,12 @@ import type { ApprovalGate, ProjectStage } from "../db/enums";
  * without that recorded decision.
  */
 export const GATE_TRANSITIONS: Record<ApprovalGate, { from: ProjectStage; to: ProjectStage }> = {
+  // Phase 1 business gates (operating model: proposal approved, implementation
+  // plan approved, handover approved). PROPOSAL is normally recorded by the
+  // client's own decision on the proposal link (src/lib/proposals/service.ts).
+  PROPOSAL: { from: "PROPOSAL", to: "APPROVED" },
+  PLAN: { from: "PLANNING", to: "DESIGN" },
+  HANDOVER: { from: "DEPLOYMENT", to: "MONITORING" },
   REQUIREMENTS: { from: "REQUIREMENTS", to: "PLANNING" },
   DESIGN: { from: "DESIGN", to: "ARCHITECTURE" },
   ARCHITECTURE: { from: "ARCHITECTURE", to: "IMPLEMENTATION" },
@@ -61,7 +68,7 @@ export async function checkGate(projectId: string): Promise<GateCheckResult> {
       currentStage: project.stage,
       nextStage: null,
       gate: null,
-      reason: `Stage "${project.stage}" has no defined quality gate in this system — it isn't one of the six gated transitions.`,
+      reason: `Stage "${project.stage}" has no defined quality gate in this system — it isn't one of the gated transitions.`,
     };
   }
 
