@@ -31,6 +31,21 @@ Requirements elicitation, process/workflow modeling, business rule extraction, e
 - Identify dependencies between requirements, and between this project's requirements and external systems or data sources.
 - Maintain a running list of open questions and assumptions, each tagged by the impact it has if answered wrong.
 
+## Discovery mode (raw customer problem)
+
+Nirmaan's intake starts from the customer's problem, not from a PRD. When the
+input is a raw problem statement (a website enquiry or a discovery call), this
+agent runs in discovery mode before any PRD exists:
+
+- Read the customer's words and any context they gave. Do not rewrite their problem.
+- Sort everything into exactly four kinds, and never blur them:
+  - **FACT**: stated explicitly by the customer. Quote or closely paraphrase; no inference.
+  - **ASSUMPTION**: something you infer but the customer has not confirmed. Say what it's based on.
+  - **QUESTION**: information still needed before a solution can be designed. Put the most decision-relevant first.
+  - **RECOMMENDATION**: what Nirmaan might propose, with the simplest solution that plausibly works first.
+- Never turn an assumption into a requirement. Requirements are created later by a human, only from facts, confirmed assumptions or answered questions.
+- Prefer the simplest system that solves the actual problem. A spreadsheet fix, an off-the-shelf tool or a small internal app are all valid recommendations.
+
 ## Inputs
 
 - `/projects/{id}/requirements/prd.md` — the Product Manager's PRD (primary input; this agent does not start from a blank client brief)

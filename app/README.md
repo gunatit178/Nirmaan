@@ -1,15 +1,66 @@
-# Agency OS
+# Nirmaan OS
 
-Internal multi-agent platform. See [`/docs/architecture-plan.md`](../docs/architecture-plan.md) at the repo root for the full architecture, agent roster, and roadmap. Separate from the public marketing site at the repo root — this is its own Next.js project with its own `package.json`.
+Nirmaan's internal operating system and client portal (formerly "Agency OS").
+One Next.js app serving three audiences with different permissions:
+
+- **Team** at `/os`: Today, leads and discovery, proposals, projects and
+  traceability, approvals, AI usage, audit log, team.
+- **Clients** through private links: `/p/<token>` to review and approve a
+  proposal, `/status/<token>` to follow progress.
+- **The public website's intake** at `POST /api/intake`.
+
+Docs: [`/docs/README.md`](../docs/README.md). The current plan is
+[`/docs/strategy/roadmap.md`](../docs/strategy/roadmap.md); the original phases
+0–9 are recorded in [`/docs/architecture-plan.md`](../docs/architecture-plan.md).
 
 ## Getting started
 
 ```bash
-npm install          # also runs `prisma generate` via postinstall
-npm run db:migrate   # apply migrations, create app/prisma/dev.db (gitignored)
-npm run db:seed      # load a demo project/task/artifact fixture
-npm run dev           # http://localhost:3000 — see /dashboard
+npm ci                     # then generate the Prisma client:
+npx prisma generate        # (npm may hold back install scripts pending approval)
+npx prisma migrate deploy  # creates prisma/dev.db (gitignored)
+npm run db:seed            # demo project + demo lead (fixtures)
+NIRMAAN_PASSWORD='a long passphrase' npm run user:create -- you@example.com "Your Name" FOUNDER
+npm run dev                # http://localhost:3000 → sign in
 ```
+
+Checks (all must pass before merging):
+
+```bash
+npm test                   # 149 tests, ~2 s
+npm run typecheck
+npx eslint src scripts prisma
+npx next build
+```
+
+Environment variables:
+
+| Variable | Purpose |
+|---|---|
+| `NIRMAAN_OS_URL` | Absolute base URL for client links (defaults to the request host) |
+| `NIRMAAN_INTAKE_ORIGINS` | Comma-separated origins allowed to post to `/api/intake` (default: nirmaan.online) |
+| `AGENCY_OS_MODEL_<TYPE>_PROVIDER` / `_ID` | Model routing overrides, e.g. `AGENCY_OS_MODEL_REQUIREMENTS_PROVIDER=mock` to run discovery without a model |
+| `AGENTS_ROOT` | Where agent specs live (default `../agents`) |
+
+## Phase 1: Business OS (2026-09-24)
+
+Business rules live in `src/lib/<domain>/`, each function taking an `Actor`
+and checking a capability first. Server actions in `src/app/os/actions/` are
+thin wrappers.
+
+| Module | What it does |
+|---|---|
+| `auth/` | scrypt passwords, hashed database sessions, capability-based RBAC, actors |
+| `ids.ts` | Atomic human-readable IDs (LEAD-, REQ-, FEAT-, TASK-, TEST-, PROP-, CR-, PRJ-, DEPLOY-) |
+| `leads/` | Intake validation, lead creation, status rules (WON only by client approval; LOST needs a reason) |
+| `discovery/` | Business Analyst discovery mode → typed items; the promotion rule (no unconfirmed guess becomes a requirement) |
+| `proposals/` | Draft from discovery, edit, validate, send (one-time link), client decision → project creation (race-safe) |
+| `projects/` | Stage moves through the gate engine, gate requests and decisions, client progress, status links |
+| `trace/` | Knowledge graph links, features, tasks, tests, evidence, deployments, traceability matrix |
+| `changes/` | Change requests: scope assessment, pricing, decision, conversion to tasks |
+| `ai/` | `callModel()`, the metered model call writing the `AiUsage` ledger |
+| `dashboard/` | The founder's Today data: real metrics, exceptions, and "not tracked yet" for Phase 3 metrics |
+| `audit.ts` | Append-only audit log |
 
 ## Agent runtime (Phase 2)
 
@@ -55,9 +106,9 @@ Not live-tested separately from the rest of the pipeline — this is determinist
 
 Artifact *content* is never stored in the database — only a `filePath` pointer into `/projects/{id}/...` on disk, consistent with the file-based artifact convention from Phase 1.
 
-The dashboard (`/dashboard`) has two views so far:
+The Phase 3 dashboard (`/dashboard`, now `/os`, which redirects) had two views:
 - **Projects** — list + detail (tasks, artifacts, approval status) for each project
-- **Approvals** — pending approval gates with Approve/Reject actions (`src/lib/actions/approvals.ts`, Next.js Server Actions). No auth exists yet, so every decision is currently attributed to `"human"` — this is a local-only, pre-deployment tool; see the architecture plan's Risk Register for the auth gap.
+- **Approvals** — pending approval gates with Approve/Reject actions (`src/lib/actions/approvals.ts`, Next.js Server Actions). *(Superseded in Phase 1: decisions are now made by signed-in users with the `approval:decide` capability and attributed to them by name.)*
 
 No production database exists — this is local SQLite for the founder's own machine. Migration to Postgres is a deliberate later step, not something to reach for now (see the architecture plan's Technology Decisions).
 

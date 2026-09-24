@@ -524,9 +524,9 @@
   }
   .hero__inner a, .hero__inner button { pointer-events: auto; }
   .hero__copy { display: grid; gap: var(--s4); justify-items: start; align-content: end; container-type: inline-size; }
-  /* Sized to its column so the headline is always exactly three lines:
-     the longest line ("block by block.") is ~7.4em wide in Archivo 800 at 112% width. */
-  .hero__title { font-size: min(var(--fs-hero), 13cqi); }
+  /* Sized to its column so each line always fits on one line: the longest
+     ("the problem.") is ~6.2em wide in Archivo 800 at 112% width. */
+  .hero__title { font-size: min(var(--fs-hero), 14.5cqi); }
   .hero__title .line { white-space: nowrap; }
   .hero__title .accent { color: var(--blue); }
   .hero__lede { max-width: 40ch; }
@@ -718,6 +718,7 @@
   .principles .glyph { width: 1.75rem; height: 1.75rem; color: var(--blue); margin-bottom: var(--s2); }
   .principles h3 { font-family: var(--display); font-weight: 750; font-stretch: 104%; font-size: 1.3rem; letter-spacing: -0.015em; line-height: 1.2; }
   .principles p { font-size: var(--fs-small); color: var(--ink-2); }
+  .principles--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   @media (max-width: 60rem) { .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 36rem) { .principles { grid-template-columns: 1fr; } }
 
@@ -976,6 +977,22 @@
     background-position: calc(100% - 1.15rem) 55%, calc(100% - 0.8rem) 55%;
     background-size: 0.35rem 0.35rem; background-repeat: no-repeat;
   }
+  /* Problem-first intake: steps shown one at a time once contact-form.js runs */
+  .intake__step { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: var(--s3); }
+  .intake__legend {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 0.75rem; padding: 0;
+    font-family: var(--display); font-weight: 800; font-stretch: 104%; font-size: 1.25rem; letter-spacing: -0.015em;
+  }
+  .intake__legend:focus { outline: none; }
+  .intake__legend .opt { font-family: var(--body); font-weight: 400; font-size: 0.875rem; color: var(--ink-3); letter-spacing: 0; }
+  .intake__count { color: var(--blue); }
+  .intake__nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+  .intake__nav .btn--ghost { order: -1; }
+  .field__hint { font-size: 0.8125rem; color: var(--ink-3); }
+  .intake:not(.is-stepped) [data-next], .intake:not(.is-stepped) [data-back] { display: none; }
+  .intake:not(.is-stepped) .intake__step + .intake__step { padding-top: var(--s3); border-top: 1px solid var(--line); }
+  .intake [aria-invalid="true"] { border-color: #C2261B; }
+
   .form__submit { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2); padding-top: var(--s1); }
   .form__note { font-size: 0.8125rem; color: var(--ink-3); }
   .notice { display: grid; gap: 0.25rem; padding: 1rem 1.1rem; border: 1px solid; font-size: var(--fs-small); }

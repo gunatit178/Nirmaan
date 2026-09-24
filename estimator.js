@@ -3,7 +3,7 @@
 
   All prices and durations live in the markup (data-* on each option), so
   changing an offer never means touching this file:
-    project type  <input name="est-type"  value="15000" data-weeks="1-2" data-form-value="website">
+    project type  <input name="est-type"  value="15000" data-weeks="1-2">
     complexity    <input name="est-scale" value="1.5"   data-time-mult="1.5">
     add-on        <input name="est-addon" value="10000" data-weeks="1" type="checkbox">
 
@@ -72,32 +72,31 @@
     out.bar.setAttribute('aria-label', 'Timeline: ' + out.weeks.textContent);
   }
 
-  // "Use this estimate": carry the choice into the enquiry form below.
+  // "Use this estimate": carry the ballpark into the intake's budget field,
+  // then send the visitor back up to describe the problem itself.
   function applyToEnquiry() {
     var e = compute();
     var enquiry = document.getElementById('enquiry');
     if (!enquiry) return;
 
-    var select = enquiry.querySelector('#project-type');
-    var mapped = e.type.getAttribute('data-form-value');
-    if (select && mapped) select.value = mapped;
-
     var label = function (input) { return input.closest('label').querySelector('b').textContent.trim(); };
-    var lines = [
-      'From the estimator:',
-      '- Project: ' + label(e.type),
-      '- Complexity: ' + label(checked('est-scale')),
-    ];
-    if (e.addons.length) lines.push('- Add-ons: ' + e.addons.map(label).join(', '));
-    lines.push('- Ballpark: ' + out.price.textContent + ', ' + out.weeks.textContent);
+    var summary = 'Estimator: ' + out.price.textContent + ', ' + out.weeks.textContent +
+      ' (' + label(e.type) + ', ' + label(checked('est-scale')).toLowerCase() +
+      (e.addons.length ? ', + ' + e.addons.map(label).join(', ').toLowerCase() : '') + ')';
 
-    var message = enquiry.querySelector('#message');
-    if (message) {
-      var existing = message.value.replace(/^From the estimator:[\s\S]*?(\n\n|$)/, '');
-      message.value = lines.join('\n') + '\n\n' + existing;
+    var budget = enquiry.querySelector('#budgetRange');
+    if (budget) {
+      var option = budget.querySelector('option[data-estimate]');
+      if (!option) {
+        option = document.createElement('option');
+        option.setAttribute('data-estimate', '');
+        budget.appendChild(option);
+      }
+      option.value = option.textContent = summary.slice(0, 200);
+      budget.value = option.value;
     }
     enquiry.scrollIntoView({ block: 'start' });
-    var first = enquiry.querySelector('#project');
+    var first = enquiry.querySelector('#problem');
     if (first) first.focus({ preventScroll: true });
   }
 

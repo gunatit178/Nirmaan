@@ -1,15 +1,19 @@
 /*
-  contact-form.js: enquiry form on contact.html.
+  contact-form.js: the problem-first intake on contact.html.
 
-  HOW TO CONNECT IT
-    Set the form's data-endpoint attribute to your form service URL, e.g. a
-    Formspree form:  <form ... data-endpoint="https://formspree.io/f/xxxxxxxx">
-    (in src/contact.njk). It's sent as multipart form data with
-    "Accept: application/json", which Formspree, Basin, Getform and most form
-    services accept. If your own backend expects JSON, add data-format="json".
+  Three steps (the problem → optional context → timing and contact). With
+  JavaScript they appear one at a time; without it, all three show as one
+  ordinary form, so nothing depends on this script to be usable.
 
-  Until an endpoint is set the form says plainly that it isn't connected.
-  It never reports success for a message that was not actually sent.
+  WHERE IT SENDS
+    data-endpoint on the form, set from src/_data/site.json#intakeEndpoint.
+    That's the Nirmaan OS intake API (app/src/app/api/intake/route.ts), which
+    creates a LEAD- in the pipeline. data-format="json" sends JSON; without it
+    the form sends multipart form data (Formspree-style services).
+
+  Until an endpoint is set the form says plainly that it isn't connected and
+  shows the email address instead. It never reports success for a message
+  that was not actually received.
 */
 (function () {
   'use strict';
@@ -18,29 +22,83 @@
   if (!form) return;
 
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var MIN_PROBLEM = 20;
   var fallbackEmail = (form.getAttribute('data-fallback-email') || '').trim();
   var reachUs = fallbackEmail ? ' Please email us at ' + fallbackEmail + ' instead.' : '';
 
   var MSG = {
-    required: 'Please fill in your name, email and what you want to build.',
-    email: 'That email address doesn’t look right. Please check it and try again.',
-    notConnected: 'This form isn’t connected to an inbox yet, so your message was not sent.' + reachUs,
+    problem: 'Tell us a little more about the problem (at least ' + MIN_PROBLEM + ' characters).',
+    name: 'Please tell us your name.',
+    email: 'That email address doesn’t look right. Please check it.',
+    notConnected: 'This form isn’t connected yet, so your message was not sent.' + reachUs,
     network: 'We couldn’t reach the server. Check your connection and try again.',
     server: 'Something went wrong on our side, so your message was not sent. Please try again in a moment.' + reachUs,
   };
 
+  var steps = Array.prototype.slice.call(form.querySelectorAll('[data-step]'));
   var ok = form.querySelector('[data-form-ok]');
   var err = form.querySelector('[data-form-error]');
   var errText = err.querySelector('[data-form-error-text]');
   var button = form.querySelector('[type="submit"]');
   var buttonLabel = button.querySelector('[data-label]');
   var idleLabel = buttonLabel.textContent;
+  var current = 0;
 
-  function showError(message, field) {
+  /* ---- Steps ---- */
+  form.classList.add('is-stepped');
+
+  function show(index, focus) {
+    current = Math.max(0, Math.min(steps.length - 1, index));
+    steps.forEach(function (step, i) {
+      step.hidden = i !== current;
+    });
+    if (focus) {
+      var legend = steps[current].querySelector('legend');
+      if (legend) legend.focus({ preventScroll: true });
+      form.scrollIntoView({ block: 'start' });
+    }
+  }
+
+  function stepOf(field) {
+    for (var i = 0; i < steps.length; i++) if (steps[i].contains(field)) return i;
+    return -1;
+  }
+
+  function fieldError(field, message) {
+    var owner = stepOf(field);
+    if (owner !== -1 && owner !== current) show(owner, false);
+    showError(message);
+    field.setAttribute('aria-invalid', 'true');
+    field.focus();
+  }
+
+  /** Validates the fields that live in the current step. True when it can be left. */
+  function stepValid() {
+    clearState();
+    var problem = steps[current].querySelector('#problem');
+    if (problem && problem.value.trim().length < MIN_PROBLEM) {
+      fieldError(problem, MSG.problem);
+      return false;
+    }
+    return true;
+  }
+
+  form.addEventListener('click', function (e) {
+    if (e.target.closest('[data-next]') && stepValid()) show(current + 1, true);
+    if (e.target.closest('[data-back]')) {
+      clearState();
+      show(current - 1, true);
+    }
+  });
+
+  /* ---- Messages ----
+     Errors are shown in the step where the problem is, so the person
+     always sees the message next to the field it's about. */
+  function showError(message) {
     ok.hidden = true;
     errText.textContent = message;
+    steps[current].appendChild(err);
     err.hidden = false;
-    if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
   }
   function clearState() {
     ok.hidden = true;
@@ -56,32 +114,32 @@
     if (e.target.hasAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid');
   });
 
+  /* ---- Submit ---- */
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     clearState();
 
-    // 1. Required fields
-    var name = form.elements.name, email = form.elements.email, project = form.elements.project;
-    var missing = [name, email, project].filter(function (f) { return !f.value.trim(); })[0];
-    if (missing) return showError(MSG.required, missing);
-    if (!EMAIL_RE.test(email.value.trim())) return showError(MSG.email, email);
+    var problem = form.elements.problem;
+    var name = form.elements.contactName;
+    var email = form.elements.contactEmail;
+    if (problem.value.trim().length < MIN_PROBLEM) return fieldError(problem, MSG.problem);
+    if (!name.value.trim()) return fieldError(name, MSG.name);
+    if (!EMAIL_RE.test(email.value.trim())) return fieldError(email, MSG.email);
 
-    // 2. Spam trap: people never see or fill this field; bots do.
+    // Spam trap: people never see or fill this field; bots do.
     if (form.elements._gotcha && form.elements._gotcha.value) { form.reset(); ok.hidden = false; return; }
 
-    // 3. Endpoint
     var endpoint = (form.getAttribute('data-endpoint') || '').trim();
     if (!endpoint) {
-      if (window.console) console.error('[contact-form] No endpoint set. Add data-endpoint="https://formspree.io/f/…" to the form in src/contact.njk.');
+      if (window.console) console.error('[contact-form] No endpoint set. Set intakeEndpoint in src/_data/site.json.');
       return showError(MSG.notConnected);
     }
 
-    // 4. Send
     busy(true);
     var init = { method: 'POST', headers: { Accept: 'application/json' } };
     if (form.getAttribute('data-format') === 'json') {
       var data = {};
-      new FormData(form).forEach(function (v, k) { data[k] = v; });
+      new FormData(form).forEach(function (v, k) { if (typeof v === 'string' && v.trim()) data[k] = v; });
       init.headers['Content-Type'] = 'application/json';
       init.body = JSON.stringify(data);
     } else {
@@ -90,13 +148,23 @@
 
     fetch(endpoint, init)
       .then(function (res) {
-        if (res.ok) { form.reset(); ok.hidden = false; ok.focus(); return; }
+        if (res.ok) {
+          form.reset();
+          show(steps.length - 1, false);
+          ok.hidden = false;
+          ok.focus();
+          return;
+        }
         return res.json().catch(function () { return null; }).then(function (body) {
-          var detail = body && body.errors && body.errors[0] && body.errors[0].message;
-          showError(res.status < 500 && detail ? detail : MSG.server);
+          var first = body && body.errors && body.errors[0];
+          var field = first && first.field && form.elements[first.field];
+          if (res.status === 422 && field) return fieldError(field, first.message);
+          showError(res.status < 500 && first && first.message ? first.message : MSG.server);
         });
       })
       .catch(function () { showError(MSG.network); })
       .then(function () { busy(false); });
   });
+
+  show(0, false);
 })();

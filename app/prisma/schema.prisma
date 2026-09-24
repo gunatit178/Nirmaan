@@ -27,49 +27,68 @@ model Client {
   id        String    @id @default(cuid())
   name      String
   contact   String? // free-text for now; not enough client volume yet to justify structured fields
+  email     String? // primary contact email (Phase 1: taken from the lead that converted)
+  company   String?
   projects  Project[]
+  leads     Lead[]
   createdAt DateTime  @default(now())
 }
 
 model Project {
-  id            String   @id @default(cuid())
-  name          String
-  clientId      String?
-  client        Client?  @relation(fields: [clientId], references: [id])
+  id              String          @id @default(cuid())
+  // Human-readable id, e.g. PRJ-003 (see src/lib/ids.ts). Nullable only
+  // because projects created before Phase 1 have none.
+  code            String?         @unique
+  name            String
+  clientId        String?
+  client          Client?         @relation(fields: [clientId], references: [id])
   // LEAD|DISCOVERY|REQUIREMENTS|ESTIMATION|PROPOSAL|APPROVED|PLANNING|
   // DESIGN|ARCHITECTURE|IMPLEMENTATION|QA|SECURITY_REVIEW|DEPLOYMENT|
   // MONITORING|MAINTENANCE — see src/lib/db/enums.ts#PROJECT_STAGES
-  stage         String   @default("LEAD")
+  stage           String          @default("LEAD")
   // Directory name under /projects/ at the repo root, e.g. "demo-project"
-  artifactsPath String
-  tasks         Task[]
-  artifacts     Artifact[]
-  approvals     Approval[]
-  events        Event[]
-  deployments   Deployment[]
-  knowledge     Knowledge[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  artifactsPath   String
+  tasks           Task[]
+  artifacts       Artifact[]
+  approvals       Approval[]
+  events          Event[]
+  deployments     Deployment[]
+  knowledge       Knowledge[]
+  // Phase 1 business links
+  leadId          String?
+  lead            Lead?           @relation(fields: [leadId], references: [id])
+  proposalId      String?         @unique
+  proposal        Proposal?       @relation("ProjectProposal", fields: [proposalId], references: [id])
+  // sha256 of the client status-page token (/status/<token>); raw token is
+  // shown once and never stored.
+  statusTokenHash String?         @unique
+  requirements    Requirement[]
+  features        Feature[]
+  testCases       TestCase[]
+  changeRequests  ChangeRequest[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 model Task {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  projectId   String
-  project     Project    @relation(fields: [projectId], references: [id])
-  ownerAgent  String? // agent slug, matches /agents/<slug>
+  id           String     @id @default(cuid())
+  code         String?    @unique // TASK-042
+  title        String
+  description  String?
+  projectId    String
+  project      Project    @relation(fields: [projectId], references: [id])
+  ownerAgent   String? // agent slug, matches /agents/<slug>
   // BACKLOG|READY|IN_PROGRESS|BLOCKED|REVIEW|APPROVED|DONE
-  status      String     @default("BACKLOG")
+  status       String     @default("BACKLOG")
   // LOW|MEDIUM|HIGH
-  priority    String     @default("MEDIUM")
-  dependencies String    @default("[]") // JSON array of Task ids
-  estimate    String?
-  actual      String?
-  blockers    String     @default("[]") // JSON array of strings
-  artifacts   Artifact[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  priority     String     @default("MEDIUM")
+  dependencies String     @default("[]") // JSON array of Task ids
+  estimate     String?
+  actual       String?
+  blockers     String     @default("[]") // JSON array of strings
+  artifacts    Artifact[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Agent {
@@ -141,18 +160,19 @@ model Knowledge {
 }
 
 model Evaluation {
-  id              String    @id @default(cuid())
+  id              String   @id @default(cuid())
   agentId         String
-  agent           Agent     @relation(fields: [agentId], references: [id])
+  agent           Agent    @relation(fields: [agentId], references: [id])
   testCase        String
   expectedOutcome String
   actualOutcome   String?
   passed          Boolean?
-  runAt           DateTime  @default(now())
+  runAt           DateTime @default(now())
 }
 
 model Deployment {
   id           String    @id @default(cuid())
+  code         String?   @unique // DEPLOY-012
   projectId    String
   project      Project   @relation(fields: [projectId], references: [id])
   environment  String // e.g. "production", "staging"
@@ -162,4 +182,285 @@ model Deployment {
   rollbackPlan String?
   artifactId   String?
   artifact     Artifact? @relation(fields: [artifactId], references: [id])
+}
+
+// ---------------------------------------------------------------------
+// Phase 1: Business OS (see /docs/strategy/roadmap.md)
+// Money is stored as whole Indian rupees (Int). Allowed string values are
+// enforced in src/lib/db/enums.ts, as for every other status column here.
+// ---------------------------------------------------------------------
+
+// Internal team member. Clients do not have accounts in Phase 1; they act
+// through capability links (see Proposal.shareTokenHash, Project.statusTokenHash).
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique // stored lower-cased
+  name         String
+  // FOUNDER|CTO|PROJECT_MANAGER|ENGINEER|DESIGNER|QA|FINANCE|SUPPORT
+  role         String
+  passwordHash String // scrypt, see src/lib/auth/password.ts
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+  sessions     Session[]
+  createdAt    DateTime  @default(now())
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  // sha256 of the cookie value; the raw token only ever lives in the cookie
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// Security-relevant actions across the whole system (who did what to which
+// object). Distinct from Event, which is a per-project activity feed.
+model AuditLog {
+  id         String   @id @default(cuid())
+  // USER|CLIENT_LINK|SYSTEM|AGENT|PUBLIC
+  actorType  String
+  actorId    String? // user id, agent slug, or null
+  actorLabel String // human-readable, e.g. "Om Patel" or "Client via proposal link"
+  action     String // e.g. "proposal.sent", "lead.status_changed"
+  entityType String
+  entityId   String
+  detail     String? // redacted free text
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+}
+
+// Atomic per-prefix counters behind human-readable ids (REQ-104).
+model Counter {
+  key   String @id
+  value Int    @default(0)
+}
+
+model Lead {
+  id              String          @id @default(cuid())
+  code            String          @unique // LEAD-001
+  // NEW|DISCOVERY|QUALIFIED|PROPOSAL|WON|LOST|SPAM
+  status          String          @default("NEW")
+  // WEBSITE|MANUAL|REFERRAL
+  source          String          @default("WEBSITE")
+  // The customer's own words. Never rewritten; discovery works from it.
+  problem         String
+  business        String?
+  currentSolution String?
+  affected        String?
+  frequency       String?
+  scale           String?
+  existingSystems String?
+  desiredOutcome  String?
+  budgetRange     String?
+  timeline        String?
+  urgency         String?
+  contactName     String
+  contactEmail    String
+  contactPhone    String?
+  company         String?
+  lostReason      String?
+  ownerId         String?
+  clientId        String?
+  client          Client?         @relation(fields: [clientId], references: [id])
+  discovery       DiscoveryItem[]
+  requirements    Requirement[]
+  proposals       Proposal[]
+  projects        Project[]
+  notes           LeadNote[]
+  lastActivityAt  DateTime        @default(now())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([status])
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    String
+  body      String
+  createdAt DateTime @default(now())
+}
+
+// Discovery output, kept strictly typed so a guess can never silently
+// become a requirement (see src/lib/discovery/items.ts#promoteToRequirement).
+model DiscoveryItem {
+  id          String       @id @default(cuid())
+  leadId      String
+  lead        Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  // FACT|ASSUMPTION|QUESTION|RECOMMENDATION
+  kind        String
+  text        String
+  // CLIENT|AGENT|TEAM
+  source      String
+  // OPEN|CONFIRMED|REJECTED|ANSWERED
+  status      String       @default("OPEN")
+  answer      String?
+  // Which agent run produced it (AiUsage.id), if any
+  aiUsageId   String?
+  requirement Requirement?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Requirement {
+  id                 String         @id @default(cuid())
+  code               String         @unique // REQ-104
+  leadId             String?
+  lead               Lead?          @relation(fields: [leadId], references: [id])
+  projectId          String?
+  project            Project?       @relation(fields: [projectId], references: [id])
+  // BUSINESS|FUNCTIONAL|NON_FUNCTIONAL|CONSTRAINT
+  kind               String
+  statement          String
+  acceptanceCriteria String         @default("[]") // JSON list of strings
+  // MUST|SHOULD|COULD|WONT
+  priority           String         @default("MUST")
+  // DRAFT|APPROVED|CHANGED|DROPPED
+  status             String         @default("DRAFT")
+  sourceItemId       String?        @unique
+  sourceItem         DiscoveryItem? @relation(fields: [sourceItemId], references: [id])
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model Feature {
+  id          String   @id @default(cuid())
+  code        String   @unique // FEAT-027
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  title       String
+  description String?
+  // PLANNED|IN_PROGRESS|DONE
+  status      String   @default("PLANNED")
+  createdAt   DateTime @default(now())
+}
+
+model TestCase {
+  id        String     @id @default(cuid())
+  code      String     @unique // TEST-031
+  projectId String
+  project   Project    @relation(fields: [projectId], references: [id])
+  title     String
+  // STATIC|UNIT|INTEGRATION|E2E|SECURITY|PERFORMANCE|SMOKE|QA
+  level     String
+  evidence  Evidence[]
+  createdAt DateTime   @default(now())
+}
+
+// Proof, not claims: "14/14 unit tests passed", recorded against a test case.
+model Evidence {
+  id         String   @id @default(cuid())
+  testCaseId String
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+  // PASS|FAIL
+  result     String
+  passed     Int      @default(0)
+  total      Int      @default(0)
+  summary    String
+  link       String? // CI run, report, screenshot
+  recordedBy String
+  recordedAt DateTime @default(now())
+}
+
+// Edges of the project knowledge graph. Nodes are addressed by their
+// human-readable code (REQ-104 -> FEAT-027), which is stable and unique
+// across every table.
+model TraceLink {
+  id        String   @id @default(cuid())
+  projectId String
+  fromCode  String
+  toCode    String
+  // SATISFIED_BY (REQ->FEAT) | IMPLEMENTED_BY (FEAT->TASK) | VERIFIED_BY (REQ|FEAT|TASK->TEST) | SHIPPED_IN (FEAT|TASK->DEPLOY)
+  relation  String
+  createdAt DateTime @default(now())
+
+  @@unique([fromCode, toCode, relation])
+  @@index([projectId])
+}
+
+model Proposal {
+  id              String    @id @default(cuid())
+  code            String    @unique // PROP-007
+  leadId          String
+  lead            Lead      @relation(fields: [leadId], references: [id])
+  version         Int       @default(1)
+  // DRAFT|SENT|CLARIFICATION_REQUESTED|APPROVED|REJECTED|SUPERSEDED
+  status          String    @default("DRAFT")
+  title           String
+  problem         String
+  solution        String
+  scope           String    @default("[]") // JSON list
+  outOfScope      String    @default("[]")
+  deliverables    String    @default("[]")
+  milestones      String    @default("[]") // JSON [{ name, weeks }]
+  technology      String?
+  priceTotal      Int       @default(0) // INR
+  paymentSchedule String    @default("[]") // JSON [{ label, percent }], must sum to 100
+  maintenance     String? // JSON { name, monthly, includes[] } or null
+  assumptions     String    @default("[]")
+  changePolicy    String
+  validUntil      DateTime?
+  // Internal economics: never rendered on the client page
+  estHours        Int       @default(0)
+  estCostHuman    Int       @default(0)
+  estCostAi       Int       @default(0)
+  estCostInfra    Int       @default(0)
+  estCostOther    Int       @default(0)
+  shareTokenHash  String?   @unique
+  sentAt          DateTime?
+  decidedAt       DateTime?
+  decidedByName   String?
+  clientNote      String?
+  project         Project?  @relation("ProjectProposal")
+  createdById     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model ChangeRequest {
+  id            String    @id @default(cuid())
+  code          String    @unique // CR-004
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id])
+  requestedBy   String
+  description   String
+  // null until assessed
+  inScope       Boolean?
+  impact        String?
+  costDelta     Int       @default(0) // INR
+  timelineDelta Int       @default(0) // days
+  // OPEN|ASSESSED|APPROVED|REJECTED|CONVERTED
+  status        String    @default("OPEN")
+  taskId        String? // set when converted into normal work
+  decidedBy     String?
+  decidedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// One row per model call. The basis for AI cost governance.
+model AiUsage {
+  id           String   @id @default(cuid())
+  task         String // e.g. "discovery"
+  agentSlug    String?
+  provider     String
+  model        String
+  inputTokens  Int?
+  outputTokens Int?
+  costUsd      Float? // real when the provider reports it, else estimated, else null
+  costSource   String // REPORTED|ESTIMATED|UNKNOWN
+  latencyMs    Int
+  success      Boolean
+  error        String?
+  leadId       String?
+  projectId    String?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
 }

@@ -53,6 +53,11 @@ module.exports = function (eleventyConfig) {
     throw new Error(`service: no catalogue entry with id "${id}"`);
   });
 
+  // {{ services | serviceCount }}: how many services the catalogue offers.
+  eleventyConfig.addFilter('serviceCount', (services) =>
+    services.groups.reduce((n, group) => n + group.items.length, 0)
+  );
+
   return {
     dir: {
       input: 'src',

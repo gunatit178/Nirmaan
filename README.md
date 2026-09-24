@@ -23,6 +23,7 @@ Edit `src/`, rebuild, and commit the regenerated `*.html` with your change.
 | `src/_data/site.json` | **Contact details and social links.** Anything left empty isn't rendered anywhere on the site. |
 | `src/_data/services.json` | The service catalogue. Feeds the Services page, the homepage rail and the footer. |
 | `src/_data/navLinks.json` | Navigation order. Also sets page-transition direction and the sitemap. |
+| `vercel.json` | Redirects (the retired `/agency-os.html` → `/process.html#honest`) and baseline security headers. |
 | `styles.css` | The whole design system: tokens (light and dark), components, page layouts, motion. |
 | `.eleventy.js` | Build config plus the `{% logo %}` and `{% glyph %}` shortcodes. |
 
@@ -40,10 +41,10 @@ and again for dark.
 
 | File | Purpose |
 | --- | --- |
+| `contact-form.js` | Contact page. The three-step, problem-first intake: problem → optional context → timing and contact. Posts JSON to the Nirmaan OS intake API (`intakeEndpoint` in `site.json`). Until that's set, it honestly says the form isn't connected and shows the email address. |
 | `site.js` | Every page. Nav state and reading-progress bar, theme toggle (system / light / dark, remembered), mobile menu, scroll reveal, and the scroll scenes (the layer stack and services rail that pin on wide screens, the process timeline, the step index). |
 | `hero.js` | Homepage only. The pixel N assembling on the construction grid. |
 | `estimator.js` | Contact page. The budget and timeline estimator. Prices and durations are `data-*` attributes written from `src/contact.njk` front matter. |
-| `contact-form.js` | Contact page. Validation and submission of the enquiry form. |
 | `page-transitions.js` | Direction-aware page transitions, with a fade fallback. |
 
 All motion is progressive enhancement. With JavaScript off, or with the visitor's
@@ -53,9 +54,11 @@ All motion is progressive enhancement. With JavaScript off, or with the visitor'
 
 1. **Contact details.** Fill in `src/_data/site.json` (email, phone, WhatsApp
    number with country code, social URLs), then rebuild.
-2. **Connect the enquiry form.** In `src/contact.njk`, set the form's
-   `data-endpoint` to your form service URL (e.g. a Formspree form). Until then
-   the form tells visitors it isn't connected. It never claims a message was sent.
+2. **Connect the intake form.** Deploy the Nirmaan OS (`/app`, see
+   `docs/engineering/deployment.md`), then set `intakeEndpoint` in
+   `src/_data/site.json` to `https://<os-host>/api/intake` and rebuild. Leads then
+   arrive in the OS pipeline as LEAD-###. Until then the form tells visitors it
+   isn't connected and shows the email address. It never claims a message was sent.
 3. **Brand images.** `og-image.png` (link previews) and `apple-touch-icon.png` are
    rendered from HTML by `npm run assets` (needs Google Chrome). Source logo files
    are in `assets/brand/`.

@@ -51,9 +51,11 @@ export function loadAgent(slug: string): AgentDefinition {
 /** List every agent slug currently defined under /agents (dirs containing an agent.md). */
 export function listAgentSlugs(): string[] {
   const root = agentsRoot();
-  if (!fs.existsSync(root)) return [];
+  // /agents lives outside the app and is read at runtime by explicit path;
+  // tell Turbopack not to trace the whole project because of this listing.
+  if (!fs.existsSync(/*turbopackIgnore: true*/ root)) return [];
   return fs
-    .readdirSync(root, { withFileTypes: true })
+    .readdirSync(/*turbopackIgnore: true*/ root, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .filter((entry) => fs.existsSync(path.join(root, entry.name, "agent.md")))
     .map((entry) => entry.name);
