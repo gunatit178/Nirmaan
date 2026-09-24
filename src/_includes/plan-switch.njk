@@ -6,7 +6,7 @@
       <h2 class="mono" id="switch-title">{{ "Other plans" if current else "Every plan" }}</h2>
       <a class="link-arrow" href="/pricing.html#estimator">Estimate a budget <span aria-hidden="true">→</span></a>
     </div>
-    <ul class="plan-switch__list" role="list">
+    <ul class="plan-switch__list" role="list" data-swipe aria-label="Plans">
       {%- for q in pricing.packages %}
       <li data-reveal style="--d: {{ loop.index0 }}">
         <a class="plan-switch__item" href="/pricing/{{ q.id }}.html"{% if q.id == current %} aria-current="page"{% endif %}>

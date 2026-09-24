@@ -54,7 +54,7 @@
   <script src="/estimator.js" defer></script>
 </head>
 <body class="page page--pricing" id="top">
-
+<div class="vt-plate" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav" id="navbar" data-nav>
@@ -102,7 +102,10 @@
       <li><a href="/technology.html">Technology</a></li>
       <li><a href="/contact.html">Contact</a></li>
     </ul>
-    <p class="menu__foot mono">Nirmaan · Software Studio</p>
+    <div class="menu__foot">
+      <a class="btn menu__cta" href="/contact.html">Tell us your problem <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></a><p class="mono">gunatit178@gmail.com</p>
+      <p class="mono">Nirmaan · Software Studio</p>
+    </div>
   </nav>
 </div>
 
@@ -145,7 +148,7 @@
       <p class="section__text">Starting prices for the simplest version of each kind of project. Your fixed quote comes after a free conversation about the problem.</p>
     </div>
 
-    <ul class="price-grid" role="list">
+    <ul class="price-grid" role="list" data-swipe aria-label="Packages">
       <li class="price-card" data-reveal style="--d: 0">
         <div class="price-card__top">
           <svg class="glyph price-card__glyph" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="0" y="4" width="1" height="1" style="--i:0"/><rect x="1" y="4" width="1" height="1" style="--i:1"/><rect x="2" y="4" width="1" height="1" style="--i:2"/><rect x="3" y="4" width="1" height="1" style="--i:3"/><rect x="4" y="4" width="1" height="1" style="--i:4"/></svg>
@@ -266,7 +269,7 @@
       </div>
       <p class="section__text">Monthly plans for real ongoing work: hosting, backups, security and improvements. Start or stop any time. Not required.</p>
     </div>
-    <ul class="care-grid" role="list">
+    <ul class="care-grid" role="list" data-swipe aria-label="Care plans">
       <li class="care-card" data-reveal style="--d: 0">
         <h3 class="care-card__name"><a href="/pricing/care/essential.html" data-morph="care-essential">Essential</a></h3>
         <p class="care-card__for">Keep it online, safe and backed up.</p>
@@ -491,6 +494,10 @@
   </div>
 </footer>
 
+<div class="dock" data-dock aria-label="Quick actions" role="region">
+  <a class="btn dock__cta" href="/contact.html">Tell us your problem <svg class="glyph btn__arrow" viewBox="0 0 5 5" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="2" y="4" width="1" height="1" style="--i:0"/><rect x="3" y="3" width="1" height="1" style="--i:1"/><rect x="0" y="2" width="1" height="1" style="--i:2"/><rect x="1" y="2" width="1" height="1" style="--i:3"/><rect x="2" y="2" width="1" height="1" style="--i:4"/><rect x="3" y="2" width="1" height="1" style="--i:5"/><rect x="4" y="2" width="1" height="1" style="--i:6"/><rect x="3" y="1" width="1" height="1" style="--i:7"/><rect x="2" y="0" width="1" height="1" style="--i:8"/></svg></a>
+  <a class="dock__link" href="/pricing.html#estimator">Estimate</a>
+</div>
 
 </body>
 </html>

@@ -199,7 +199,7 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
       <p class="section__text">Clean code, direct communication with the people building it, and full-stack execution from first call to long after launch.</p>
     </div>
 
-    <ul class="principles" role="list">
+    <ul class="principles" role="list" data-swipe aria-label="Why Nirmaan">
       {%- for p in principles %}
       <li data-reveal style="--d: {{ loop.index0 % 3 }}">
         {% glyph p.glyph %}
@@ -273,7 +273,7 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
       <p class="section__text">Starting prices below. Your project gets one fixed quote after a free conversation, paid in three steps as it progresses. <a href="/pricing.html">Full pricing, care plans and an estimator</a>.</p>
     </div>
 
-    <ul class="packages packages--4" role="list">
+    <ul class="packages packages--4" role="list" data-swipe aria-label="Packages">
       {%- for p in pricing.packages %}
       <li class="package{% if p.highlight %} package--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
         {% glyph p.glyph, "package__glyph" %}

@@ -171,6 +171,84 @@
   }
 
   /* ---------------------------------------------------------------
+     4b. Phones: swipe rows and the dock
+  --------------------------------------------------------------- */
+  // Swipe rows ([data-swipe], horizontal on phones in styles.css): dots that
+  // follow the swipe and jump to a card, plus a "2 / 4" count.
+  $$('[data-swipe]').forEach(function (list) {
+    var items = Array.prototype.slice.call(list.children);
+    if (items.length < 2) return;
+    var bar = document.createElement('div');
+    bar.className = 'swipe-dots';
+    var track = document.createElement('div');
+    track.className = 'swipe-dots__track';
+    var count = document.createElement('span');
+    count.className = 'mono swipe-dots__count';
+    count.setAttribute('aria-hidden', 'true');
+    var label = list.getAttribute('aria-label') || 'item';
+    var dots = items.map(function (item, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', label + ': ' + (i + 1) + ' of ' + items.length);
+      b.addEventListener('click', function () {
+        list.scrollTo({ left: item.offsetLeft - list.offsetLeft - parseFloat(getComputedStyle(list).scrollPaddingLeft || 0), behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      });
+      track.appendChild(b);
+      return b;
+    });
+    bar.appendChild(track);
+    bar.appendChild(count);
+    list.insertAdjacentElement('afterend', bar);
+
+    var current = -1;
+    function sync() {
+      var edge = list.getBoundingClientRect().left + parseFloat(getComputedStyle(list).scrollPaddingLeft || 0);
+      var best = 0, bestD = Infinity;
+      items.forEach(function (item, i) {
+        var d = Math.abs(item.getBoundingClientRect().left - edge);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      // At the far end the last card may never reach the edge; count it anyway.
+      if (list.scrollLeft + list.clientWidth >= list.scrollWidth - 4) best = items.length - 1;
+      if (best === current) return;
+      current = best;
+      dots.forEach(function (b, i) { b.setAttribute('aria-current', String(i === best)); });
+      count.textContent = (best + 1) + ' / ' + items.length;
+    }
+    var pending = false;
+    list.addEventListener('scroll', function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; sync(); });
+    }, { passive: true });
+    sync();
+  });
+
+  // The dock: shown once the page's first screen of buttons has scrolled
+  // away, hidden again when the closing call to action or footer is in view
+  // (they already offer the same step).
+  var dock = document.querySelector('[data-dock]');
+  if (dock && 'IntersectionObserver' in window) {
+    var opener = document.querySelector('.hero .actions') || document.querySelector('.page-head .actions') || document.querySelector('.page-head');
+    var closers = $$('.cta-band, .footer');
+    var openerGone = false, closerSeen = new Set();
+    function syncDock() { dock.classList.toggle('is-shown', openerGone && closerSeen.size === 0); }
+    if (opener) {
+      new IntersectionObserver(function (entries) {
+        var e = entries[0];
+        openerGone = !e.isIntersecting && e.boundingClientRect.top < 0;
+        syncDock();
+      }, { rootMargin: '-' + ((document.querySelector('[data-nav]') || {}).offsetHeight || 0) + 'px 0px 0px 0px' }).observe(opener);
+    } else { openerGone = true; }
+    var closerObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) closerSeen.add(e.target); else closerSeen.delete(e.target); });
+      syncDock();
+    });
+    closers.forEach(function (c) { closerObserver.observe(c); });
+    syncDock();
+  }
+
+  /* ---------------------------------------------------------------
      5. Scroll scenes
   --------------------------------------------------------------- */
   var nav = document.querySelector('[data-nav]');

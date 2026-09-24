@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-25: Website: built for phones
+
+- Hero fills the first screen: a large mark (finer grid on small screens),
+  the headline at full column width, a full-width button; tapping the grid
+  sends a ripple of blue blocks out from your finger.
+- Page transitions on phones: blue blocks are laid over the old page from
+  the bottom, the pages swap underneath, and the blocks lift off the new
+  one, with the nav, dock and a tapped card's title staying on top.
+- Long card lists (packages, principles, prices, care plans, related
+  services, plan switcher) become swipe rows with dots and a "2 / 4" count.
+- A dock keeps "Tell us your problem" within thumb reach once the page's own
+  buttons scroll away, and steps aside for the closing call to action.
+- The menu builds down row by row and ends with the call to action and email.
+- Cards and buttons give a little under your thumb; the footer is two
+  columns instead of one long list.
+
 ## 2026-09-25: Website: a quieter hero, led by the mark
 
 - Hero: the headline on the left, a large pixel N on the right leading the
