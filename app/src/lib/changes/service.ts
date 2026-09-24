@@ -3,6 +3,7 @@ import { nextCode } from "../ids";
 import { audit } from "../audit";
 import { logEvent } from "../db/logEvent";
 import { assertCan } from "../auth/permissions";
+import { createChangeInvoice } from "../finance/invoices";
 import type { Actor } from "../auth/actor";
 
 /**
@@ -108,9 +109,16 @@ async function toTask(actor: Actor, id: string, projectId: string, crCode: strin
       where: { id },
       data: { status, taskId: task.id, decidedBy: actor.label, decidedAt: new Date() },
     });
-    return { task, cr };
+    // Approved, priced out-of-scope work is billed on its own invoice (Phase 3).
+    const invoice = status === "APPROVED" ? await createChangeInvoice(tx, cr) : null;
+    return { task, cr, invoice };
   });
-  await logEvent(projectId, null, null, `${crCode} ${status === "APPROVED" ? "approved" : "accepted as in scope"} by ${actor.label}; created ${result.task.code}.`);
+  await logEvent(
+    projectId,
+    null,
+    null,
+    `${crCode} ${status === "APPROVED" ? "approved" : "accepted as in scope"} by ${actor.label}; created ${result.task.code}${result.invoice ? ` and draft invoice ${result.invoice.code}` : ""}.`
+  );
   await audit(actor, `change.${status.toLowerCase()}`, "ChangeRequest", id, `${crCode} → ${result.task.code}`);
   return result.cr;
 }

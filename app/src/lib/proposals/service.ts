@@ -7,6 +7,7 @@ import { assertCan } from "../auth/permissions";
 import type { Actor } from "../auth/actor";
 import { decodeStringList, encodeStringList } from "../db/json";
 import { generateToken, hashToken, looksLikeToken } from "../auth/tokens";
+import { createScheduleInvoices } from "../finance/invoices";
 import {
   DEFAULT_CHANGE_POLICY,
   DEFAULT_PAYMENT_SCHEDULE,
@@ -259,6 +260,8 @@ export async function recordClientDecision(
         statusTokenHash: hashToken(statusToken),
       },
     });
+    // The billing schedule exists from the moment the project does (Phase 3).
+    await createScheduleInvoices(tx, created.id, client.id, proposal);
     await tx.requirement.updateMany({
       where: { leadId: lead.id, status: { not: "DROPPED" } },
       data: { projectId: created.id, status: "APPROVED" },

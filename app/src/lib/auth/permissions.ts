@@ -31,6 +31,9 @@ export const CAPABILITIES = [
   // AI software factory (Phase 2)
   "factory:run", // spends AI budget on architecture, planning and task dispatch
   "factory:review", // accepts an architecture or plan, which creates real project structure
+  // Money (Phase 3)
+  "finance:read", // invoices, payments, costs, actual margins
+  "finance:write", // issue invoices, record payments and costs, subscriptions, finance settings
   // Company
   "dashboard:read",
   "ai:read", // AI usage & cost ledger
@@ -67,7 +70,7 @@ export const ROLE_CAPABILITIES: Record<Role, readonly Capability[]> = {
   ENGINEER: ["project:read", "trace:write", "evidence:write"],
   DESIGNER: ["project:read", "trace:write"],
   QA: ["project:read", "trace:write", "evidence:write"],
-  FINANCE: ["lead:read", "proposal:read", "economics:read", "project:read", "dashboard:read", "ai:read"],
+  FINANCE: ["lead:read", "proposal:read", "economics:read", "project:read", "dashboard:read", "ai:read", "finance:read", "finance:write"],
   SUPPORT: ["lead:read", "project:read", "change:write"],
   CLIENT_ADMIN: ["client:proposal:respond", "client:project:status"],
   CLIENT_USER: ["client:project:status"],

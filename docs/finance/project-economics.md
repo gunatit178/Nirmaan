@@ -14,9 +14,9 @@ Actual gross margin = (revenue − actual cost) ÷ revenue
 |---|---|
 | Quoted revenue, estimated cost, expected margin, estimated hours on every proposal | **IMPLEMENTED** (visible only with `economics:read`) |
 | Approved change-request cost deltas | **IMPLEMENTED** (recorded on each CR) |
-| AI cost per lead/project from the usage ledger | **IMPLEMENTED** for discovery; PLANNED for all agent calls |
-| Invoices, payments, outstanding balance | **PLANNED** (Phase 3) |
-| Actual cost entries and actual margin; estimate-vs-actual per project and per service type | **PLANNED** (Phase 3) |
+| AI cost per lead/project from the usage ledger | **IMPLEMENTED** for discovery, architecture, planning and every agent dispatch; converted to INR at the settings rate |
+| Invoices, payments, outstanding balance | **IMPLEMENTED** (Phase 3) |
+| Actual cost entries and actual margin; estimate-vs-actual per project and per service type | **IMPLEMENTED** (Phase 3), `/os/finance` and each project's Money panel |
 
 ## The learning loop (after every project)
 

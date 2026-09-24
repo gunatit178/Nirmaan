@@ -76,14 +76,21 @@ Still **PLANNED** within Phase 2: agents writing code into a client repository
 through the tool registry (today they produce reviewed artifacts), and
 automated preview deploys.
 
-### Phase 3: Financial OS · PLANNED
+### Phase 3: Financial OS · IMPLEMENTED
 
-- Invoices and payments against the proposal's payment schedule.
-- Actual cost entries (human hours, AI, infrastructure, other) against the
-  estimate on the proposal, giving actual gross margin per project.
-- Recurring plans (hosting, maintenance, support) with renewals, MRR and
-  customer lifetime value.
-- CFO screen: estimated vs actual by project and by service type.
+| Capability | Scope |
+|---|---|
+| Invoices | Client approval creates one DRAFT invoice per payment step, inside the approval transaction; amounts sum exactly to the price. Approved priced change requests get their own invoice. Manual invoices for anything else. Issue → due date from payment terms; void (never with payments). |
+| Payments | Partial and full payments (bank, UPI, card, cash); overpayment refused; PAID when fully settled. |
+| GST | Company settings hold GSTIN and rate; charging GST requires a GSTIN. Tax shown separately. |
+| Actual costs | Human effort (hours × loaded hourly cost, or amount), infrastructure, external AI bills, other. AI spend from the usage ledger is added live (USD × settings rate), never re-entered. |
+| Economics | Per project: contract (price + approved CRs), invoiced, collected, outstanding, estimated vs actual cost, hours and margin. Margins are blank, not 100%, when there are no cost figures. |
+| Recurring | Care plans (SUB-) bill monthly as DRAFT invoices; each month can only be billed once; pause/cancel; MRR; client lifetime value. |
+| CFO screen | `/os/finance`: collected, outstanding, overdue, MRR, actual gross margin, estimate vs actual by project and by kind of work, invoices, plans, settings. Today shows the same money figures to finance roles. |
+| Client view | The status page lists sent invoices, what's due, and payment instructions. |
+
+**PLANNED:** online payment collection (a gateway) and a scheduled job for
+recurring invoices (today: a "Create due invoices" button).
 
 ### Phase 4: Knowledge and IP · PLANNED
 

@@ -10,7 +10,8 @@ Two experiences, one data model, different permissions and UX.
 | Problem-first intake (3 progressive steps) | nirmaan.online/contact → OS `/api/intake` | IMPLEMENTED (the endpoint goes live when the OS is deployed) |
 | Proposal review: approve / request changes / decline | OS `/p/<token>` | IMPLEMENTED |
 | Project progress | OS `/status/<token>` | IMPLEMENTED |
-| Deliverables, support requests, invoices, multi-project view | OS client accounts | PLANNED (Phase 3–4) |
+| Invoices due and paid, with payment instructions | OS `/status/<token>` | IMPLEMENTED (Phase 3) |
+| Deliverables, support requests, multi-project view | OS client accounts | PLANNED (Phase 4) |
 
 ## Internal OS (`/os`)
 
@@ -24,7 +25,7 @@ Delivery
              deployments, tasks, artifacts, activity)
   Approvals (human gates)
 Company
-  AI usage · Audit log · Team
+  Finance (CFO view, invoices, care plans, settings) · AI usage · Audit log · Team
 ```
 
 The lifecycle drives the navigation: a lead is worked in Pipeline until

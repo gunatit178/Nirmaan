@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { projectForStatusToken } from "@/lib/projects/service";
 import { clientProgress } from "@/lib/projects/progress";
+import { getSettings } from "@/lib/finance/settings";
+import { isOverdue } from "@/lib/finance/invoices";
+import { formatInr } from "@/lib/proposals/model";
 import { Logo } from "../../_components/Logo";
 
 export const metadata: Metadata = { title: "Project status", referrer: "no-referrer" };
@@ -17,6 +20,8 @@ export default async function StatusPage({ params }: PageProps<"/status/[token]"
     );
   }
   const p = clientProgress(project.stage);
+  const settings = project.invoices.length ? await getSettings() : null;
+  const now = new Date();
   return (
     <main className="client">
       <Brand />
@@ -54,6 +59,44 @@ export default async function StatusPage({ params }: PageProps<"/status/[token]"
           <dd>{project.updatedAt.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</dd>
         </dl>
       </section>
+
+      {project.invoices.length > 0 && (
+        <section aria-labelledby="payments">
+          <h2 id="payments">Invoices</h2>
+          <table className="table">
+            <tbody>
+              {project.invoices.map((inv) => {
+                const paid = inv.payments.reduce((s, x) => s + x.amount, 0);
+                const due = inv.total - paid;
+                return (
+                  <tr key={inv.code}>
+                    <td>
+                      <span className="mono">{inv.code}</span>
+                      <div style={{ fontSize: "0.875rem" }}>{inv.label.replace(/^PROP-\d+: /, "")}</div>
+                    </td>
+                    <td className="num" style={{ textAlign: "right" }}>
+                      {formatInr(inv.total)}
+                      <div className="faint" style={{ fontSize: "0.8125rem" }}>
+                        {inv.status === "PAID"
+                          ? "Paid, thank you"
+                          : isOverdue(inv, now)
+                            ? `${formatInr(due)} overdue`
+                            : `${formatInr(due)} due ${inv.dueDate ? inv.dueDate.toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}`}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {settings?.paymentInstructions && project.invoices.some((i) => i.status === "ISSUED") && (
+            <div className="panel">
+              <span className="label">How to pay</span>
+              <p className="prewrap">{settings.paymentInstructions}</p>
+            </div>
+          )}
+        </section>
+      )}
     </main>
   );
 }
