@@ -19,8 +19,14 @@ head:
   <div class="wrap contact">
 
     <form class="form intake" id="enquiry" data-enquiry novalidate
+          {%- if site.web3formsKey %}
+          data-endpoint="https://api.web3forms.com/submit"
+          data-format="web3forms"
+          data-access-key="{{ site.web3formsKey }}"
+          {%- else %}
           data-endpoint="{{ site.intakeEndpoint }}"
           data-format="json"
+          {%- endif %}
           data-fallback-email="{{ site.email }}"
           aria-labelledby="enquiry-title">
       <div>
