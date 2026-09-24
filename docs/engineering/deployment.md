@@ -35,3 +35,12 @@ Code → lint → typecheck → unit → build → integration → security chec
 
 Today the OS already enforces the human step: a production DEPLOY record
 can't be created without an approved PRODUCTION gate and a rollback plan.
+
+## GitHub Pages: keep it off
+
+The public site is served only by Vercel (www.nirmaan.online). GitHub Pages
+must stay disabled for this repository: its Jekyll build can't read the
+Eleventy templates in `src/` (every push fails with "Unknown tag 'set'"), and
+while it was on it kept serving an outdated copy of the site at
+`nirmaansoftware.github.io/Nirmaan`. Only the repository owner can change
+this, in Settings → Pages.

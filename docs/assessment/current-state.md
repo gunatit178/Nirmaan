@@ -64,7 +64,7 @@ CURRENT STATE
 
 ## What is fragile
 
-- **Public repository.** `gunatit178/Nirmaan` is public. `/projects/*` and
+- **Public repository.** `nirmaansoftware/Nirmaan` (formerly `gunatit178/Nirmaan`) is public. `/projects/*` and
   `/docs/*` are readable by anyone. The existing plan already warns about client
   data; the same now applies to internal pricing, margins and strategy (see
   Risks below).
