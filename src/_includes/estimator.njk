@@ -1,0 +1,64 @@
+{#- Budget estimator. Prices come from src/_data/pricing.json (packages + estimator). -#}
+<section class="section" id="estimator" aria-labelledby="estimator-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Project estimator</p>
+        <h2 class="section__title display" id="estimator-title">Ballpark it in ten&nbsp;seconds.</h2>
+      </div>
+      <p class="section__text">Already have a rough idea of what you need? Pick what's closest for a starting range. It's not a quote; your real proposal comes after we understand the problem.</p>
+    </div>
+
+    <form class="estimator" data-estimator aria-label="Project estimator">
+      <div class="estimator__inputs">
+        <fieldset>
+          <legend>Project type</legend>
+          <div class="choice-grid">
+            {%- for t in pricing.packages %}
+            <label class="choice">
+              <input type="radio" name="est-type" value="{{ t.from }}" data-weeks="{{ t.weeks | replace('–', '-') }}"{% if loop.first %} checked{% endif %} />
+              <span class="choice__box"><b>{{ t.estimator }}</b><span>{{ t.name }} · from {{ t.from | inr }}</span></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Complexity</legend>
+          <div class="choice-grid choice-grid--3">
+            {%- for sc in pricing.estimator.scales %}
+            <label class="choice">
+              <input type="radio" name="est-scale" value="{{ sc.value }}" data-time-mult="{{ sc.mult }}"{% if loop.first %} checked{% endif %} />
+              <span class="choice__box"><b>{{ sc.name }}</b><span>{{ sc.note }}</span></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Add-ons</legend>
+          <div class="chip-row">
+            {%- for a in pricing.estimator.addons %}
+            <label class="choice chip">
+              <input type="checkbox" name="est-addon" value="{{ a.value }}" data-weeks="{{ a.weeks }}" />
+              <span class="choice__box"><b>{{ a.name }}</b></span>
+            </label>
+            {%- endfor %}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="estimator__result" aria-live="polite">
+        <p class="mono">Estimated range</p>
+        <p class="estimator__price" data-est-price>₹15,000 – ₹19,500</p>
+        <div>
+          <p class="mono">Timeline · <span class="estimator__weeks" data-est-weeks>1–2 weeks</span></p>
+          <div class="weeks" data-est-bar role="img" aria-label="Timeline: 1–2 weeks"><i></i><i class="is-range"></i></div>
+          <p class="weeks-legend"><span>1 block = 1 week</span><span>Possible extra time</span></p>
+        </div>
+        <button class="btn btn--inverse" type="submit">Use this estimate {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</button>
+        <p class="estimator__fine">Takes this ballpark into your enquiry. Final pricing depends on the problem, scope and integrations.</p>
+      </div>
+    </form>
+  </div>
+</section>

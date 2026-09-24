@@ -4,7 +4,7 @@ title: "Tell us your problem — Nirmaan"
 description: "Describe the problem in your own words. No spec or technical knowledge needed. Nirmaan works out the system you actually need and replies within 24 hours."
 ogDescription: "You bring the problem. We build the system. Describe it in your own words and we'll reply within 24 hours."
 permalink: "/contact.html"
-scripts: ["contact-form.js", "estimator.js"]
+scripts: ["contact-form.js"]
 nav: "contact"
 head:
   eyebrow: "You bring the problem"
@@ -13,20 +13,7 @@ head:
   lede: "You don't need to know whether you need a website, an app or an automation. Tell us what's going wrong; working out the right system is our job."
   glyph: "00100/00010/11111/00010/00100"
   actions:
-    - { label: "Estimate a budget first", href: "#estimator" }
-types:
-  - { value: "15000", weeks: "1-2", form: "website",   name: "Business website",  note: "Pages, forms, SEO" }
-  - { value: "35000", weeks: "3-4", form: "ecommerce", name: "E-commerce store",  note: "Catalogue, payments, orders" }
-  - { value: "60000", weeks: "4-6", form: "webapp",    name: "Web application",   note: "Accounts, logic, data" }
-  - { value: "80000", weeks: "6-8", form: "fullstack", name: "Full-stack system", note: "Frontend + backend + database" }
-scales:
-  - { value: "1",   mult: "1",   name: "Simple",  note: "Standard features" }
-  - { value: "1.5", mult: "1.5", name: "Medium",  note: "More pages, some custom logic" }
-  - { value: "2.5", mult: "2",   name: "Complex", note: "Intricate logic, lots of data" }
-addons:
-  - { value: "10000", weeks: "1", name: "User login" }
-  - { value: "15000", weeks: "2", name: "Admin dashboard" }
-  - { value: "8000",  weeks: "1", name: "Payments" }
+    - { label: "See pricing first", href: "/pricing.html" }
 ---
 <section class="section" aria-label="Enquiry">
   <div class="wrap contact">
@@ -203,69 +190,5 @@ addons:
         <a class="channel" href="/projects.html"><span class="mono">Sudaangeo.in</span><b>Website + automation →</b></a>
       </div>
     </aside>
-  </div>
-</section>
-
-<section class="section" id="estimator" aria-labelledby="estimator-title">
-  <div class="wrap">
-    <div class="section__head section__head--split" data-reveal>
-      <div>
-        <p class="eyebrow">Project estimator</p>
-        <h2 class="section__title display" id="estimator-title">Ballpark it in ten&nbsp;seconds.</h2>
-      </div>
-      <p class="section__text">Already have a rough idea of what you need? Pick what's closest for a starting range. It's not a quote; your real proposal comes after we understand the problem.</p>
-    </div>
-
-    <form class="estimator" data-estimator aria-label="Project estimator">
-      <div class="estimator__inputs">
-        <fieldset>
-          <legend>Project type</legend>
-          <div class="choice-grid">
-            {%- for t in types %}
-            <label class="choice">
-              <input type="radio" name="est-type" value="{{ t.value }}" data-weeks="{{ t.weeks }}"{% if loop.first %} checked{% endif %} />
-              <span class="choice__box"><b>{{ t.name }}</b><span>{{ t.note }}</span></span>
-            </label>
-            {%- endfor %}
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Complexity</legend>
-          <div class="choice-grid choice-grid--3">
-            {%- for sc in scales %}
-            <label class="choice">
-              <input type="radio" name="est-scale" value="{{ sc.value }}" data-time-mult="{{ sc.mult }}"{% if loop.first %} checked{% endif %} />
-              <span class="choice__box"><b>{{ sc.name }}</b><span>{{ sc.note }}</span></span>
-            </label>
-            {%- endfor %}
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Add-ons</legend>
-          <div class="chip-row">
-            {%- for a in addons %}
-            <label class="choice chip">
-              <input type="checkbox" name="est-addon" value="{{ a.value }}" data-weeks="{{ a.weeks }}" />
-              <span class="choice__box"><b>{{ a.name }}</b></span>
-            </label>
-            {%- endfor %}
-          </div>
-        </fieldset>
-      </div>
-
-      <div class="estimator__result" aria-live="polite">
-        <p class="mono">Estimated range</p>
-        <p class="estimator__price" data-est-price>₹15,000 – ₹19,500</p>
-        <div>
-          <p class="mono">Timeline · <span class="estimator__weeks" data-est-weeks>1–2 weeks</span></p>
-          <div class="weeks" data-est-bar role="img" aria-label="Timeline: 1–2 weeks"><i></i><i class="is-range"></i></div>
-          <p class="weeks-legend"><span>1 block = 1 week</span><span>Possible extra time</span></p>
-        </div>
-        <button class="btn btn--inverse" type="submit">Use this estimate {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</button>
-        <p class="estimator__fine">Adds this ballpark to your enquiry above. Final pricing depends on the problem, scope and integrations.</p>
-      </div>
-    </form>
   </div>
 </section>

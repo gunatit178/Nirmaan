@@ -166,5 +166,17 @@
       .then(function () { busy(false); });
   });
 
+  // Arriving from the pricing page's estimator: pre-select that ballpark.
+  try {
+    var estimate = new URLSearchParams(location.search).get('estimate');
+    var budget = form.querySelector('#budgetRange');
+    if (estimate && budget) {
+      var option = document.createElement('option');
+      option.value = option.textContent = estimate.slice(0, 200);
+      budget.appendChild(option);
+      budget.value = option.value;
+    }
+  } catch (e) { /* no URLSearchParams: the field simply stays on "Not sure yet" */ }
+
   show(0, false);
 })();

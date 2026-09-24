@@ -1,0 +1,121 @@
+---
+layout: base.njk
+title: "Pricing — Nirmaan"
+description: "Clear starting prices for websites, online stores, web applications and full platforms, optional monthly care plans, and a free estimator. Fixed quotes, milestone payments, no hourly meter."
+ogDescription: "Starting prices, fixed quotes and milestone payments. See what a website, web app or full platform costs with Nirmaan."
+permalink: "/pricing.html"
+scripts: ["estimator.js"]
+nav: "pricing"
+head:
+  eyebrow: "Pricing"
+  lines: ["Honest prices,", "fixed before we start."]
+  accent: 1
+  lede: "Starting prices for the kinds of systems we build, one fixed quote for yours, and payments that follow progress. No hourly meter, no surprise invoices."
+  glyph: "00100/01110/00100/01110/00100"
+  actions:
+    - { label: "Tell us your problem", href: "/contact.html", style: "primary" }
+    - { label: "Estimate a budget", href: "#estimator" }
+cta:
+  eyebrow: "Not sure which one fits?"
+  lines: ["Describe the problem.", "We'll price the fix."]
+  text: "Most people don't know whether they need a website, an app or an automation. You don't have to. Tell us what's going wrong and you'll get a fixed quote for the simplest system that solves it."
+  primary: { label: "Tell us your problem", href: "/contact.html" }
+  secondary: { label: "How we work", href: "/process.html" }
+---
+<section class="section" aria-labelledby="build-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Build</p>
+        <h2 class="section__title display" id="build-title">One-time price for the&nbsp;system.</h2>
+      </div>
+      <p class="section__text">Starting prices for the simplest version of each kind of project. Your fixed quote comes after a free conversation about the problem.</p>
+    </div>
+
+    <ul class="price-grid" role="list">
+      {%- for p in pricing.packages %}
+      <li class="price-card{% if p.highlight %} price-card--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
+        <div class="price-card__top">
+          {% glyph p.glyph, "price-card__glyph" %}
+          <h3 class="price-card__name">{{ p.name }}</h3>
+          <p class="price-card__for">{{ p.for }}</p>
+        </div>
+        <p class="price-card__price">
+          <span class="price-card__from">from</span>
+          <span class="price-card__amount">{{ p.from | inr }}</span>
+        </p>
+        <p class="price-card__meta mono">{{ p.weeks }} weeks · {{ p.examples }}</p>
+        <ul class="ticks" role="list">
+          {%- for f in p.features %}<li>{{ f }}</li>{% endfor %}
+        </ul>
+        <a class="btn{% if not p.highlight %} btn--ghost{% endif %} price-card__cta" href="/contact.html">Tell us your problem</a>
+      </li>
+      {%- endfor %}
+    </ul>
+    <p class="price-note">{{ pricing.note }}</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">How pricing works</p>
+        <h2 class="section__title display" id="how-title">No meter running.</h2>
+      </div>
+      <p class="section__text">The same four rules on every project, whatever its size.</p>
+    </div>
+    <ol class="price-steps" role="list">
+      {%- for s in pricing.steps %}
+      <li data-reveal style="--d: {{ loop.index0 }}">
+        <span class="mono">Step {{ loop.index }}</span>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.text }}</p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="care" aria-labelledby="care-title">
+  <div class="wrap">
+    <div class="section__head section__head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Care plans (optional)</p>
+        <h2 class="section__title display" id="care-title">After launch, we stay.</h2>
+      </div>
+      <p class="section__text">Monthly plans for real ongoing work: hosting, backups, security and improvements. Start or stop any time. Not required.</p>
+    </div>
+    <ul class="care-grid" role="list">
+      {%- for c in pricing.care %}
+      <li class="care-card{% if c.highlight %} care-card--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
+        <h3 class="care-card__name">{{ c.name }}</h3>
+        <p class="care-card__for">{{ c.for }}</p>
+        <p class="care-card__price"><span class="price-card__amount">{{ c.monthly | inr }}</span><span class="care-card__per">/ month</span></p>
+        <ul class="ticks" role="list">
+          {%- for f in c.features %}<li>{{ f }}</li>{% endfor %}
+        </ul>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+{% include "estimator.njk" %}
+
+<section class="section" aria-labelledby="price-faq-title">
+  <div class="wrap faq-layout">
+    <div data-reveal>
+      <p class="eyebrow">Pricing questions</p>
+      <h2 class="section__title display" id="price-faq-title">The small&nbsp;print, big.</h2>
+    </div>
+    <div class="faq" data-reveal>
+      {%- for item in pricing.faq %}
+      <details{% if loop.first %} open{% endif %}>
+        <summary>{{ item.q }}<span class="faq__icon" aria-hidden="true"></span></summary>
+        <p class="faq__answer">{{ item.a }}</p>
+      </details>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,78 @@
+{
+  "_comment": "Single source of truth for every price on the website: the pricing page, the homepage packages and the estimator all read from here. Amounts are whole rupees, before GST. Build prices come from the original estimator; care-plan prices were proposed on 2026-09-24 and should be confirmed by the founder.",
+  "note": "Prices in INR, before GST where applicable. Every project gets a fixed quote after a free discovery conversation.",
+  "packages": [
+    {
+      "id": "starter", "name": "Starter", "estimator": "Business website",
+      "from": 15000, "weeks": "1–2", "glyph": "00000/00000/00000/00000/11111",
+      "for": "A professional presence that brings in enquiries.",
+      "examples": "Clinics, consultants, service businesses",
+      "features": ["Custom-designed website, up to 6 pages", "Mobile-first and fast", "Enquiry forms, WhatsApp and maps", "Search-ready structure and metadata", "Launch, domain and SSL setup"]
+    },
+    {
+      "id": "growth", "name": "Growth", "estimator": "E-commerce store",
+      "from": 35000, "weeks": "3–4", "glyph": "00000/00000/00000/11111/11111",
+      "for": "Sell online or manage more than a brochure.",
+      "examples": "Shops, restaurants, schools, D2C brands",
+      "features": ["Everything in Starter", "Online store or booking flow", "Payments and order management", "Content you can edit yourself", "Performance tuning"]
+    },
+    {
+      "id": "system", "name": "System", "estimator": "Web application",
+      "from": 60000, "weeks": "4–6", "glyph": "00000/00000/11111/11111/11111",
+      "for": "Replace the spreadsheet-and-WhatsApp workflow.",
+      "examples": "Order tracking, internal tools, client portals",
+      "features": ["Web application built around your process", "Accounts, roles and permissions", "Your data in a real database", "Dashboards and exports", "Automations and reminders"],
+      "highlight": true
+    },
+    {
+      "id": "platform", "name": "Platform", "estimator": "Full-stack system",
+      "from": 80000, "weeks": "6–8", "glyph": "11111/11111/11111/11111/11111",
+      "for": "The engine behind a business: many users, many parts.",
+      "examples": "SaaS products, marketplaces, AI-assisted operations",
+      "features": ["Frontend, backend and database, end to end", "APIs and third-party integrations", "AI features where they genuinely help", "Admin panel and reporting", "Security review before launch"]
+    }
+  ],
+  "estimator": {
+    "scales": [
+      { "value": "1", "mult": "1", "name": "Simple", "note": "Standard features" },
+      { "value": "1.5", "mult": "1.5", "name": "Medium", "note": "More pages, some custom logic" },
+      { "value": "2.5", "mult": "2", "name": "Complex", "note": "Intricate logic, lots of data" }
+    ],
+    "addons": [
+      { "value": "10000", "weeks": "1", "name": "User login" },
+      { "value": "15000", "weeks": "2", "name": "Admin dashboard" },
+      { "value": "8000", "weeks": "1", "name": "Payments" }
+    ]
+  },
+  "care": [
+    {
+      "name": "Essential", "monthly": 2500,
+      "for": "Keep it online, safe and backed up.",
+      "features": ["Managed hosting", "Daily backups with tested restores", "Security and dependency updates", "Uptime monitoring and alerts", "Response within 2 business days"]
+    },
+    {
+      "name": "Growth", "monthly": 6000,
+      "for": "Keep improving it every month.",
+      "features": ["Everything in Essential", "4 hours of changes each month", "Monthly performance and usage report", "Search and speed tuning", "Response within 1 business day"],
+      "highlight": true
+    },
+    {
+      "name": "Priority", "monthly": 15000,
+      "for": "For systems the business runs on.",
+      "features": ["Everything in Growth", "12 hours of changes each month", "Same-business-day response", "AI and API usage monitoring", "Quarterly roadmap session"]
+    }
+  ],
+  "steps": [
+    { "title": "Free first conversation", "text": "Tell us the problem. We ask questions, separate facts from assumptions, and tell you honestly if you don't need custom software at all." },
+    { "title": "One fixed price", "text": "A written proposal with what's in scope, what isn't, the timeline and the price. No hourly meter running." },
+    { "title": "Pay as it progresses", "text": "40% on approval, 40% when you review the working version, 20% on delivery." },
+    { "title": "Changes priced up front", "text": "New ideas mid-project are welcome. Each one comes with its cost and time before any work starts." }
+  ],
+  "faq": [
+    { "q": "Why \"from\" prices?", "a": "Because the problem sets the price, not the page count. The \"from\" price is what the simplest version of that kind of project costs. You get a fixed quote after we understand what you need, before you commit to anything." },
+    { "q": "Do prices include GST?", "a": "Prices are shown before GST. Where GST applies, it's added on the invoice and shown separately in your proposal." },
+    { "q": "What if my budget is lower?", "a": "Tell us. We'll usually suggest a smaller first version that solves the most painful part of the problem, and grow it later." },
+    { "q": "Is a care plan required?", "a": "No. It's optional and you can start or stop it at any time. If you'd rather host and maintain the system yourself, we hand over everything you need." },
+    { "q": "Who owns the code?", "a": "You do, once the project is paid for: source code, database and every asset." }
+  ]
+}

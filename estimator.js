@@ -72,18 +72,22 @@
     out.bar.setAttribute('aria-label', 'Timeline: ' + out.weeks.textContent);
   }
 
-  // "Use this estimate": carry the ballpark into the intake's budget field,
-  // then send the visitor back up to describe the problem itself.
+  // "Use this estimate": carry the ballpark into the intake's budget field.
+  // On the pricing page there's no intake, so it travels to the contact
+  // page in the URL (?estimate=…), where contact-form.js picks it up.
   function applyToEnquiry() {
     var e = compute();
     var enquiry = document.getElementById('enquiry');
-    if (!enquiry) return;
 
     var label = function (input) { return input.closest('label').querySelector('b').textContent.trim(); };
     var summary = 'Estimator: ' + out.price.textContent + ', ' + out.weeks.textContent +
       ' (' + label(e.type) + ', ' + label(checked('est-scale')).toLowerCase() +
       (e.addons.length ? ', + ' + e.addons.map(label).join(', ').toLowerCase() : '') + ')';
 
+    if (!enquiry) {
+      location.href = '/contact.html?estimate=' + encodeURIComponent(summary.slice(0, 200)) + '#enquiry';
+      return;
+    }
     var budget = enquiry.querySelector('#budgetRange');
     if (budget) {
       var option = budget.querySelector('option[data-estimate]');
