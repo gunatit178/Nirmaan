@@ -188,3 +188,39 @@ export const COST_CATEGORIES = ["HUMAN", "INFRA", "EXTERNAL_AI", "OTHER"] as con
 export type CostCategory = (typeof COST_CATEGORIES)[number];
 export const SUBSCRIPTION_STATUSES = ["ACTIVE", "PAUSED", "CANCELLED"] as const;
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];
+
+// ---------------------------------------------------------------------
+// Phase 4: Knowledge and IP
+// ---------------------------------------------------------------------
+
+export const ASSET_CATEGORIES = [
+  "UI_COMPONENTS",
+  "AUTHENTICATION",
+  "PAYMENTS",
+  "DASHBOARDS",
+  "ADMIN_PANELS",
+  "FORMS",
+  "EMAIL",
+  "NOTIFICATIONS",
+  "AI_INTEGRATIONS",
+  "DATABASE_PATTERNS",
+  "DEPLOYMENT_TEMPLATES",
+  "MONITORING",
+  "TESTING",
+  "SECURITY",
+] as const;
+export type AssetCategory = (typeof ASSET_CATEGORIES)[number];
+
+/** EXPERIMENTAL until first used on a project, USED_ONCE after one, PROVEN after three. */
+export const ASSET_MATURITY = ["EXPERIMENTAL", "USED_ONCE", "PROVEN"] as const;
+export type AssetMaturity = (typeof ASSET_MATURITY)[number];
+export const PROVEN_AFTER_PROJECTS = 3;
+
+export const SUPPORT_STATUSES = ["OPEN", "IN_PROGRESS", "RESOLVED"] as const;
+export type SupportStatus = (typeof SUPPORT_STATUSES)[number];
+export const SUPPORT_PRIORITIES = ["LOW", "NORMAL", "URGENT"] as const;
+export type SupportPriority = (typeof SUPPORT_PRIORITIES)[number];
+
+export function isClientRole(role: string | null | undefined): boolean {
+  return role === "CLIENT_ADMIN" || role === "CLIENT_USER";
+}

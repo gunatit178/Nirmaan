@@ -61,6 +61,11 @@ export async function cleanupClient(clientId: string) {
   await prisma.payment.deleteMany({ where: { invoice: { clientId } } });
   await prisma.invoice.deleteMany({ where: { clientId } });
   await prisma.subscription.deleteMany({ where: { clientId } });
+  const supports = await prisma.supportRequest.findMany({ where: { clientId }, select: { id: true } });
+  const users = await prisma.user.findMany({ where: { clientId }, select: { id: true } });
+  await prisma.auditLog.deleteMany({ where: { entityId: { in: [...supports, ...users].map((r) => r.id) } } });
+  await prisma.supportRequest.deleteMany({ where: { clientId } });
+  await prisma.user.deleteMany({ where: { clientId } });
   await prisma.client.delete({ where: { id: clientId } }).catch(() => undefined);
 }
 
@@ -83,6 +88,7 @@ export async function cleanupProjectGraph(projectId: string) {
     ...(await ids(prisma.invoice.findMany({ where: { projectId }, select: { id: true } }))),
     ...(await ids(prisma.costEntry.findMany({ where: { projectId }, select: { id: true } }))),
     ...(await ids(prisma.subscription.findMany({ where: { projectId }, select: { id: true } }))),
+    ...(await ids(prisma.supportRequest.findMany({ where: { projectId }, select: { id: true } }))),
   ];
   await prisma.auditLog.deleteMany({ where: { entityId: { in: related } } });
   await prisma.payment.deleteMany({ where: { invoice: { projectId } } });
@@ -90,6 +96,9 @@ export async function cleanupProjectGraph(projectId: string) {
   await prisma.costEntry.deleteMany({ where: { projectId } });
   await prisma.subscription.deleteMany({ where: { projectId } });
   await prisma.postMortem.deleteMany({ where: { projectId } });
+  await prisma.knowledge.deleteMany({ where: { projectId } });
+  await prisma.assetUse.deleteMany({ where: { projectId } });
+  await prisma.supportRequest.deleteMany({ where: { projectId } });
   await prisma.aiUsage.deleteMany({ where: { projectId } });
   await prisma.agentRun.deleteMany({ where: { projectId } });
   await prisma.traceLink.deleteMany({ where: { projectId } });

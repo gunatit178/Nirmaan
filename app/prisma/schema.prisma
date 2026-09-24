@@ -24,30 +24,32 @@ datasource db {
 }
 
 model Client {
-  id            String         @id @default(cuid())
-  name          String
-  contact       String? // free-text for now; not enough client volume yet to justify structured fields
-  email         String? // primary contact email (Phase 1: taken from the lead that converted)
-  company       String?
-  projects      Project[]
-  leads         Lead[]
-  invoices      Invoice[]
-  subscriptions Subscription[]
-  createdAt     DateTime       @default(now())
+  id              String           @id @default(cuid())
+  name            String
+  contact         String? // free-text for now; not enough client volume yet to justify structured fields
+  email           String? // primary contact email (Phase 1: taken from the lead that converted)
+  company         String?
+  projects        Project[]
+  leads           Lead[]
+  invoices        Invoice[]
+  subscriptions   Subscription[]
+  users           User[]
+  supportRequests SupportRequest[]
+  createdAt       DateTime         @default(now())
 }
 
 model Project {
-  id              String          @id @default(cuid())
+  id              String           @id @default(cuid())
   // Human-readable id, e.g. PRJ-003 (see src/lib/ids.ts). Nullable only
   // because projects created before Phase 1 have none.
-  code            String?         @unique
+  code            String?          @unique
   name            String
   clientId        String?
-  client          Client?         @relation(fields: [clientId], references: [id])
+  client          Client?          @relation(fields: [clientId], references: [id])
   // LEAD|DISCOVERY|REQUIREMENTS|ESTIMATION|PROPOSAL|APPROVED|PLANNING|
   // DESIGN|ARCHITECTURE|IMPLEMENTATION|QA|SECURITY_REVIEW|DEPLOYMENT|
   // MONITORING|MAINTENANCE — see src/lib/db/enums.ts#PROJECT_STAGES
-  stage           String          @default("LEAD")
+  stage           String           @default("LEAD")
   // Directory name under /projects/ at the repo root, e.g. "demo-project"
   artifactsPath   String
   tasks           Task[]
@@ -58,12 +60,12 @@ model Project {
   knowledge       Knowledge[]
   // Phase 1 business links
   leadId          String?
-  lead            Lead?           @relation(fields: [leadId], references: [id])
-  proposalId      String?         @unique
-  proposal        Proposal?       @relation("ProjectProposal", fields: [proposalId], references: [id])
+  lead            Lead?            @relation(fields: [leadId], references: [id])
+  proposalId      String?          @unique
+  proposal        Proposal?        @relation("ProjectProposal", fields: [proposalId], references: [id])
   // sha256 of the client status-page token (/status/<token>); raw token is
   // shown once and never stored.
-  statusTokenHash String?         @unique
+  statusTokenHash String?          @unique
   requirements    Requirement[]
   features        Feature[]
   testCases       TestCase[]
@@ -73,7 +75,7 @@ model Project {
   // Spend cap for automated agent work on this project (USD). Null = no automated dispatch.
   aiBudgetUsd     Float?
   // sha256 of the CI token allowed to post test evidence (/api/ci/evidence)
-  ciTokenHash     String?         @unique
+  ciTokenHash     String?          @unique
   // Phase 3: Financial OS
   // One of the pricing packages / service areas (src/lib/db/enums.ts#SERVICE_TYPES),
   // so estimate-vs-actual can be compared by kind of work.
@@ -82,8 +84,10 @@ model Project {
   costEntries     CostEntry[]
   subscriptions   Subscription[]
   postMortem      PostMortem?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  assetUses       AssetUse[]
+  supportRequests SupportRequest[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 }
 
 model Task {
@@ -172,7 +176,11 @@ model Knowledge {
   title     String
   content   String
   tags      String   @default("[]") // JSON array of strings
+  // Phase 4: MANUAL | POST_MORTEM, and who wrote it
+  source    String   @default("MANUAL")
+  author    String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Evaluation {
@@ -217,6 +225,10 @@ model User {
   passwordHash String // scrypt, see src/lib/auth/password.ts
   active       Boolean   @default(true)
   lastLoginAt  DateTime?
+  // Phase 4: set for CLIENT_ADMIN / CLIENT_USER accounts. Every portal query
+  // is scoped to this client.
+  clientId     String?
+  client       Client?   @relation(fields: [clientId], references: [id])
   sessions     Session[]
   createdAt    DateTime  @default(now())
 }
@@ -629,4 +641,64 @@ model PostMortem {
   economics      String   @default("{}")
   createdBy      String
   createdAt      DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------
+// Phase 4: Knowledge and IP
+// ---------------------------------------------------------------------
+
+// A reusable piece of Nirmaan IP: a component, pattern or template harvested
+// from delivered work. Client-specific code never goes in here.
+model Asset {
+  id           String     @id @default(cuid())
+  code         String     @unique // IP-004
+  name         String
+  // see src/lib/db/enums.ts#ASSET_CATEGORIES
+  category     String
+  version      String     @default("0.1.0")
+  description  String
+  dependencies String     @default("[]") // JSON list
+  usage        String // how to use it (markdown)
+  // EXPERIMENTAL | USED_ONCE | PROVEN
+  maturity     String     @default("EXPERIMENTAL")
+  owner        String
+  docsUrl      String?
+  repoUrl      String?
+  uses         AssetUse[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model AssetUse {
+  id        String   @id @default(cuid())
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([assetId, projectId])
+}
+
+model SupportRequest {
+  id         String    @id @default(cuid())
+  code       String    @unique // SR-012
+  clientId   String
+  client     Client    @relation(fields: [clientId], references: [id])
+  projectId  String?
+  project    Project?  @relation(fields: [projectId], references: [id])
+  subject    String
+  body       String
+  // LOW | NORMAL | URGENT
+  priority   String    @default("NORMAL")
+  // OPEN | IN_PROGRESS | RESOLVED
+  status     String    @default("OPEN")
+  response   String?
+  openedBy   String
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([status])
 }

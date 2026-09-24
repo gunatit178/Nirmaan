@@ -29,7 +29,7 @@
 | QA | Read projects, write traceability and evidence |
 | Finance | Read leads, proposals, economics, projects, dashboard, AI usage |
 | Support | Read leads and projects, log change requests |
-| Client admin / Client user | `client:proposal:respond` / `client:project:status`, through capability links in Phase 1 (accounts are PLANNED for Phase 4) |
+| Client admin / Client user | `client:proposal:respond` / `client:project:status`, through capability links, and with accounts (Phase 4): `client:invoices:read`, `client:support:write`, `client:change:request` for admins; status and support for users. Every portal query is scoped by the user's `clientId`; client roles can't be changed into internal roles or reach `/os` |
 
 The authoritative list is `ROLE_CAPABILITIES`; the Team screen shows it live.
 

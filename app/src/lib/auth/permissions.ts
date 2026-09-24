@@ -34,6 +34,11 @@ export const CAPABILITIES = [
   // Money (Phase 3)
   "finance:read", // invoices, payments, costs, actual margins
   "finance:write", // issue invoices, record payments and costs, subscriptions, finance settings
+  // Knowledge & IP (Phase 4)
+  "knowledge:read",
+  "knowledge:write",
+  "ip:write", // reusable asset library
+  "support:write", // respond to client support requests
   // Company
   "dashboard:read",
   "ai:read", // AI usage & cost ledger
@@ -42,6 +47,9 @@ export const CAPABILITIES = [
   // Client capabilities (exercised through capability links in Phase 1)
   "client:proposal:respond",
   "client:project:status",
+  "client:invoices:read",
+  "client:support:write",
+  "client:change:request",
 ] as const;
 export type Capability = (typeof CAPABILITIES)[number];
 
@@ -66,14 +74,18 @@ export const ROLE_CAPABILITIES: Record<Role, readonly Capability[]> = {
     "dashboard:read",
     "ai:read",
     "factory:run",
+    "knowledge:read",
+    "knowledge:write",
+    "support:write",
   ],
-  ENGINEER: ["project:read", "trace:write", "evidence:write"],
-  DESIGNER: ["project:read", "trace:write"],
-  QA: ["project:read", "trace:write", "evidence:write"],
-  FINANCE: ["lead:read", "proposal:read", "economics:read", "project:read", "dashboard:read", "ai:read", "finance:read", "finance:write"],
-  SUPPORT: ["lead:read", "project:read", "change:write"],
-  CLIENT_ADMIN: ["client:proposal:respond", "client:project:status"],
-  CLIENT_USER: ["client:project:status"],
+  ENGINEER: ["project:read", "trace:write", "evidence:write", "knowledge:read", "knowledge:write", "ip:write"],
+  DESIGNER: ["project:read", "trace:write", "knowledge:read", "knowledge:write", "ip:write"],
+  QA: ["project:read", "trace:write", "evidence:write", "knowledge:read", "knowledge:write"],
+  FINANCE: ["lead:read", "proposal:read", "economics:read", "project:read", "dashboard:read", "ai:read", "finance:read", "finance:write", "knowledge:read"],
+  SUPPORT: ["lead:read", "project:read", "change:write", "knowledge:read", "knowledge:write", "support:write"],
+  // Client accounts only ever see their own client's data (enforced in src/lib/portal).
+  CLIENT_ADMIN: ["client:proposal:respond", "client:project:status", "client:invoices:read", "client:support:write", "client:change:request"],
+  CLIENT_USER: ["client:project:status", "client:support:write"],
 };
 
 export function can(role: Role | string | null | undefined, capability: Capability): boolean {

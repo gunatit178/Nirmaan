@@ -1,4 +1,4 @@
-# Reusable IP library · PLANNED (Phase 4)
+# Reusable IP library · IMPLEMENTED (Phase 4, `/os/ip`)
 
 > Build once. Reuse many times.
 
@@ -8,7 +8,8 @@ deployment templates, monitoring, testing, security.
 
 Each asset records: name, version, description, dependencies, usage,
 projects using it, owner, maturity (experimental → used once → proven in 3+
-projects), and documentation link.
+projects), and documentation link. Maturity is derived from recorded uses,
+so it can't be overstated.
 
 Rules:
 

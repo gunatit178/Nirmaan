@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-09-24: Nirmaan OS, Phase 4 (Knowledge and IP)
+
+- IP library with computed maturity, knowledge base with search, mandatory
+  post-mortems before handover.
+- Client accounts and a `/portal` scoped to one client: projects, invoices,
+  support requests, change requests.
+- Support queue for the team.
+
+## 2026-09-24: Nirmaan OS, Phases 2 and 3
+
+- AI software factory: architect, planner, budgeted orchestrator, metered
+  dispatch, criticality routing, CI evidence endpoint.
+- Financial OS: invoices from payment schedules, payments, GST, actual costs,
+  project economics, care-plan billing, CFO screen.
+
 ## 2026-09-24: Nirmaan OS, Phase 1 (Business OS)
 
 **Positioning** · The public site now leads with "You bring the problem. We build

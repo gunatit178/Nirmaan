@@ -9,7 +9,13 @@ import { createUser, setUserActive, setUserRole } from "@/lib/team/service";
 export async function createUserAction(_: ActionState, form: FormData): Promise<ActionState> {
   const actor = await requireActor();
   try {
-    const u = await createUser(actor, { email: str(form, "email"), name: str(form, "name"), role: str(form, "role"), password: str(form, "password") });
+    const u = await createUser(actor, {
+      email: str(form, "email"),
+      name: str(form, "name"),
+      role: str(form, "role"),
+      password: str(form, "password"),
+      clientId: str(form, "clientId") || undefined,
+    });
     revalidatePath("/os/team");
     return { ok: `Created an account for ${u.email}. Share the password with them over a separate channel.` };
   } catch (err) {

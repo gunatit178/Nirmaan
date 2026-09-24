@@ -9,13 +9,15 @@ import { audit } from "@/lib/audit";
 import { userActor } from "@/lib/auth/actor";
 import type { ActionState } from "@/lib/web/actionState";
 import { str } from "@/lib/web/form";
+import { isClientRole } from "@/lib/db/enums";
 
 // 10 attempts per 15 minutes per IP+email: plenty for a person, useless for guessing.
 const allow = createRateLimiter({ limit: 10, windowMs: 15 * 60 * 1000 });
 
-/** Only same-app paths under /os, never an absolute or protocol-relative URL. */
-function safeNext(value: string): string {
-  return /^\/os(\/[\w\-/]*)?$/.test(value) ? value : "/os";
+/** Only same-app paths under the user's own area, never an absolute or protocol-relative URL. */
+function safeNext(value: string, home: "/os" | "/portal"): string {
+  const pattern = home === "/os" ? /^\/os(\/[\w\-/]*)?$/ : /^\/portal(\/[\w\-/]*)?$/;
+  return pattern.test(value) ? value : home;
 }
 
 export async function login(_: ActionState, form: FormData): Promise<ActionState> {
@@ -32,7 +34,7 @@ export async function login(_: ActionState, form: FormData): Promise<ActionState
 
   await startSession(user.id);
   await audit(userActor(user), "auth.login", "User", user.id);
-  redirect(safeNext(str(form, "next")));
+  redirect(safeNext(str(form, "next"), isClientRole(user.role) ? "/portal" : "/os"));
 }
 
 export async function logout() {

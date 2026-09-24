@@ -13,6 +13,7 @@ import { formatInr } from "@/lib/proposals/model";
 import { ActionForm } from "../../../_components/ActionForm";
 import { FactoryPanel } from "../../../_components/FactoryPanel";
 import { MoneyPanel } from "../../../_components/MoneyPanel";
+import { ProjectKnowledgePanel } from "../../../_components/ProjectKnowledgePanel";
 import { projectEconomics } from "@/lib/finance/costs";
 import { SERVICE_TYPES } from "@/lib/db/enums";
 import { projectAiSpend, runnableTasks } from "@/lib/factory/orchestrate";
@@ -59,6 +60,8 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
       agentRuns: { orderBy: { createdAt: "desc" } },
       invoices: { orderBy: { createdAt: "asc" }, include: { payments: true } },
       costEntries: { orderBy: { incurredOn: "desc" } },
+      postMortem: true,
+      assetUses: { include: { asset: { select: { code: true, name: true, maturity: true } } } },
     },
   });
   if (!project) notFound();
@@ -139,6 +142,14 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
       {economics && (
         <MoneyPanel projectId={project.id} e={economics} invoices={project.invoices} costs={project.costEntries} canWrite={can(user.role, "finance:write")} />
       )}
+
+      <ProjectKnowledgePanel
+        projectId={project.id}
+        postMortem={project.postMortem}
+        uses={project.assetUses}
+        canWrite={write}
+        canIp={can(user.role, "ip:write")}
+      />
 
       <div className="split">
         <div className="stack">

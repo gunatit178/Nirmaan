@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSession, deleteSession, userForToken } from "../auth/sessionStore";
 import { userActor, type Actor } from "../auth/actor";
+import { isClientRole } from "../db/enums";
 
 /**
  * Next.js side of sessions: the cookie. The cookie holds a random token;
@@ -20,10 +21,22 @@ export const getCurrentUser = cache(async () => {
   return userForToken(token);
 });
 
-/** For pages and actions under /os: the signed-in user, or a redirect to login. */
+/**
+ * For pages and actions under /os: a signed-in TEAM user, or a redirect.
+ * Client accounts are sent to their portal; they never see /os.
+ */
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
+  if (isClientRole(user.role)) redirect("/portal");
+  return user;
+}
+
+/** For /portal: a signed-in CLIENT user attached to a client, or a redirect. */
+export async function requireClientUser() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  if (!isClientRole(user.role) || !user.clientId) redirect("/os");
   return user;
 }
 
