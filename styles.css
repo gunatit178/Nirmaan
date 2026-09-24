@@ -778,7 +778,13 @@
   .price-card__meta { line-height: 1.5; }
   .price-card .ticks { flex: 1; }
   .price-card__cta { align-self: stretch; }
-  .price-card--featured { background: var(--ink); color: var(--paper); }
+  .price-card--featured { background: var(--ink); color: var(--paper); position: relative; }
+  /* The inverted card is the recommended one; say so, so it never reads as a glitch. */
+  .price-card--featured::before, .package--featured::before {
+    content: "Recommended"; position: absolute; top: 0; right: 0; padding: 0.3rem 0.6rem;
+    background: var(--blue); color: var(--blue-ink);
+    font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
   .price-card--featured:hover { background: var(--ink); }
   .price-card--featured .price-card__glyph { color: var(--blue-on-ink); }
   .price-card--featured .price-card__for, .price-card--featured .ticks li { color: color-mix(in srgb, var(--paper) 75%, transparent); }
@@ -1144,7 +1150,7 @@
   .price-card--featured .price-card__start:hover { color: var(--paper); }
   .care-card .ticks { flex: 1; }
   .care-card__cta { align-self: stretch; }
-  .package--featured { background: var(--ink); color: var(--paper); }
+  .package--featured { background: var(--ink); color: var(--paper); position: relative; }
   .package--featured .package__for, .package--featured .ticks li { color: color-mix(in srgb, var(--paper) 75%, transparent); }
   .package--featured .package__price span { color: color-mix(in srgb, var(--paper) 60%, transparent); }
   .package--featured .package__glyph { color: var(--blue-on-ink); }
