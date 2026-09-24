@@ -4,7 +4,7 @@ import { logEvent } from "../db/logEvent";
 import { assertCan } from "../auth/permissions";
 import type { Actor } from "../auth/actor";
 import { generateToken, hashToken, looksLikeToken } from "../auth/tokens";
-import { APPROVAL_GATES, isOneOf, type ApprovalGate } from "../db/enums";
+import { APPROVAL_GATES, SERVICE_TYPES, isOneOf, type ApprovalGate } from "../db/enums";
 import { GATE_TRANSITIONS, advanceProjectStage, checkGate, tryAdvanceAfterApproval } from "../orchestrator/qualityGates";
 import { nextStage } from "./progress";
 
@@ -71,6 +71,13 @@ export async function decideGate(actor: Actor, approvalId: string, status: "APPR
   return approval;
 }
 
+export async function setServiceType(actor: Actor, projectId: string, serviceType: string) {
+  assertCan(actor.role, "project:write");
+  if (serviceType && !isOneOf(SERVICE_TYPES, serviceType)) throw new Error("Unknown service type.");
+  await prisma.project.update({ where: { id: projectId }, data: { serviceType: serviceType || null } });
+  await audit(actor, "project.service_type_set", "Project", projectId, serviceType || "cleared");
+}
+
 /** Issues a fresh client status link (the old one stops working). Raw token is returned once. */
 export async function issueStatusLink(actor: Actor, projectId: string) {
   assertCan(actor.role, "project:write");
@@ -84,6 +91,18 @@ export async function projectForStatusToken(token: string) {
   if (!looksLikeToken(token)) return null;
   return prisma.project.findUnique({
     where: { statusTokenHash: hashToken(token) },
-    select: { code: true, name: true, stage: true, updatedAt: true, client: { select: { name: true } } },
+    select: {
+      code: true,
+      name: true,
+      stage: true,
+      updatedAt: true,
+      client: { select: { name: true } },
+      // Only invoices the client has actually been sent; drafts and voids stay internal.
+      invoices: {
+        where: { status: { in: ["ISSUED", "PAID"] } },
+        orderBy: { createdAt: "asc" },
+        select: { code: true, label: true, total: true, status: true, dueDate: true, paidAt: true, payments: { select: { amount: true } } },
+      },
+    },
   });
 }

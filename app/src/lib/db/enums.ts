@@ -156,3 +156,35 @@ export type AuditActorType = (typeof AUDIT_ACTOR_TYPES)[number];
 export function isOneOf<T extends string>(allowed: readonly T[], value: unknown): value is T {
   return typeof value === "string" && (allowed as readonly string[]).includes(value);
 }
+
+// ---------------------------------------------------------------------
+// Phase 3: Financial OS
+// ---------------------------------------------------------------------
+
+/** Kinds of work, for comparing estimate vs actual by service type. Mirrors the pricing packages plus service areas. */
+export const SERVICE_TYPES = [
+  "WEBSITE",
+  "ECOMMERCE",
+  "WEB_APP",
+  "INTERNAL_TOOL",
+  "AUTOMATION",
+  "AI_SYSTEM",
+  "MOBILE_APP",
+  "INTEGRATION",
+  "PLATFORM",
+  "MODERNISATION",
+  "OTHER",
+] as const;
+export type ServiceType = (typeof SERVICE_TYPES)[number];
+
+export const INVOICE_KINDS = ["MILESTONE", "CHANGE", "RECURRING", "OTHER"] as const;
+export type InvoiceKind = (typeof INVOICE_KINDS)[number];
+export const INVOICE_STATUSES = ["DRAFT", "ISSUED", "PAID", "VOID"] as const;
+export type InvoiceStatus = (typeof INVOICE_STATUSES)[number];
+export const PAYMENT_METHODS = ["BANK", "UPI", "CARD", "CASH", "OTHER"] as const;
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+/** AI spend from the ledger is added automatically; EXTERNAL_AI is for API bills paid outside the ledger. */
+export const COST_CATEGORIES = ["HUMAN", "INFRA", "EXTERNAL_AI", "OTHER"] as const;
+export type CostCategory = (typeof COST_CATEGORIES)[number];
+export const SUBSCRIPTION_STATUSES = ["ACTIVE", "PAUSED", "CANCELLED"] as const;
+export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];

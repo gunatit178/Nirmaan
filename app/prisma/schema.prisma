@@ -24,14 +24,16 @@ datasource db {
 }
 
 model Client {
-  id        String    @id @default(cuid())
-  name      String
-  contact   String? // free-text for now; not enough client volume yet to justify structured fields
-  email     String? // primary contact email (Phase 1: taken from the lead that converted)
-  company   String?
-  projects  Project[]
-  leads     Lead[]
-  createdAt DateTime  @default(now())
+  id            String         @id @default(cuid())
+  name          String
+  contact       String? // free-text for now; not enough client volume yet to justify structured fields
+  email         String? // primary contact email (Phase 1: taken from the lead that converted)
+  company       String?
+  projects      Project[]
+  leads         Lead[]
+  invoices      Invoice[]
+  subscriptions Subscription[]
+  createdAt     DateTime       @default(now())
 }
 
 model Project {
@@ -72,6 +74,14 @@ model Project {
   aiBudgetUsd     Float?
   // sha256 of the CI token allowed to post test evidence (/api/ci/evidence)
   ciTokenHash     String?         @unique
+  // Phase 3: Financial OS
+  // One of the pricing packages / service areas (src/lib/db/enums.ts#SERVICE_TYPES),
+  // so estimate-vs-actual can be compared by kind of work.
+  serviceType     String?
+  invoices        Invoice[]
+  costEntries     CostEntry[]
+  subscriptions   Subscription[]
+  postMortem      PostMortem?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
@@ -501,4 +511,122 @@ model AgentRun {
   createdAt  DateTime  @default(now())
 
   @@index([projectId, kind])
+}
+
+// ---------------------------------------------------------------------
+// Phase 3: Financial OS. Money is whole rupees (Int).
+// ---------------------------------------------------------------------
+
+// Company-wide finance settings. A single row with id "company".
+model CompanySettings {
+  id                  String   @id @default("company")
+  legalName           String   @default("Nirmaan")
+  gstin               String?
+  // Applied to new invoices. 0 until the business is GST-registered.
+  taxRatePercent      Int      @default(0)
+  // Converts the AI ledger's USD into INR for project costs.
+  usdToInr            Float    @default(84)
+  // Loaded internal cost of one hour of human effort, for effort-based cost entries.
+  hourlyCost          Int      @default(0)
+  invoiceDueDays      Int      @default(7)
+  paymentInstructions String?
+  updatedAt           DateTime @updatedAt
+}
+
+model Invoice {
+  id              String        @id @default(cuid())
+  code            String        @unique // INV-001
+  projectId       String?
+  project         Project?      @relation(fields: [projectId], references: [id])
+  clientId        String?
+  client          Client?       @relation(fields: [clientId], references: [id])
+  // MILESTONE | CHANGE | RECURRING | OTHER
+  kind            String
+  label           String
+  subtotal        Int
+  taxRatePercent  Int           @default(0)
+  tax             Int           @default(0)
+  total           Int
+  // DRAFT | ISSUED | PAID | VOID (overdue = ISSUED and past dueDate)
+  status          String        @default("DRAFT")
+  issuedAt        DateTime?
+  dueDate         DateTime?
+  paidAt          DateTime?
+  changeRequestId String?       @unique
+  subscriptionId  String?
+  subscription    Subscription? @relation(fields: [subscriptionId], references: [id])
+  // For recurring invoices: the month it covers, so a month is never billed twice.
+  periodStart     DateTime?
+  payments        Payment[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([subscriptionId, periodStart])
+  @@index([status])
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  invoiceId  String
+  invoice    Invoice  @relation(fields: [invoiceId], references: [id])
+  amount     Int
+  // BANK | UPI | CARD | CASH | OTHER
+  method     String
+  reference  String?
+  receivedAt DateTime
+  recordedBy String
+  createdAt  DateTime @default(now())
+}
+
+// Actual costs of delivering a project. AI cost is not entered here: it is
+// read live from the AiUsage ledger (so it can't drift or be double counted).
+model CostEntry {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id])
+  // HUMAN | INFRA | EXTERNAL_AI | OTHER
+  category   String
+  amount     Int
+  hours      Float?
+  note       String
+  incurredOn DateTime
+  recordedBy String
+  createdAt  DateTime @default(now())
+}
+
+model Subscription {
+  id              String    @id @default(cuid())
+  code            String    @unique // SUB-001
+  clientId        String
+  client          Client    @relation(fields: [clientId], references: [id])
+  projectId       String?
+  project         Project?  @relation(fields: [projectId], references: [id])
+  name            String
+  monthly         Int
+  // ACTIVE | PAUSED | CANCELLED
+  status          String    @default("ACTIVE")
+  startDate       DateTime
+  nextInvoiceDate DateTime
+  cancelledAt     DateTime?
+  invoices        Invoice[]
+  createdAt       DateTime  @default(now())
+}
+
+// Declared here (Phase 3 relation on Project); used by Phase 4.
+model PostMortem {
+  id             String   @id @default(cuid())
+  projectId      String   @unique
+  project        Project  @relation(fields: [projectId], references: [id])
+  wentWell       String
+  wentWrong      String
+  rework         String
+  underestimated String
+  reusable       String
+  automate       String
+  pricing        String
+  process        String
+  // Snapshot of estimate vs actual at the time of writing (JSON)
+  economics      String   @default("{}")
+  createdBy      String
+  createdAt      DateTime @default(now())
 }

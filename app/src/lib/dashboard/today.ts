@@ -1,5 +1,6 @@
 import { prisma } from "../db/client";
 import { OPEN_LEAD_STATUSES } from "../db/enums";
+import { cfoSummary } from "../finance/summary";
 
 /**
  * "NIRMAAN TODAY": the founder's one screen. It shows only numbers the
@@ -30,13 +31,14 @@ export interface Today {
   aiCost30dUsd: number | null;
   aiCalls30d: number;
   aiUnknownCost30d: number;
-  notTrackedYet: { label: string; phase: string }[];
+  money: { collected30d: number; outstanding: number; overdue: number; overdueCount: number; mrr: number; grossMarginActual: number | null } | null;
   exceptions: Exception[];
 }
 
 const INACTIVE_STAGES = ["LEAD", "DISCOVERY", "REQUIREMENTS", "ESTIMATION", "PROPOSAL", "MONITORING", "MAINTENANCE"];
 
-export async function getToday(now = new Date()): Promise<Today> {
+/** Money figures are only computed for people who may see them (finance:read). */
+export async function getToday(now = new Date(), opts: { includeMoney?: boolean } = {}): Promise<Today> {
   const since7 = new Date(now.getTime() - 7 * DAY);
   const since30 = new Date(now.getTime() - 30 * DAY);
   const since90 = new Date(now.getTime() - 90 * DAY);
@@ -100,8 +102,16 @@ export async function getToday(now = new Date()): Promise<Today> {
     ...blockedTasks.map((t) => ({ severity: "high" as const, label: `Blocked: ${t.title} (${t.project.name})`, href: `/os/projects/${t.project.id}` })),
     ...staleLeads.map((l) => ({ severity: "medium" as const, label: `${l.code} (${l.contactName}): no activity for ${STALE_LEAD_DAYS}+ days`, href: `/os/leads/${l.id}` })),
     ...staleProposals.map((p) => ({ severity: "medium" as const, label: `${p.code}: no answer for ${STALE_PROPOSAL_DAYS}+ days`, href: `/os/proposals/${p.id}` })),
+    ...(opts.includeMoney
+      ? (await prisma.invoice.findMany({ where: { status: "ISSUED", dueDate: { lt: now } }, select: { code: true, label: true } })).map((i) => ({
+          severity: "high" as const,
+          label: `${i.code} overdue: ${i.label}`,
+          href: "/os/finance",
+        }))
+      : []),
   ];
 
+  const cfo = opts.includeMoney ? await cfoSummary(now) : null;
   const decided = won90 + lost90;
   return {
     newLeads7d,
@@ -116,12 +126,16 @@ export async function getToday(now = new Date()): Promise<Today> {
     aiCost30dUsd: ai._count ? (ai._sum.costUsd ?? 0) : null,
     aiCalls30d: ai._count,
     aiUnknownCost30d: aiUnknown,
-    notTrackedYet: [
-      { label: "Revenue", phase: "Phase 3" },
-      { label: "Outstanding payments", phase: "Phase 3" },
-      { label: "MRR", phase: "Phase 3" },
-      { label: "Gross margin (actual)", phase: "Phase 3" },
-    ],
+    money: cfo
+      ? {
+          collected30d: cfo.collected30d,
+          outstanding: cfo.outstanding,
+          overdue: cfo.overdue,
+          overdueCount: cfo.overdueCount,
+          mrr: cfo.mrr,
+          grossMarginActual: cfo.grossMarginActual,
+        }
+      : null,
     exceptions,
   };
 }

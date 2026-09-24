@@ -9,7 +9,7 @@ import { prisma } from "./db/client";
  * concurrent allocations can never hand out the same number. Numbers are
  * zero-padded to three digits and simply grow past 999 (REQ-1000).
  */
-export const ID_PREFIXES = ["LEAD", "REQ", "FEAT", "TASK", "TEST", "PROP", "CR", "PRJ", "DEPLOY"] as const;
+export const ID_PREFIXES = ["LEAD", "REQ", "FEAT", "TASK", "TEST", "PROP", "CR", "PRJ", "DEPLOY", "INV", "SUB", "IP", "SR"] as const;
 export type IdPrefix = (typeof ID_PREFIXES)[number];
 
 type Db = PrismaClient | Prisma.TransactionClient;

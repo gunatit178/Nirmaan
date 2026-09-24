@@ -12,6 +12,9 @@ import { approvedScopeFor } from "@/lib/proposals/service";
 import { formatInr } from "@/lib/proposals/model";
 import { ActionForm } from "../../../_components/ActionForm";
 import { FactoryPanel } from "../../../_components/FactoryPanel";
+import { MoneyPanel } from "../../../_components/MoneyPanel";
+import { projectEconomics } from "@/lib/finance/costs";
+import { SERVICE_TYPES } from "@/lib/db/enums";
 import { projectAiSpend, runnableTasks } from "@/lib/factory/orchestrate";
 import { Badge, NoAccess, PageHead, ago, when } from "../../../_components/ui";
 import {
@@ -29,6 +32,7 @@ import {
   requestGateAction,
   statusLinkAction,
 } from "../../actions/projects";
+import { serviceTypeAction } from "../../actions/finance";
 
 export async function generateMetadata({ params }: PageProps<"/os/projects/[id]">): Promise<Metadata> {
   const p = await prisma.project.findUnique({ where: { id: (await params).id }, select: { code: true, name: true } });
@@ -53,11 +57,20 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
       deployments: { orderBy: { deployedAt: "desc" } },
       events: { orderBy: { timestamp: "desc" }, take: 25 },
       agentRuns: { orderBy: { createdAt: "desc" } },
+      invoices: { orderBy: { createdAt: "asc" }, include: { payments: true } },
+      costEntries: { orderBy: { incurredOn: "desc" } },
     },
   });
   if (!project) notFound();
 
-  const [matrix, scope, spend, runnable] = await Promise.all([traceMatrix(id), approvedScopeFor(id), projectAiSpend(id), runnableTasks(id)]);
+  const canFinance = can(user.role, "finance:read");
+  const [matrix, scope, spend, runnable, economics] = await Promise.all([
+    traceMatrix(id),
+    approvedScopeFor(id),
+    projectAiSpend(id),
+    runnableTasks(id),
+    canFinance ? projectEconomics(id) : Promise.resolve(null),
+  ]);
   const write = can(user.role, "project:write");
   const traceWrite = can(user.role, "trace:write");
   const gate = gateLeaving(project.stage);
@@ -121,6 +134,10 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
           hasCiToken={!!project.ciTokenHash}
           can={{ run: can(user.role, "factory:run"), review: can(user.role, "factory:review"), write }}
         />
+      )}
+
+      {economics && (
+        <MoneyPanel projectId={project.id} e={economics} invoices={project.invoices} costs={project.costEntries} canWrite={can(user.role, "finance:write")} />
       )}
 
       <div className="split">
@@ -402,6 +419,19 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
                 <code>/projects/{project.artifactsPath}/</code>
               </dd>
             </dl>
+            {write && (
+              <ActionForm action={serviceTypeAction} submit="Save" variant="ghost sm" className="row">
+                <input type="hidden" name="projectId" value={project.id} />
+                <select className="input" name="serviceType" defaultValue={project.serviceType ?? ""} aria-label="Service type" style={{ maxWidth: "12rem" }}>
+                  <option value="">Service type…</option>
+                  {SERVICE_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t.replace("_", " ").toLowerCase()}
+                    </option>
+                  ))}
+                </select>
+              </ActionForm>
+            )}
             {write && (
               <ActionForm action={statusLinkAction} submit="New client status link" variant="ghost sm">
                 <input type="hidden" name="projectId" value={project.id} />

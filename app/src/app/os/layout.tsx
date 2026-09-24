@@ -22,6 +22,7 @@ export default async function OsLayout({ children }: LayoutProps<"/os">) {
     can(role, "proposal:read") && { href: "/os/proposals", label: "Proposals", group: "Pipeline" },
     can(role, "project:read") && { href: "/os/projects", label: "Projects", group: "Delivery" },
     can(role, "approval:decide") && { href: "/os/approvals", label: "Approvals", count: pendingApprovals, group: "Delivery" },
+    can(role, "finance:read") && { href: "/os/finance", label: "Finance", group: "Company" },
     can(role, "ai:read") && { href: "/os/ai", label: "AI usage", group: "Company" },
     can(role, "audit:read") && { href: "/os/audit", label: "Audit log", group: "Company" },
     can(role, "user:manage") && { href: "/os/team", label: "Team", group: "Company" },

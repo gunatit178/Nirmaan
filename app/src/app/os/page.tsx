@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Today" };
 export default async function TodayPage() {
   const user = await requireUser();
   if (!can(user.role, "dashboard:read")) redirect("/os/projects");
-  const t = await getToday();
+  const t = await getToday(new Date(), { includeMoney: can(user.role, "finance:read") });
   const pct = (n: number | null) => (n === null ? "—" : `${Math.round(n * 100)}%`);
 
   return (
@@ -81,13 +81,24 @@ export default async function TodayPage() {
             value={t.aiCost30dUsd === null ? "—" : `$${t.aiCost30dUsd.toFixed(2)}`}
             note={`${t.aiCalls30d} calls, 30 days${t.aiUnknownCost30d ? ` · ${t.aiUnknownCost30d} without a cost` : ""}`}
           />
-          {t.notTrackedYet.map((m) => (
-            <div key={m.label} className="stat pending">
-              <span className="label">{m.label}</span>
-              <b>Not tracked yet</b>
-              <small>Arrives with the financial OS ({m.phase})</small>
+          {t.money ? (
+            <>
+              <Stat label="Collected" value={formatInr(t.money.collected30d)} note="last 30 days" />
+              <Stat
+                label="Outstanding"
+                value={formatInr(t.money.outstanding)}
+                note={t.money.overdueCount ? `${formatInr(t.money.overdue)} overdue on ${t.money.overdueCount} invoice(s)` : "none overdue"}
+              />
+              <Stat label="MRR" value={formatInr(t.money.mrr)} note="active care plans" />
+              <Stat label="Gross margin" value={pct(t.money.grossMarginActual)} note="actual, projects with costs recorded" />
+            </>
+          ) : (
+            <div className="stat pending">
+              <span className="label">Revenue and margins</span>
+              <b>Finance only</b>
+              <small>Visible to roles with finance access</small>
             </div>
-          ))}
+          )}
         </div>
       </section>
     </>

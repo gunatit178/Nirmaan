@@ -34,7 +34,12 @@ test("status links: a fresh link replaces the old one and exposes no internal fi
     assert.equal(await projectForStatusToken(first.token), null);
     const view = await projectForStatusToken(second.token);
     assert.equal(view?.stage, "QA");
-    assert.deepEqual(Object.keys(view!).sort(), ["client", "code", "name", "stage", "updatedAt"]);
+    assert.deepEqual(Object.keys(view!).sort(), ["client", "code", "invoices", "name", "stage", "updatedAt"]);
+    // Only sent invoices, and only what a client needs: no internal ids or drafts.
+    for (const inv of view!.invoices) {
+      assert.deepEqual(Object.keys(inv).sort(), ["code", "dueDate", "label", "paidAt", "payments", "status", "total"]);
+      assert.notEqual(inv.status, "DRAFT");
+    }
   } finally {
     await cleanupProjectGraph(project.id);
   }

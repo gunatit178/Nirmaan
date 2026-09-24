@@ -49,10 +49,19 @@ export async function cleanupLead(leadId: string) {
   await prisma.aiUsage.deleteMany({ where: { leadId } });
   await prisma.auditLog.deleteMany({ where: { entityId: { in: entityIds } } });
   await prisma.lead.delete({ where: { id: leadId } });
-  if (lead.clientId) {
-    const stillUsed = await prisma.project.count({ where: { clientId: lead.clientId } });
-    if (!stillUsed) await prisma.client.delete({ where: { id: lead.clientId } }).catch(() => undefined);
-  }
+  if (lead.clientId) await cleanupClient(lead.clientId);
+}
+
+/** Removes a fixture client and its client-level finance rows once no project uses it. */
+export async function cleanupClient(clientId: string) {
+  if (await prisma.project.count({ where: { clientId } })) return;
+  const subs = await prisma.subscription.findMany({ where: { clientId }, select: { id: true } });
+  const invoices = await prisma.invoice.findMany({ where: { clientId }, select: { id: true } });
+  await prisma.auditLog.deleteMany({ where: { entityId: { in: [...subs, ...invoices].map((r) => r.id) } } });
+  await prisma.payment.deleteMany({ where: { invoice: { clientId } } });
+  await prisma.invoice.deleteMany({ where: { clientId } });
+  await prisma.subscription.deleteMany({ where: { clientId } });
+  await prisma.client.delete({ where: { id: clientId } }).catch(() => undefined);
 }
 
 /** Removes a project's Phase 1 graph plus the base rows fixtureProject.ts handles. */
@@ -71,8 +80,16 @@ export async function cleanupProjectGraph(projectId: string) {
     ...(await ids(prisma.evidence.findMany({ where: { testCaseId: { in: tests } }, select: { id: true } }))),
     ...(await ids(prisma.requirement.findMany({ where: { projectId, leadId: null }, select: { id: true } }))),
     ...(await ids(prisma.agentRun.findMany({ where: { projectId }, select: { id: true } }))),
+    ...(await ids(prisma.invoice.findMany({ where: { projectId }, select: { id: true } }))),
+    ...(await ids(prisma.costEntry.findMany({ where: { projectId }, select: { id: true } }))),
+    ...(await ids(prisma.subscription.findMany({ where: { projectId }, select: { id: true } }))),
   ];
   await prisma.auditLog.deleteMany({ where: { entityId: { in: related } } });
+  await prisma.payment.deleteMany({ where: { invoice: { projectId } } });
+  await prisma.invoice.deleteMany({ where: { projectId } });
+  await prisma.costEntry.deleteMany({ where: { projectId } });
+  await prisma.subscription.deleteMany({ where: { projectId } });
+  await prisma.postMortem.deleteMany({ where: { projectId } });
   await prisma.aiUsage.deleteMany({ where: { projectId } });
   await prisma.agentRun.deleteMany({ where: { projectId } });
   await prisma.traceLink.deleteMany({ where: { projectId } });
