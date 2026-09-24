@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-24: Nirmaan OS, Phase 5 (Productization signals)
+
+- `/os/patterns`: won projects grouped by kind of work, scored against the
+  four productization criteria (pass / fail / unknown), with recorded
+  pursue / not-now decisions in the knowledge base.
+
 ## 2026-09-24: Nirmaan OS, Phase 4 (Knowledge and IP)
 
 - IP library with computed maturity, knowledge base with search, mandatory
