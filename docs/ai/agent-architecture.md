@@ -31,7 +31,10 @@ an **approval gate** (human).
 | Business Analyst **discovery mode** from a raw customer problem, producing typed discovery items | IMPLEMENTED (tested with the mock provider; live runs use the founder's `claude` CLI) · treat as **EXPERIMENTAL** until reviewed on 10 real leads |
 | Gate enforcement on stage moves | IMPLEMENTED |
 | Scoped tools (project filesystem, fixed test runner; no deploy, no git) | IMPLEMENTED |
-| Solution Architect run from approved requirements; planner creating FEAT/TASK; implementation agents on real code | PLANNED (Phase 2) |
+| Solution Architect run from approved requirements, reviewed by a person | IMPLEMENTED (Phase 2) · EXPERIMENTAL until reviewed on real projects |
+| Planner creating FEAT/TASK with agent owners, on acceptance | IMPLEMENTED (Phase 2) · EXPERIMENTAL |
+| Orchestrator loop with per-project budget, dependency order, stop on failure | IMPLEMENTED (Phase 2) |
+| Implementation agents writing code into a client repository | PLANNED |
 
 ## Guardrails
 

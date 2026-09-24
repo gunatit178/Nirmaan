@@ -11,7 +11,8 @@
 Plus `complexityHeuristic.ts` nudges one tier up or down per task from its
 text (free, no extra model call), logged when it fires.
 
-**PLANNED:** criticality routing, so that critical architecture and security
-output always gets the strongest model **and** a human review gate, while
-low-risk bulk work (summaries, formatting) is pinned to the cheapest tier.
+**IMPLEMENTED (Phase 2), criticality routing:** `CRITICAL_AGENTS` (orchestrator,
+principal-architect, security-engineer, devops-engineer, sre) are never
+down-tiered by the complexity heuristic, and every run creates a mandatory
+human review task. **PLANNED:** pinning low-risk bulk work to the cheapest tier.
 Overrides per task type via `AGENCY_OS_MODEL_<TYPE>_PROVIDER/_ID` env vars.

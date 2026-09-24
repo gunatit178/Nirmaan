@@ -30,13 +30,13 @@ function toStringList(value: unknown): string[] {
  */
 export function loadAgent(slug: string): AgentDefinition {
   const file = path.join(agentsRoot(), slug, "agent.md");
-  if (!fs.existsSync(file)) {
+  if (!fs.existsSync(/*turbopackIgnore: true*/ file)) {
     throw new Error(
       `No agent.md found for slug "${slug}" at ${file}. Check /agents/README.md for the expected layout.`
     );
   }
 
-  const raw = fs.readFileSync(file, "utf-8");
+  const raw = fs.readFileSync(/*turbopackIgnore: true*/ file, "utf-8");
   const { data, content } = matter(raw);
 
   return {

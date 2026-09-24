@@ -6,10 +6,11 @@ import { encodeStringList } from "../db/json";
 import { resolveModel } from "../model-router";
 import type { ModelProvider } from "../providers/types";
 import type { HandoffStatus } from "../agents/types";
-import { requireTaskType, requireOutputPath, artifactTypeFor } from "./agentConfig";
+import { requireTaskType, requireOutputPath, artifactTypeFor, CRITICAL_AGENTS } from "./agentConfig";
 import { estimateCostUsd } from "../costs/estimateCost";
 import { logEvent } from "../db/logEvent";
 import { estimateComplexity, adjustModelForComplexity } from "./complexityHeuristic";
+import { redactSecrets } from "../security/redact";
 
 /**
  * The one piece of real "orchestration" logic in this phase: given a Task
@@ -82,11 +83,16 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
   // instance specifically looks, at zero extra cost (no model call).
   // AGENCY_OS_DISABLE_COMPLEXITY_ROUTING=1 turns it off entirely if it
   // ever needs to be ruled out as a variable.
+  // Criticality routing: critical agents never run below their role's
+  // baseline model, however simple the task text looks.
+  const critical = CRITICAL_AGENTS.has(agentSlug);
   let modelOverrides: { model: string } | undefined;
   if (process.env.AGENCY_OS_DISABLE_COMPLEXITY_ROUTING !== "1") {
     const baseModel = resolveModel(taskType).model;
     const { adjustment, reasons } = estimateComplexity(userInput);
-    if (adjustment !== 0) {
+    if (adjustment < 0 && critical) {
+      await logEvent(task.projectId, agentSlug, task.id, `Complexity heuristic suggested a cheaper model, ignored: ${agentSlug} is a critical agent.`);
+    } else if (adjustment !== 0) {
       const adjustedModel = adjustModelForComplexity(baseModel, adjustment);
       if (adjustedModel !== baseModel) {
         modelOverrides = { model: adjustedModel };
@@ -100,15 +106,45 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
     }
   }
 
-  const result = await runAgent({
-    agentSlug,
-    taskType,
-    projectId: task.project.artifactsPath,
-    userInput,
-    outputRelativePath,
-    provider: options.provider,
-    modelOverrides,
-  });
+  // Every dispatch is metered in the AiUsage ledger, success or failure
+  // (see /docs/ai/ai-cost-governance.md). A failed run leaves the task
+  // BLOCKED with the reason, instead of stuck IN_PROGRESS.
+  const routed = { ...resolveModel(taskType), ...modelOverrides };
+  const started = Date.now();
+  let result: Awaited<ReturnType<typeof runAgent>>;
+  try {
+    result = await runAgent({
+      agentSlug,
+      taskType,
+      projectId: task.project.artifactsPath,
+      userInput,
+      outputRelativePath,
+      provider: options.provider,
+      modelOverrides,
+    });
+  } catch (err) {
+    const message = redactSecrets(err instanceof Error ? err.message : String(err)).slice(0, 1000);
+    await prisma.aiUsage.create({
+      data: {
+        task: `dispatch:${agentSlug}`,
+        agentSlug,
+        provider: routed.provider,
+        model: routed.model,
+        costSource: "UNKNOWN",
+        latencyMs: Date.now() - started,
+        success: false,
+        error: message,
+        projectId: task.projectId,
+      },
+    });
+    await prisma.task.update({
+      where: { id: task.id },
+      data: { status: "BLOCKED", blockers: encodeStringList([`Agent run failed: ${message.slice(0, 300)}`]) },
+    });
+    await logEvent(task.projectId, agentSlug, task.id, `${agentSlug} failed: ${message.slice(0, 300)}`);
+    throw err;
+  }
+  const latencyMs = Date.now() - started;
 
   const agentRow = await prisma.agent.upsert({
     where: { slug: agentSlug },
@@ -158,6 +194,35 @@ export async function dispatchTask(taskId: string, options: DispatchOptions = {}
     task.id,
     `${agentSlug} completed with status=${result.metadata.status}, confidence=${result.metadata.confidence}, ${costNote}.`
   );
+  await prisma.aiUsage.create({
+    data: {
+      task: `dispatch:${agentSlug}`,
+      agentSlug,
+      provider: result.provider,
+      model: result.model,
+      inputTokens: result.usage?.inputTokens,
+      outputTokens: result.usage?.outputTokens,
+      costUsd,
+      costSource: result.costUsd !== undefined ? "REPORTED" : costUsd !== null ? "ESTIMATED" : "UNKNOWN",
+      latencyMs,
+      success: true,
+      projectId: task.projectId,
+    },
+  });
+
+  // Critical agents always get a human reviewer on top of any agent reviewers.
+  if (critical) {
+    const humanReview = await prisma.task.create({
+      data: {
+        title: `Human review (critical): ${task.title}`,
+        description: `${agentSlug} is a critical agent. A person must review artifact ${artifact.id} before anything depends on it.`,
+        projectId: task.projectId,
+        status: "REVIEW",
+        dependencies: encodeStringList([task.id]),
+      },
+    });
+    await logEvent(task.projectId, agentSlug, task.id, `Created mandatory human review task ${humanReview.id} (critical agent).`);
+  }
 
   const reviewTaskIds: string[] = [];
   if (result.metadata.status === "ready-for-handoff") {

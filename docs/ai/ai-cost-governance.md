@@ -15,8 +15,8 @@ Cost source, in order of trust:
 | Ledger plus `/os/ai` (by task, by model, recent calls, current routing) | IMPLEMENTED |
 | AI cost on the Today screen (30 days) and per lead | IMPLEMENTED |
 | Discovery metered | IMPLEMENTED |
-| `dispatchTask` agent runs metered in the same ledger (today they log cost to Event) | PLANNED (Phase 2) |
-| Per-project AI budget with a stop at the cap | PLANNED |
+| `dispatchTask`, architecture and planning runs metered in the same ledger | IMPLEMENTED (Phase 2) |
+| Per-project AI budget with a stop at the cap | IMPLEMENTED (Phase 2): automated dispatch refuses to start without a budget and stops when spend reaches it |
 | AI cost as a line in actual project economics | PLANNED (Phase 3) |
 
 Rules: use the cheapest model that does the job; strong models for

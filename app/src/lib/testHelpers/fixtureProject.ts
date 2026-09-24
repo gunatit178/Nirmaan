@@ -22,6 +22,8 @@ export async function seedFixtureTask(projectId: string, ownerAgent: string, tit
 }
 
 export async function cleanupFixtureProject(projectId: string) {
+  await prisma.aiUsage.deleteMany({ where: { projectId } });
+  await prisma.agentRun.deleteMany({ where: { projectId } });
   await prisma.event.deleteMany({ where: { projectId } });
   await prisma.approval.deleteMany({ where: { projectId } });
   await prisma.artifact.deleteMany({ where: { projectId } });

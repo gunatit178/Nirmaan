@@ -3,7 +3,10 @@
  * is created with unique values and removed afterwards, so tests can share
  * the developer's dev.db without leaving rows behind.
  */
+import fs from "node:fs";
+import path from "node:path";
 import { prisma } from "../db/client";
+import { projectsRoot } from "../agents/artifactWriter";
 import type { Actor } from "../auth/actor";
 import type { InternalRole } from "../db/enums";
 import { createLead, type IntakeData } from "../leads/intake";
@@ -67,8 +70,11 @@ export async function cleanupProjectGraph(projectId: string) {
     ...(await ids(prisma.traceLink.findMany({ where: { projectId }, select: { id: true } }))),
     ...(await ids(prisma.evidence.findMany({ where: { testCaseId: { in: tests } }, select: { id: true } }))),
     ...(await ids(prisma.requirement.findMany({ where: { projectId, leadId: null }, select: { id: true } }))),
+    ...(await ids(prisma.agentRun.findMany({ where: { projectId }, select: { id: true } }))),
   ];
   await prisma.auditLog.deleteMany({ where: { entityId: { in: related } } });
+  await prisma.aiUsage.deleteMany({ where: { projectId } });
+  await prisma.agentRun.deleteMany({ where: { projectId } });
   await prisma.traceLink.deleteMany({ where: { projectId } });
   await prisma.evidence.deleteMany({ where: { testCaseId: { in: tests } } });
   await prisma.testCase.deleteMany({ where: { projectId } });
@@ -83,5 +89,12 @@ export async function cleanupProjectGraph(projectId: string) {
   await prisma.approval.deleteMany({ where: { projectId } });
   await prisma.artifact.deleteMany({ where: { projectId } });
   await prisma.task.deleteMany({ where: { projectId } });
-  await prisma.project.delete({ where: { id: projectId } });
+  const project = await prisma.project.delete({ where: { id: projectId } });
+  removeFixtureArtifacts(project.artifactsPath);
+}
+
+/** Agent runs in tests write real files under /projects/test-fixture-*; remove them too. */
+export function removeFixtureArtifacts(artifactsPath: string) {
+  if (!artifactsPath.startsWith("test-fixture-")) return; // never touch a real project's folder
+  fs.rmSync(path.join(projectsRoot(), artifactsPath), { recursive: true, force: true });
 }

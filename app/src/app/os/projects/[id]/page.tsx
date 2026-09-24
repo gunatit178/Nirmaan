@@ -11,6 +11,8 @@ import { clientProgress, nextStage } from "@/lib/projects/progress";
 import { approvedScopeFor } from "@/lib/proposals/service";
 import { formatInr } from "@/lib/proposals/model";
 import { ActionForm } from "../../../_components/ActionForm";
+import { FactoryPanel } from "../../../_components/FactoryPanel";
+import { projectAiSpend, runnableTasks } from "@/lib/factory/orchestrate";
 import { Badge, NoAccess, PageHead, ago, when } from "../../../_components/ui";
 import {
   addFeatureAction,
@@ -50,11 +52,12 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
       changeRequests: { orderBy: { createdAt: "desc" } },
       deployments: { orderBy: { deployedAt: "desc" } },
       events: { orderBy: { timestamp: "desc" }, take: 25 },
+      agentRuns: { orderBy: { createdAt: "desc" } },
     },
   });
   if (!project) notFound();
 
-  const [matrix, scope] = await Promise.all([traceMatrix(id), approvedScopeFor(id)]);
+  const [matrix, scope, spend, runnable] = await Promise.all([traceMatrix(id), approvedScopeFor(id), projectAiSpend(id), runnableTasks(id)]);
   const write = can(user.role, "project:write");
   const traceWrite = can(user.role, "trace:write");
   const gate = gateLeaving(project.stage);
@@ -107,6 +110,18 @@ export default async function ProjectPage({ params }: PageProps<"/os/projects/[i
           </p>
         )}
       </section>
+
+      {(can(user.role, "factory:run") || can(user.role, "factory:review")) && (
+        <FactoryPanel
+          projectId={project.id}
+          runs={project.agentRuns}
+          budgetUsd={project.aiBudgetUsd}
+          spend={spend}
+          runnable={runnable.length}
+          hasCiToken={!!project.ciTokenHash}
+          can={{ run: can(user.role, "factory:run"), review: can(user.role, "factory:review"), write }}
+        />
+      )}
 
       <div className="split">
         <div className="stack">
