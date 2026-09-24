@@ -478,9 +478,6 @@
     .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer__brand { grid-column: 1 / -1; }
   }
-  @media (max-width: 26rem) {
-    .footer__grid { grid-template-columns: 1fr; }
-  }
 
   /* ---- Tag list ---- */
   .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -556,11 +553,27 @@
   .hero__mark-fallback { width: clamp(18rem, 36vw, 34rem); height: auto; color: var(--ink); align-self: center; justify-self: end; }
   .js .hero__mark-fallback { display: none; }
 
+  /* Tablets and phones: one screen, mark first and big, headline set to the
+     column's full width, actions within thumb reach. */
   @media (max-width: 60rem) {
-    .hero__inner { grid-template-columns: 1fr; gap: var(--s4); }
+    /* A finer grid on small screens, so the mark can be drawn larger. */
+    .hero { --cell: 1.25rem; }
+    .hero__inner {
+      grid-template-columns: 1fr; align-content: space-between; gap: var(--s4);
+      min-height: calc(100svh - var(--nav-h) - 3.4rem);
+      padding-block: clamp(1.5rem, 1rem + 3vw, 3rem) 2rem;
+    }
     .hero__side { order: -1; }
-    .hero__slot { min-height: 12rem; --mark-align: start; }
-    .hero__mark-fallback { width: 12rem; justify-self: start; }
+    .hero__slot { min-height: min(56vw, 30svh); --mark-align: start; }
+    .hero__mark-fallback { width: min(64vw, 36svh); justify-self: start; }
+    .hero__copy { gap: var(--s3); }
+    .hero__title { font-size: min(15.5cqi, 5rem); }
+  }
+  @media (max-width: 40rem) {
+    .hero__copy .actions { display: grid; width: 100%; gap: 0.5rem; }
+    .hero__copy .actions .btn { width: 100%; min-height: 3.5rem; }
+    .hero__copy .actions .link-arrow { justify-self: center; }
+    .hero__meaning { font-size: 0.75rem; }
   }
 
   /* Capability ticker */
@@ -1333,6 +1346,95 @@
 }
 
 /* ----------------------------------------------------------------
+   PHONES
+   Long card lists become swipeable rows, the next step stays within
+   thumb reach (the dock), and everything tappable answers the touch.
+---------------------------------------------------------------- */
+@layer pages {
+
+  /* Swipe rows: [data-swipe] lists scroll sideways on phones, one card and
+     a peek of the next, with dots underneath (site.js adds them). */
+  .swipe-dots { display: none; }
+  @media (max-width: 40rem) {
+    [data-swipe] {
+      display: flex; gap: 0.75rem; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scrollbar-width: none;
+      margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+      scroll-padding-inline: var(--gutter);
+      background: none; border: 0;
+    }
+    [data-swipe]::-webkit-scrollbar { display: none; }
+    [data-swipe] > * { flex: 0 0 84%; scroll-snap-align: start; border: 1px solid var(--line-2); }
+    [data-swipe] > .price-card--featured, [data-swipe] > .package--featured { border-color: var(--ink); }
+    .principles[data-swipe] > li { border: 1px solid var(--line-2); }
+    .care-grid[data-swipe] > .care-card--featured { border: 2px solid var(--blue); margin-top: 0.75rem; }
+    .care-grid[data-swipe] > * { margin-top: 0.75rem; }
+    .plan-switch__list[data-swipe] > * { flex-basis: 70%; border: 0; }
+    .related[data-swipe] > * { border: 0; }
+
+    .swipe-dots { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); margin-top: var(--s3); }
+    .swipe-dots__track { display: flex; gap: 0.375rem; }
+    .swipe-dots button {
+      width: 1.5rem; height: 0.375rem; padding: 0; background: var(--line-2);
+      transition: background-color 0.3s, width 0.35s var(--ease-out);
+    }
+    .swipe-dots button[aria-current="true"] { width: 2.5rem; background: var(--blue); }
+    /* A 44px touch target around each small dot. */
+    .swipe-dots button { position: relative; }
+    .swipe-dots button::after { content: ""; position: absolute; inset: -1.2rem -0.2rem; }
+    .swipe-dots__count { font-variant-numeric: tabular-nums; }
+  }
+
+  /* The dock */
+  .dock { display: none; }
+  @media (max-width: 48rem) {
+    .dock {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem max(var(--gutter), env(safe-area-inset-left, 0px)) calc(0.6rem + env(safe-area-inset-bottom, 0px));
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+      border-top: 1px solid var(--line);
+      transform: translateY(110%); transition: transform 0.45s var(--ease-out);
+      view-transition-name: dock;
+    }
+    .dock.is-shown { transform: none; }
+    .dock__cta { flex: 1; min-height: 3.25rem; }
+    .dock__link {
+      display: inline-grid; place-items: center; min-height: 3.25rem; padding: 0 1.1rem;
+      border: 1px solid var(--line-2); font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    }
+    html.menu-open .dock { transform: translateY(110%); }
+    /* Room at the end of the page so the dock never covers the footer's last line. */
+    .footer { padding-bottom: calc(var(--s4) + 4.5rem + env(safe-area-inset-bottom, 0px)); }
+  }
+
+  /* The menu: built from the top a row at a time, with the next step in it. */
+  .menu__foot { display: grid; gap: 0.75rem; }
+  .menu__cta { justify-self: stretch; min-height: 3.5rem; }
+  .motion .menu.is-open { animation: menu-build 0.5s steps(6, jump-none) both; }
+  @keyframes menu-build { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+  .motion .menu.is-open .menu__foot { animation: menu-in 0.6s var(--ease-out) 0.25s both; }
+
+  /* Press feedback on touch: things you tap give a little under your thumb. */
+  @media (hover: none) {
+    .btn, .svc-card, .price-card, .package, .care-card, .care-link, .plan-switch__item, .fit__other, .svc-chips a, .channel, .dock__link, .menu__links a {
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.18s var(--ease-out), background-color 0.25s, color 0.25s, border-color 0.25s;
+    }
+    .btn:active, .dock__link:active, .svc-chips a:active, .channel:active { transform: scale(0.97); }
+    .svc-card:active, .price-card:active, .package:active, .care-card:active, .care-link:active, .plan-switch__item:active, .fit__other:active { transform: scale(0.985); }
+    .menu__links a:active { color: var(--blue); transform: translateX(0.35rem); }
+  }
+
+  /* Footer: two columns of links on phones instead of one long list. */
+  @media (max-width: 26rem) {
+    .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer__grid > .footer__col:last-child { grid-column: 1 / -1; }
+  }
+}
+
+/* ----------------------------------------------------------------
    MOTION
    Everything here is enhancement. Hidden start states only exist
    under html.motion (set in <head> when IntersectionObserver is
@@ -1465,11 +1567,38 @@
     from { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
     to   { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
   }
-  @keyframes vt-old { to { opacity: 0.35; transform: scale(0.97); } }
+  /* The old page dims early, so each block of the new one visibly lands. */
+  @keyframes vt-old { 35% { opacity: 0.35; } to { opacity: 0.15; transform: scale(0.95); } }
   :root[data-vt-dir="forward"]::view-transition-old(root) { animation-name: vt-old-forward; }
   :root[data-vt-dir="back"]::view-transition-old(root)    { animation-name: vt-old-back; }
-  @keyframes vt-old-forward { to { opacity: 0.35; transform: translateX(-4%) scale(0.97); } }
-  @keyframes vt-old-back    { to { opacity: 0.35; transform: translateX(4%) scale(0.97); } }
+  @keyframes vt-old-forward { 35% { opacity: 0.35; } to { opacity: 0.15; transform: translateX(-5%) scale(0.95); } }
+  @keyframes vt-old-back    { 35% { opacity: 0.35; } to { opacity: 0.15; transform: translateX(5%) scale(0.95); } }
+  /* Phones: a bolder block wipe. Blue blocks are laid over the old page,
+     bottom row first; under them the pages swap; then the blocks lift off
+     the new page in reverse. The nav, dock and a morphing title stay on top
+     (they come after .vt-plate in the page). */
+  .vt-plate { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; }
+  @media (max-width: 40rem) {
+    .vt-plate { view-transition-name: plate; }
+    ::view-transition-old(plate) { display: none; }
+    ::view-transition-new(plate) {
+      opacity: 1; background: var(--blue);
+      animation: 0.8s steps(12, jump-none) both vt-plate;
+      -webkit-mask-image: url("/assets/motion/build-portrait.svg"); mask-image: url("/assets/motion/build-portrait.svg");
+      -webkit-mask-size: 1200% 100%; mask-size: 1200% 100%;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    }
+    @keyframes vt-plate {
+      0%   { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+      50%  { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+      100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+    }
+    ::view-transition-group(root) { animation-duration: 0.8s; }
+    :root[data-vt-dir]::view-transition-old(root), ::view-transition-old(root) { animation: 0.8s both vt-swap-out; }
+    ::view-transition-new(root) { animation: 0.8s both vt-swap-in; -webkit-mask-image: none; mask-image: none; }
+    @keyframes vt-swap-out { 0%, 45% { opacity: 1; transform: none; } 50%, 100% { opacity: 0; transform: scale(0.96); } }
+    @keyframes vt-swap-in  { 0%, 45% { opacity: 0; } 50%, 100% { opacity: 1; } }
+  }
 
   ::view-transition-group(morph) { animation-duration: 0.7s; animation-timing-function: var(--ease-out); z-index: 2; }
   ::view-transition-old(morph), ::view-transition-new(morph) { animation-duration: 0.45s; height: 100%; }

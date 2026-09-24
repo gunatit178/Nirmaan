@@ -14,6 +14,9 @@
   frames stop entirely when nothing is moving; the whole thing pauses when
   the hero is off-screen or the tab is hidden. With reduced motion, the
   finished mark is drawn once and nothing animates.
+
+  On touch screens there's no pointer to follow, so a tap sends a ripple of
+  blue cells out across the grid from where the finger landed.
 */
 (function () {
   'use strict';
@@ -136,6 +139,7 @@
     if (trail.size) {
       ctx.fillStyle = colors.blue;
       trail.forEach(function (t, key) {
+        if (t > now) return; // a ripple ring that hasn't arrived yet
         var a = 1 - (now - t) / TRAIL_MS;
         if (a <= 0) { trail.delete(key); return; }
         var ij = key.split(',');
@@ -208,6 +212,24 @@
     wake();
   }
 
+  // Touch: rings of cells light up outward from the tap, one ring every 55ms.
+  var RIPPLE_RINGS = 5;
+  function onTap(e) {
+    if (e.pointerType === 'mouse' || reduceMotion.matches) return;
+    var r = canvas.getBoundingClientRect();
+    var col = Math.floor((e.clientX - r.left) / cell);
+    var row = Math.floor((e.clientY - r.top) / cell);
+    var now = performance.now();
+    for (var dy = -RIPPLE_RINGS; dy <= RIPPLE_RINGS; dy++) {
+      for (var dx = -RIPPLE_RINGS; dx <= RIPPLE_RINGS; dx++) {
+        var ring = Math.abs(dx) + Math.abs(dy); // diamond rings, like blocks being laid
+        if (ring > RIPPLE_RINGS) continue;
+        trail.set((col + dx) + ',' + (row + dy), now + ring * 55);
+      }
+    }
+    wake();
+  }
+
   function redrawStatic() { draw(performance.now()); }
 
   readColors();
@@ -216,6 +238,7 @@
 
   hero.addEventListener('pointermove', onPointer, { passive: true });
   hero.addEventListener('pointerleave', function () { pointer = null; });
+  hero.addEventListener('pointerdown', onTap, { passive: true });
 
   var resizeTimer = 0;
   new ResizeObserver(function () {

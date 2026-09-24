@@ -138,7 +138,7 @@ eleventyComputed:
       </div>
       <a class="link-arrow" href="/services.html">All {{ services | serviceCount }} services <span aria-hidden="true">→</span></a>
     </div>
-    <ul class="related" role="list">
+    <ul class="related" role="list" data-swipe aria-label="Related services">
       {%- for id in s.related %}
       {%- set r = services | service(id) %}
       <li data-reveal style="--d: {{ loop.index0 }}">

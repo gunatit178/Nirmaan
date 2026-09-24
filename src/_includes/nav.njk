@@ -38,6 +38,10 @@
       <li><a href="/{{ link.href }}"{% if nav == link.slug %} aria-current="page"{% endif %}>{{ link.label }}</a></li>
       {%- endfor %}
     </ul>
-    <p class="menu__foot mono">{{ site.name }} · {{ site.descriptor }}</p>
+    <div class="menu__foot">
+      <a class="btn menu__cta" href="/contact.html">Tell us your problem {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</a>
+      {%- if site.email %}<p class="mono">{{ site.email }}</p>{% endif %}
+      <p class="mono">{{ site.name }} · {{ site.descriptor }}</p>
+    </div>
   </nav>
 </div>

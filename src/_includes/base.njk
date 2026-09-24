@@ -65,6 +65,9 @@
 </head>
 <body class="page page--{{ nav }}" id="top">
 
+{#- An empty layer that only exists for the phone page transition: blue blocks
+    are laid over the old page and lifted off the new one (styles.css). #}
+<div class="vt-plate" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 
 {% include "nav.njk" %}
@@ -80,6 +83,19 @@
 </main>
 
 {% include "footer.njk" %}
+
+{#- Phones: the next step stays within thumb reach once the page's own
+    buttons have scrolled away (site.js shows and hides it). -#}
+{%- if nav != 'contact' %}
+<div class="dock" data-dock aria-label="Quick actions" role="region">
+  <a class="btn dock__cta" href="/contact.html">Tell us your problem {% glyph "00100/00010/11111/00010/00100", "btn__arrow" %}</a>
+  {%- if nav == 'pricing' %}
+  <a class="dock__link" href="/pricing.html#estimator">Estimate</a>
+  {%- else %}
+  <a class="dock__link" href="/pricing.html">Pricing</a>
+  {%- endif %}
+</div>
+{%- endif %}
 
 </body>
 </html>
