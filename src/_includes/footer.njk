@@ -10,10 +10,10 @@
           </span>
         </a>
         <p class="footer__blurb">Websites, web applications and the backend systems behind them, built as one system around how your business runs.</p>
-        {%- set socials = [["LinkedIn", site.social.linkedin], ["GitHub", site.social.github], ["X", site.social.x]] %}
+        {%- set socials = [["LinkedIn", site.social.linkedin], ["GitHub", site.social.github], ["X · @" + (site.social.x | replace("https://x.com/", "")), site.social.x]] %}
         <ul class="footer__social" role="list">
           {%- for s in socials %}{% if s[1] %}
-          <li><a href="{{ s[1] }}" rel="noopener noreferrer" target="_blank">{{ s[0] }}</a></li>
+          <li><a href="{{ s[1] }}" rel="noopener noreferrer" target="_blank">{{ s[0] }}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
           {%- endif %}{% endfor %}
         </ul>
       </div>

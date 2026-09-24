@@ -193,12 +193,13 @@ head:
         </ol>
       </div>
 
-      {%- if site.email or site.phone or site.whatsapp %}
+      {%- if site.email or site.phone or site.whatsapp or site.social.x %}
       <div data-reveal>
         <p class="eyebrow">Or reach us directly</p>
         <div class="channels">
           {%- if site.email %}<a class="channel" href="mailto:{{ site.email }}"><span class="mono">Email</span><b>{{ site.email }}</b></a>{% endif %}
           {%- if site.phone %}<a class="channel" href="tel:{{ site.phone | replace(' ', '') }}"><span class="mono">Phone</span><b>{{ site.phone }}</b></a>{% endif %}
+          {%- if site.social.x %}<a class="channel" href="{{ site.social.x }}" target="_blank" rel="noopener noreferrer"><span class="mono">X</span><b>@{{ site.social.x | replace('https://x.com/', '') }} <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></b></a>{% endif %}
           {%- if site.whatsapp %}<a class="channel" href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener noreferrer"><span class="mono">WhatsApp</span><b>Message us <span aria-hidden="true">↗</span></b></a>{% endif %}
         </div>
       </div>

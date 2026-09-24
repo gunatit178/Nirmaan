@@ -20,6 +20,9 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="The Nirmaan pixel-N mark beside the line: We build software, block by block." />
   <meta name="twitter:card" content="summary_large_image" />
+  {%- if site.social.x %}
+  <meta name="twitter:site" content="@{{ site.social.x | replace('https://x.com/', '') }}" />
+  {%- endif %}
   <meta name="twitter:title" content="{{ title | safe }}" />
   <meta name="twitter:description" content="{{ ogDescription or description }}" />
   <meta name="twitter:image" content="{{ site.url }}/og-image.png" />
