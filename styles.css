@@ -1472,6 +1472,8 @@
     @keyframes block-fall { to { transform: translateY(calc(100vh + 6rem)); } }
     /* A card title that morphs into this page's heading arrives with it, instead of rising. */
     .vt-morph .page-head__title .line > span { animation: none; }
+    /* Phones: a page that slid in is already complete; no second entrance. */
+    .vt-slide :is(.page-head__title .line > span, .page-head__copy > *, .hero__title .line > span, .hero__copy > *, .glyph--assemble rect) { animation: none; }
 
     /* Page heads: the mark drifts off and the blueprint grid thins as you scroll away. */
     @supports (animation-timeline: scroll()) {
@@ -1529,8 +1531,7 @@
   }
   .motion .section + .section:not(.is-seen)::before { transform: scaleX(0); }
 
-  /* Layer stack below the pinning width: the tower is built once, bottom layer first. */
-  .motion .stack:not(.is-pinned) .layer:not(.is-placed) { opacity: 0.12; transform: translateY(-1.25rem); }
+  /* Layer stack below the pinning width: the layer being read is highlighted. */
   .stack:not(.is-pinned) .layer.is-current { background: var(--ink); color: var(--paper); border-color: var(--ink); }
   .stack:not(.is-pinned) .layer.is-current .layer__tech { color: var(--blue-on-ink); opacity: 1; }
 
@@ -1573,31 +1574,26 @@
   :root[data-vt-dir="back"]::view-transition-old(root)    { animation-name: vt-old-back; }
   @keyframes vt-old-forward { 35% { opacity: 0.35; } to { opacity: 0.15; transform: translateX(-5%) scale(0.95); } }
   @keyframes vt-old-back    { 35% { opacity: 0.35; } to { opacity: 0.15; transform: translateX(5%) scale(0.95); } }
-  /* Phones: a bolder block wipe. Blue blocks are laid over the old page,
-     bottom row first; under them the pages swap; then the blocks lift off
-     the new page in reverse. The nav, dock and a morphing title stay on top
-     (they come after .vt-plate in the page). */
-  .vt-plate { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; }
+  /* Phones: pages slide like a native app instead of building. Forward, the
+     new page slides in from the right over the old one, which eases left and
+     dims; back, the page slides off to the right, revealing the one before.
+     The nav and the dock stay put. */
   @media (max-width: 40rem) {
-    .vt-plate { view-transition-name: plate; }
-    ::view-transition-old(plate) { display: none; }
-    ::view-transition-new(plate) {
-      opacity: 1; background: var(--blue);
-      animation: 0.8s steps(12, jump-none) both vt-plate;
-      -webkit-mask-image: url("/assets/motion/build-portrait.svg"); mask-image: url("/assets/motion/build-portrait.svg");
-      -webkit-mask-size: 1200% 100%; mask-size: 1200% 100%;
-      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    ::view-transition-group(root) { animation-duration: 0.5s; }
+    ::view-transition-old(root), :root[data-vt-dir]::view-transition-old(root) {
+      animation: 0.5s cubic-bezier(0.32, 0.72, 0, 1) both vt-push-out;
     }
-    @keyframes vt-plate {
-      0%   { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
-      50%  { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
-      100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+    ::view-transition-new(root) {
+      animation: 0.5s cubic-bezier(0.32, 0.72, 0, 1) both vt-push-in;
+      -webkit-mask-image: none; mask-image: none;
+      box-shadow: -1.25rem 0 2.5rem rgb(0 0 0 / 0.28);
     }
-    ::view-transition-group(root) { animation-duration: 0.8s; }
-    :root[data-vt-dir]::view-transition-old(root), ::view-transition-old(root) { animation: 0.8s both vt-swap-out; }
-    ::view-transition-new(root) { animation: 0.8s both vt-swap-in; -webkit-mask-image: none; mask-image: none; }
-    @keyframes vt-swap-out { 0%, 45% { opacity: 1; transform: none; } 50%, 100% { opacity: 0; transform: scale(0.96); } }
-    @keyframes vt-swap-in  { 0%, 45% { opacity: 0; } 50%, 100% { opacity: 1; } }
+    :root[data-vt-dir="back"]::view-transition-old(root) { animation-name: vt-pop-out; z-index: 1; box-shadow: -1.25rem 0 2.5rem rgb(0 0 0 / 0.28); }
+    :root[data-vt-dir="back"]::view-transition-new(root) { animation-name: vt-pop-in; box-shadow: none; }
+    @keyframes vt-push-out { to { transform: translateX(-28%); opacity: 0.45; } }
+    @keyframes vt-push-in  { from { transform: translateX(100%); } }
+    @keyframes vt-pop-out  { to { transform: translateX(100%); } }
+    @keyframes vt-pop-in   { from { transform: translateX(-28%); opacity: 0.45; } }
   }
 
   ::view-transition-group(morph) { animation-duration: 0.7s; animation-timing-function: var(--ease-out); z-index: 2; }
@@ -1614,6 +1610,10 @@
   .pt-curtain[data-state="building"] i, .pt-curtain[data-state="covered"] i { transform: scale(1.02); }
   .pt-curtain[data-state="covered"] i { transition: none; }
   html.pt-arriving body::after { content: ""; position: fixed; inset: 0; z-index: 300; background: var(--ink); }
+  /* Phone fallback slide (no view transitions): out to the left, in from the right. */
+  html.pt-slide-out body { transform: translateX(-28%); opacity: 0; transition: transform 0.26s cubic-bezier(0.4, 0, 1, 1), opacity 0.26s; }
+  html.pt-slide-in body { animation: pt-slide-in 0.45s cubic-bezier(0.32, 0.72, 0, 1) both; }
+  @keyframes pt-slide-in { from { transform: translateX(40%); opacity: 0; } }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }

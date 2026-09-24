@@ -8,8 +8,8 @@
        across as each section arrives; [data-count] figures count up to their
        value the first time they're seen; cards get a pointer spotlight
     5. Scroll scenes, all driven from one rAF-throttled scroll loop:
-         [data-scene="stack"]     layer tower builds as you scroll (pinned), or
-                                  once, bottom layer first, on narrower screens
+         [data-scene="stack"]     layer tower builds as you scroll (pinned); on
+                                  narrower screens the layer you're reading lights up
          [data-scene="rail"]      services track moves sideways (pinned)
          [data-scene="line"]      process timeline fills as it passes
          [data-scene="spy"]       process index highlights the step in view
@@ -266,31 +266,38 @@
   function canPin() { return wide.matches && !reduceMotion.matches; }
 
   /* Layer stack: 5 layers placed one per fifth of the pinned scroll. Below the
-     pinning width it builds once instead, bottom layer first, when it comes into view. */
+     pinning width nothing is pinned: every layer is shown, and the one under
+     the reading line (just above the middle of the screen) is highlighted,
+     so the highlight follows your thumb down the page, top to bottom. */
   $$('[data-scene="stack"]').forEach(function (el) {
     var layers = $$('[data-layer]', el);
     var meter = $$('[data-meter] span', el);
     var count = el.querySelector('[data-stack-count]');
     var n = layers.length;
     var last = -1;
-    var built = false;
-    var flows = function () { return !canPin() && root.classList.contains('motion'); };
-    var builder = 'IntersectionObserver' in window && new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting || built || !flows()) return;
-      built = true;
-      layers.forEach(function (_, i) { setTimeout(function () { set(i); }, 180 + i * 190); });
-    }, { threshold: 0.45 });
-    if (builder) builder.observe(el.querySelector('.tower') || el);
 
-    function set(k) {
-      if (k === last) return;
-      last = k;
+    function set(k, current) {
+      var key = k + ':' + current;
+      if (key === last) return;
+      last = key;
       layers.forEach(function (layer, i) {
         layer.classList.toggle('is-placed', i <= k);
-        layer.classList.toggle('is-current', i === k);
+        layer.classList.toggle('is-current', i === current);
       });
       meter.forEach(function (m, i) { m.classList.toggle('is-on', i <= k); });
       if (count) count.textContent = (k + 1) + ' / ' + n;
+    }
+
+    // The layer nearest the reading line; -1 while the tower is off that line.
+    function underReadingLine() {
+      var line = window.innerHeight * 0.45, best = -1, bestD = Infinity;
+      layers.forEach(function (layer, i) {
+        var r = layer.getBoundingClientRect();
+        if (r.bottom < line - r.height || r.top > line + r.height) return;
+        var d = Math.abs((r.top + r.bottom) / 2 - line);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
     }
 
     scenes.push({
@@ -298,11 +305,14 @@
       layout: function () {
         el.classList.toggle('is-pinned', canPin());
         last = -1;
-        if (!canPin()) set(flows() && !built ? -1 : n - 1);
+        if (!canPin()) set(n - 1, reduceMotion.matches ? -1 : underReadingLine());
       },
       update: function () {
-        if (!canPin()) return;
-        set(Math.min(n - 1, Math.floor(pinProgress(el) * n)));
+        if (canPin()) {
+          var k = Math.min(n - 1, Math.floor(pinProgress(el) * n));
+          return set(k, k);
+        }
+        if (!reduceMotion.matches) set(n - 1, underReadingLine());
       },
     });
   });

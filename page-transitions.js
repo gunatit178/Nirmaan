@@ -12,6 +12,10 @@
   2. Other browsers (e.g. Firefox) get the same block build from a small overlay:
      blocks cover the old page, the new page opens covered, and they clear away.
 
+  On phones (up to 40rem) pages slide sideways instead, like a native app: the
+  new page comes in from the right going forward, and from the left going back.
+  There's no title morph on phones; the slide carries the whole page.
+
   Loaded in <head>, after styles.css, so it is ready before first paint.
 */
 (function () {
@@ -19,6 +23,8 @@
 
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Phones slide pages like a native app (styles.css); no title morph there.
+  var phone = window.matchMedia('(max-width: 40rem)');
   var MORPH_KEY = 'nirmaan-morph';
   var CURTAIN_KEY = 'nirmaan-curtain';
 
@@ -55,6 +61,7 @@
     return a.depth > 1 ? 'forward' : null; // one detail page to its sibling
   }
   function setDirection(dir) {
+    if (!dir && phone.matches) dir = 'forward'; // a slide always needs a side to come from
     if (dir) root.setAttribute('data-vt-dir', dir);
     else root.removeAttribute('data-vt-dir');
   }
@@ -99,7 +106,7 @@
       var dest = urlOf(e.activation.entry.url);
       setDirection(direction(location.href, dest && dest.href));
       session('del', MORPH_KEY);
-      if (reduceMotion.matches || e.activation.navigationType === 'traverse') return;
+      if (reduceMotion.matches || phone.matches || e.activation.navigationType === 'traverse') return;
       var source = morphSource(lastLink && sameDocument(urlOf(lastLink.href), dest) ? lastLink : null, dest);
       if (!source) return;
       source.style.viewTransitionName = 'morph';
@@ -113,6 +120,9 @@
       if (!e.viewTransition) return;
       var nav = window.navigation, from = nav && nav.activation && nav.activation.from;
       setDirection(direction(from ? from.url : document.referrer, location.href));
+      // On phones the slide is the entrance, so the page arrives complete
+      // instead of replaying its own intro once it has slid in.
+      if (phone.matches) root.classList.add('vt-slide');
 
       // The heading's text span, not the full-width block, so both ends of the
       // morph are the same shape: a word, scaling and moving into place.
@@ -153,6 +163,17 @@
     return el;
   }
 
+  // Phones without view transitions: the page slides out left and the next
+  // one slides in from the right (html.pt-slide-* in styles.css).
+  var SLIDE_KEY = 'nirmaan-slide';
+  if (session('get', SLIDE_KEY) && !reduceMotion.matches) {
+    session('del', SLIDE_KEY);
+    root.classList.add('pt-slide-in');
+    window.addEventListener('pageshow', function () {
+      setTimeout(function () { root.classList.remove('pt-slide-in'); }, 600);
+    });
+  }
+
   // Arriving under a curtain: cover before first paint, then clear it block by block.
   if (session('get', CURTAIN_KEY) && !reduceMotion.matches) {
     session('del', CURTAIN_KEY);
@@ -183,6 +204,12 @@
     if (url.pathname === location.pathname && url.search === location.search) return;
 
     e.preventDefault();
+    if (phone.matches) {
+      root.classList.add('pt-slide-out');
+      session('set', SLIDE_KEY, '1');
+      setTimeout(function () { location.href = url.href; }, 260);
+      return;
+    }
     var c = curtain('open');
     document.body.appendChild(c);
     requestAnimationFrame(function () {
@@ -196,6 +223,7 @@
   window.addEventListener('pageshow', function (e) {
     if (!e.persisted) return;
     Array.prototype.forEach.call(document.querySelectorAll('.pt-curtain'), function (c) { c.remove(); });
+    root.classList.remove('pt-slide-out');
     session('del', CURTAIN_KEY);
   });
 })();
