@@ -7,6 +7,7 @@ import type { Actor } from "../auth/actor";
 import type { ModelProvider } from "../providers/types";
 import { DISCOVERY_KINDS, isOneOf, type DiscoveryKind } from "../db/enums";
 import { seedIntakeFacts } from "./items";
+import { extractJsonObject } from "../ai/json";
 
 /**
  * Business Analyst, discovery mode: raw customer problem → typed discovery
@@ -86,19 +87,8 @@ export interface ParsedItem {
  * wrapped in a ```json fence; rejects anything else rather than guessing.
  */
 export function parseDiscoveryResponse(raw: string): ParsedItem[] {
-  const fenced = /```(?:json)?\s*([\s\S]*?)```/.exec(raw);
-  const candidate = (fenced ? fenced[1] : raw).trim();
-  const start = candidate.indexOf("{");
-  const end = candidate.lastIndexOf("}");
-  if (start === -1 || end <= start) throw new Error("The analyst's reply didn't contain a JSON object.");
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(candidate.slice(start, end + 1));
-  } catch {
-    throw new Error("The analyst's reply wasn't valid JSON.");
-  }
-  const items = (parsed as { items?: unknown }).items;
+  const parsed = extractJsonObject(raw, "The analyst");
+  const items = parsed.items;
   if (!Array.isArray(items)) throw new Error('The analyst\'s reply had no "items" list.');
 
   const out: ParsedItem[] = [];

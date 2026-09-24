@@ -35,6 +35,21 @@ export const AGENT_TASK_TYPES: Record<string, TaskType> = {
 };
 
 /**
+ * Critical agents: their output shapes architecture, security or delivery
+ * for the whole project. They always run on at least their role's baseline
+ * model (the complexity heuristic may raise, never lower, it), and every
+ * run of theirs gets a mandatory human review task. See
+ * /docs/ai/model-routing.md ("criticality routing").
+ */
+export const CRITICAL_AGENTS: ReadonlySet<string> = new Set([
+  "orchestrator",
+  "principal-architect",
+  "security-engineer",
+  "devops-engineer",
+  "sre",
+]);
+
+/**
  * Default artifact path (relative to /projects/{id}/) each agent writes
  * to when dispatched without an explicit override. Follows the folder
  * convention documented in /projects/README.md.

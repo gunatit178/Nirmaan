@@ -28,6 +28,9 @@ export const CAPABILITIES = [
   "change:write",
   "change:decide", // accepts cost/timeline impact on behalf of the company
   "approval:decide", // quality gates
+  // AI software factory (Phase 2)
+  "factory:run", // spends AI budget on architecture, planning and task dispatch
+  "factory:review", // accepts an architecture or plan, which creates real project structure
   // Company
   "dashboard:read",
   "ai:read", // AI usage & cost ledger
@@ -59,6 +62,7 @@ export const ROLE_CAPABILITIES: Record<Role, readonly Capability[]> = {
     "change:write",
     "dashboard:read",
     "ai:read",
+    "factory:run",
   ],
   ENGINEER: ["project:read", "trace:write", "evidence:write"],
   DESIGNER: ["project:read", "trace:write"],

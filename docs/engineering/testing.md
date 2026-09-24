@@ -6,7 +6,7 @@ Static checks (tsc, eslint) → unit → integration (real SQLite) → E2E (brow
 
 ## Nirmaan OS today · IMPLEMENTED
 
-- `npm test` in `/app`: **149 tests** (107 original, 42 added for Phase 1),
+- `npm test` in `/app`: **156 tests** (107 original, 42 Phase 1, 7 Phase 2),
   about 2 seconds. They cover auth, RBAC matrix invariants, sessions, IDs under
   concurrency, intake validation, the discovery promotion rule, proposal
   lifecycle (including two simultaneous approvals creating exactly one
@@ -28,4 +28,14 @@ Static checks (tsc, eslint) → unit → integration (real SQLite) → E2E (brow
   only if passed = total, whatever the summary says.
 - The project page shows, per requirement, what's still unproven. The QA gate
   should not be approved while MUST requirements have gaps.
-- Automatically recording evidence from CI runs is **PLANNED** (Phase 2).
+- Evidence from CI is **IMPLEMENTED** (Phase 2): issue a project CI token on the
+  project page, store it as a CI secret, and post results:
+
+  ```bash
+  curl -X POST https://<os-host>/api/ci/evidence \
+    -H "Authorization: Bearer $NIRMAAN_CI_TOKEN" -H "Content-Type: application/json" \
+    -d '{"run":{"id":"'"$GITHUB_RUN_ID"'","url":"<run url>"},
+         "results":[{"code":"TEST-031","passed":14,"total":14,"summary":"unit suite"}]}'
+  ```
+
+  Name tests after their TEST- code so the mapping is mechanical.

@@ -66,6 +66,12 @@ model Project {
   features        Feature[]
   testCases       TestCase[]
   changeRequests  ChangeRequest[]
+  // Phase 2: AI software factory
+  agentRuns       AgentRun[]
+  // Spend cap for automated agent work on this project (USD). Null = no automated dispatch.
+  aiBudgetUsd     Float?
+  // sha256 of the CI token allowed to post test evidence (/api/ci/evidence)
+  ciTokenHash     String?         @unique
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
@@ -364,8 +370,13 @@ model Evidence {
   total      Int      @default(0)
   summary    String
   link       String? // CI run, report, screenshot
+  // MANUAL | CI. For CI, runRef makes re-posting the same run idempotent.
+  source     String   @default("MANUAL")
+  runRef     String?
   recordedBy String
   recordedAt DateTime @default(now())
+
+  @@unique([testCaseId, runRef])
 }
 
 // Edges of the project knowledge graph. Nodes are addressed by their
@@ -463,4 +474,31 @@ model AiUsage {
   createdAt    DateTime @default(now())
 
   @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------
+// Phase 2: AI software factory
+// ---------------------------------------------------------------------
+
+// A structured, human-reviewed agent output that shapes the project: the
+// Solution Architect's recommendation or the Planner's feature/task plan.
+// Kept in the database (not /projects files) because it's client-specific.
+model AgentRun {
+  id         String    @id @default(cuid())
+  projectId  String
+  project    Project   @relation(fields: [projectId], references: [id])
+  // ARCHITECTURE | PLAN
+  kind       String
+  agentSlug  String
+  // PROPOSED | ACCEPTED | REJECTED
+  status     String    @default("PROPOSED")
+  summary    String
+  output     String // validated JSON (see src/lib/factory/*)
+  usageId    String?
+  reviewedBy String?
+  reviewedAt DateTime?
+  reviewNote String?
+  createdAt  DateTime  @default(now())
+
+  @@index([projectId, kind])
 }

@@ -17,3 +17,10 @@ node_modules/
 * [0-9]
 * [0-9].*
 * [0-9][0-9].*
+
+# Agent artifacts for real client projects (PRJ-###) are client data and must
+# never reach this public repository. Only the demo fixture lives in /projects.
+/projects/prj-*/
+
+# Test fixtures (removed by the test helpers; ignored in case a run is interrupted)
+/projects/test-fixture-*/

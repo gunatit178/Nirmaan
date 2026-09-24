@@ -8,7 +8,7 @@ export function projectsRoot(): string {
 
 /** Absolute path to a project's directory, e.g. /projects/{artifactsPath}/. */
 export function projectDir(projectId: string): string {
-  return path.join(projectsRoot(), projectId);
+  return path.join(/*turbopackIgnore: true*/ projectsRoot(), projectId);
 }
 
 /**
@@ -35,22 +35,24 @@ export function resolveProjectPath(projectId: string, relativePath: string): str
  * the ONE place that writes into /projects/{id}/ — everything else
  * (runAgent, the Phase 7 filesystem write tool) goes through this.
  */
+// Artifacts live in /projects at runtime (outside the app bundle), hence the
+// turbopackIgnore hints: nothing here should be traced into the build.
 export function writeVersioned(projectId: string, relativePath: string, content: string): string {
   const dir = path.dirname(resolveProjectPath(projectId, relativePath));
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
 
   let target = resolveProjectPath(projectId, relativePath);
-  if (fs.existsSync(target)) {
+  if (fs.existsSync(/*turbopackIgnore: true*/ target)) {
     const ext = path.extname(relativePath);
     const base = relativePath.slice(0, -ext.length);
     let version = 2;
-    while (fs.existsSync(resolveProjectPath(projectId, `${base}-v${version}${ext}`))) {
+    while (fs.existsSync(/*turbopackIgnore: true*/ resolveProjectPath(projectId, `${base}-v${version}${ext}`))) {
       version += 1;
     }
     target = resolveProjectPath(projectId, `${base}-v${version}${ext}`);
   }
 
-  fs.writeFileSync(target, content);
+  fs.writeFileSync(/*turbopackIgnore: true*/ target, content);
   return target;
 }
 

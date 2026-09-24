@@ -36,7 +36,7 @@ TARGET STATE
 - Data model for phases 1–4, designed once so later phases don't reshape tables.
 - Internal design system for `/app`, reusing the public site's tokens.
 
-### Phase 1: Business OS · IMPLEMENTED (this PR)
+### Phase 1: Business OS · IMPLEMENTED (PR #18)
 
 The highest-value phase: without it there is nowhere to put a customer, and
 nothing can be shown to one.
@@ -61,18 +61,20 @@ nothing can be shown to one.
 | AI usage ledger | `AiUsage` rows (model, provider, tokens, cost, latency, task, success) for every discovery run. |
 | Public site | Repositioned around "You bring the problem. We build the system." Progressive problem-first intake. Agency OS page removed from public view. |
 
-### Phase 2: AI software factory · PLANNED
+### Phase 2: AI software factory · IMPLEMENTED (agents run live only with a configured model)
 
-- Solution Architect run from approved requirements (build vs buy, simplest safe
-  architecture, tradeoffs), producing an ARCHITECTURE gate artifact.
-- Planner: requirements → features → tasks with owners, so `dispatchTask()` has
-  work to run. (Deciding who owns a task is still unsolved; see
-  `architecture-plan.md`.)
-- Implementation, QA and DevOps agents wired to the tool registry, with evidence
-  records written automatically from real test runs.
-- Record every existing `runAgent()`/`dispatchTask()` call in the `AiUsage` ledger
-  as well (today only discovery writes there; dispatch still logs cost to Event).
-- Model routing by task criticality (cheap / standard / strongest + human review).
+| Capability | Scope |
+|---|---|
+| Solution Architect | Approved requirements + proposal → structured architecture (simplest safe design, build-vs-buy, components, tradeoffs, risks, security, open questions). Stored privately as a PROPOSED run; a reviewer accepts or rejects it. |
+| Planner | Requirements (+ accepted architecture) → features and tasks, each task owned by a specialist agent. Invented REQ codes or unknown agents are rejected; uncovered MUST requirements are flagged. Accepting creates FEAT-/TASK- rows and REQ→FEAT→TASK links in one transaction. |
+| Orchestrator loop | Runs READY agent tasks whose dependencies are met, one by one, within a per-project AI budget; stops at the budget, the batch size, or the first failure (the task is marked BLOCKED with the reason). No budget, no automated runs. |
+| Metering | Every `dispatchTask` run, success or failure, is now in the `AiUsage` ledger. |
+| Criticality routing | Architect, security, DevOps, SRE and orchestrator runs never go below their baseline model and always create a human review task. |
+| Evidence from CI | `POST /api/ci/evidence` with a per-project token (hashed, rotatable) records test results against TEST- codes, idempotent per run. |
+
+Still **PLANNED** within Phase 2: agents writing code into a client repository
+through the tool registry (today they produce reviewed artifacts), and
+automated preview deploys.
 
 ### Phase 3: Financial OS · PLANNED
 
