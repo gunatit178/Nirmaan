@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-25: Website: contact details, and the services rail on phones
+
+- Contact email is now nirmaansoftware@gmail.com; X (@Nirmaansoftware) added
+  to the footer, the contact page and the link-preview tags.
+- The homepage services rail now moves sideways as you scroll on phones
+  too (any screen at least 520px tall), sized to the visible screen and kept
+  clear of the dock.
+
 ## 2026-09-25: Website: built for phones
 
 - Hero fills the first screen: a large mark (finer grid on small screens),

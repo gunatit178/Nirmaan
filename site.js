@@ -10,7 +10,7 @@
     5. Scroll scenes, all driven from one rAF-throttled scroll loop:
          [data-scene="stack"]     layer tower builds as you scroll (pinned); on
                                   narrower screens the layer you're reading lights up
-         [data-scene="rail"]      services track moves sideways (pinned)
+         [data-scene="rail"]      services track moves sideways (pinned, all widths)
          [data-scene="line"]      process timeline fills as it passes
          [data-scene="spy"]       process index highlights the step in view
 
@@ -317,7 +317,9 @@
     });
   });
 
-  /* Services rail: vertical scroll drives the track sideways */
+  /* Services rail: vertical scroll drives the track sideways, on every screen
+     tall enough to hold it (phones included), not only wide ones. */
+  function canPinRail() { return !reduceMotion.matches && window.innerHeight >= 520; }
   $$('[data-scene="rail"]').forEach(function (el) {
     var viewport = el.querySelector('[data-rail-viewport]');
     var track = el.querySelector('[data-rail-track]');
@@ -326,7 +328,7 @@
     scenes.push({
       el: el,
       layout: function () {
-        var pin = canPin();
+        var pin = canPinRail();
         el.classList.toggle('is-pinned', pin);
         el.style.height = '';
         if (!pin) { el.style.setProperty('--rail', '0'); return; }
@@ -336,7 +338,7 @@
         el.style.height = (el.querySelector('.rail__sticky').offsetHeight + distance) + 'px';
       },
       update: function () {
-        if (canPin()) { el.style.setProperty('--rail', pinProgress(el).toFixed(4)); return; }
+        if (canPinRail()) { el.style.setProperty('--rail', pinProgress(el).toFixed(4)); return; }
         var max = viewport.scrollWidth - viewport.clientWidth;
         el.style.setProperty('--rail', max > 0 ? (viewport.scrollLeft / max).toFixed(4) : '0');
       },
