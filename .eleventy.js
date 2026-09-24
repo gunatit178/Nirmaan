@@ -53,6 +53,10 @@ module.exports = function (eleventyConfig) {
     throw new Error(`service: no catalogue entry with id "${id}"`);
   });
 
+  // {{ 15000 | inr }} → "₹15,000" (Indian digit grouping).
+  const INR = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+  eleventyConfig.addFilter('inr', (amount) => INR.format(Number(amount)));
+
   // {{ services | serviceCount }}: how many services the catalogue offers.
   eleventyConfig.addFilter('serviceCount', (services) =>
     services.groups.reduce((n, group) => n + group.items.length, 0)
