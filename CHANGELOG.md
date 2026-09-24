@@ -5,9 +5,11 @@
 - Hero fills the first screen: a large mark (finer grid on small screens),
   the headline at full column width, a full-width button; tapping the grid
   sends a ripple of blue blocks out from your finger.
-- Page transitions on phones: blue blocks are laid over the old page from
-  the bottom, the pages swap underneath, and the blocks lift off the new
-  one, with the nav, dock and a tapped card's title staying on top.
+- Page transitions on phones slide like a native app: forward, the new page
+  arrives complete from the right while the old one eases left and dims;
+  back, the page slides off to the right. The nav and dock stay put.
+- The homepage layer tabs on phones light up as you read them, top to
+  bottom, instead of building from the bottom.
 - Long card lists (packages, principles, prices, care plans, related
   services, plan switcher) become swipe rows with dots and a "2 / 4" count.
 - A dock keeps "Tell us your problem" within thumb reach once the page's own
