@@ -11,3 +11,9 @@ node_modules/
 # Prisma (Phase 3)
 /app/prisma/dev.db
 /app/prisma/dev.db-journal
+
+# iCloud Drive / Finder conflict copies ("file 2.ts", "folder 3"). This repo
+# lives in a synced folder; these must never be committed.
+* [0-9]
+* [0-9].*
+* [0-9][0-9].*
