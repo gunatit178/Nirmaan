@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: Google sign-in only
+
+- `NIRMAAN_PASSWORD_LOGIN=off` turns password sign-in off: the server refuses it,
+  and the login page shows only "Sign in with Google".
+- Accounts can be created without a password (Google-only), from the Team screen or
+  `npm run user:create -- <email> "<name>" FOUNDER`.
+- The ID-allocation test no longer fails when other tests allocate codes at the same time.
+
 ## 2026-09-26: Nirmaan OS: Sign in with Google
 
 - "Sign in with Google" on the login page, for people who already have an OS

@@ -26,3 +26,21 @@ test("team: only user:manage can create accounts; weak passwords and duplicates 
     await prisma.user.delete({ where: { id: user.id } });
   }
 });
+
+test("Google-only accounts: created without a password, and no password ever opens them", async () => {
+  const { authenticate } = await import("../auth/sessionStore");
+  const { NO_PASSWORD, passwordLoginEnabled } = await import("../auth/password");
+  const email = `google-only-${Date.now()}@example.test`;
+  const user = await createUser(actorAs("FOUNDER"), { email, name: "Owner", role: "FOUNDER" });
+  try {
+    assert.equal(user.passwordHash, NO_PASSWORD);
+    for (const guess of ["", NO_PASSWORD, "!google-only", "a long enough password"]) {
+      assert.equal(await authenticate(email, guess), null, `refused: ${JSON.stringify(guess)}`);
+    }
+    assert.equal(passwordLoginEnabled({} as unknown as NodeJS.ProcessEnv), true);
+    assert.equal(passwordLoginEnabled({ NIRMAAN_PASSWORD_LOGIN: "OFF" } as unknown as NodeJS.ProcessEnv), false);
+  } finally {
+    await prisma.auditLog.deleteMany({ where: { entityId: user.id } });
+    await prisma.user.delete({ where: { id: user.id } });
+  }
+});

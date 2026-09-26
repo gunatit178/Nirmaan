@@ -19,6 +19,8 @@ test("prefixOf recognises only our prefixes", () => {
 test("nextCode never hands out the same code twice, even concurrently", async () => {
   const codes = await Promise.all(Array.from({ length: 15 }, () => nextCode("TEST")));
   assert.equal(new Set(codes).size, codes.length);
-  const numbers = codes.map((c) => Number(c.split("-")[1])).sort((a, b) => a - b);
-  for (let i = 1; i < numbers.length; i++) assert.equal(numbers[i], numbers[i - 1] + 1, "contiguous");
+  // Other test files allocate TEST- codes in parallel, so ours needn't be
+  // contiguous; what matters is that none is ever handed out twice.
+  const numbers = codes.map((c) => Number(c.split("-")[1]));
+  assert.ok(numbers.every((n) => Number.isInteger(n) && n > 0));
 });

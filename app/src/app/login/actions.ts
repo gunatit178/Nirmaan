@@ -10,6 +10,7 @@ import { userActor } from "@/lib/auth/actor";
 import type { ActionState } from "@/lib/web/actionState";
 import { str } from "@/lib/web/form";
 import { isClientRole } from "@/lib/db/enums";
+import { passwordLoginEnabled } from "@/lib/auth/password";
 
 // 10 attempts per 15 minutes per IP+email: plenty for a person, useless for guessing.
 const allow = createRateLimiter({ limit: 10, windowMs: 15 * 60 * 1000 });
@@ -21,6 +22,7 @@ function safeNext(value: string, home: "/os" | "/portal"): string {
 }
 
 export async function login(_: ActionState, form: FormData): Promise<ActionState> {
+  if (!passwordLoginEnabled()) return { error: "Password sign-in is turned off. Use “Sign in with Google”." };
   const email = str(form, "email").trim().toLowerCase();
   const password = str(form, "password");
   if (!email || !password) return { error: "Enter your email and password." };

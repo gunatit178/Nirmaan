@@ -17,7 +17,11 @@ export async function createUserAction(_: ActionState, form: FormData): Promise<
       clientId: str(form, "clientId") || undefined,
     });
     revalidatePath("/os/team");
-    return { ok: `Created an account for ${u.email}. Share the password with them over a separate channel.` };
+    return {
+      ok: str(form, "password")
+        ? `Created an account for ${u.email}. Share the password with them over a separate channel.`
+        : `Created an account for ${u.email}. They sign in with “Sign in with Google” using that address.`,
+    };
   } catch (err) {
     return errorState(err);
   }

@@ -46,9 +46,12 @@ account whose email matches it.
 3. Put the client ID and secret in `app/.env.local` (never in git):
    `GOOGLE_CLIENT_ID=…` and `GOOGLE_CLIENT_SECRET=…`. Online, also set
    `NIRMAAN_OS_URL=https://os.nirmaan.online`.
-4. Make sure the owner has an OS account with the same email:
-   `NIRMAAN_PASSWORD='a long password' npm run user:create -- nirmaansoftware@gmail.com "Sahaj Patel" FOUNDER`.
-   The password stays as a fallback.
+4. Make sure the owner has an OS account with the same email. Without a password
+   it's a **Google-only** account:
+   `npm run user:create -- nirmaansoftware@gmail.com "Sahaj Patel" FOUNDER`.
+5. **Google sign-in only (recommended):** set `NIRMAAN_PASSWORD_LOGIN=off`. The server
+   refuses password sign-in, and the login page and Team screen stop asking for
+   passwords. New team members are added on the Team screen with just their email.
 
 The login page then shows **Sign in with Google**.
 

@@ -14,6 +14,17 @@ const MAX_MEM = 64 * 1024 * 1024;
 
 export const MIN_PASSWORD_LENGTH = 12;
 
+/**
+ * Stored instead of a hash for Google-only accounts. It isn't in the scrypt
+ * format, so verifyPassword can never accept anything against it.
+ */
+export const NO_PASSWORD = "!google-only";
+
+/** Password sign-in is on unless NIRMAAN_PASSWORD_LOGIN=off (Google sign-in only). */
+export function passwordLoginEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.NIRMAAN_PASSWORD_LOGIN?.trim().toLowerCase() !== "off";
+}
+
 function scrypt(password: string, salt: Buffer, keylen: number, opts: ScryptOptions): Promise<Buffer> {
   return new Promise((resolve, reject) =>
     scryptCb(password, salt, keylen, opts, (err, key) => (err ? reject(err) : resolve(key)))

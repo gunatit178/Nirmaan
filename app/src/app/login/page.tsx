@@ -6,6 +6,7 @@ import { ActionForm } from "../_components/ActionForm";
 import { Logo } from "../_components/Logo";
 import { login } from "./actions";
 import { googleConfigured } from "@/lib/auth/google";
+import { passwordLoginEnabled } from "@/lib/auth/password";
 
 const GOOGLE_ERRORS: Record<string, string> = {
   "google-not-allowed": "That Google account isn't on the team. Ask the founder to add your email.",
@@ -25,6 +26,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const next = params.next;
   const error = typeof params.error === "string" ? GOOGLE_ERRORS[params.error] : undefined;
   const google = googleConfigured();
+  const passwords = passwordLoginEnabled();
   return (
     <main className="auth">
       <div className="panel">
@@ -44,24 +46,33 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
             <a className="btn" href={`/api/auth/google${typeof next === "string" ? `?next=${encodeURIComponent(next)}` : ""}`} style={{ width: "100%", justifyContent: "center" }}>
               Sign in with Google
             </a>
-            <p className="faint" style={{ textAlign: "center", margin: "0.25rem 0" }}>
-              or with a password
-            </p>
+            {passwords && (
+              <p className="faint" style={{ textAlign: "center", margin: "0.25rem 0" }}>
+                or with a password
+              </p>
+            )}
           </>
         )}
-        <ActionForm action={login} submit="Sign in" pendingLabel="Signing in…">
-          <input type="hidden" name="next" value={typeof next === "string" ? next : "/os"} />
-          <div className="field">
-            <label htmlFor="email">Email</label>
-            <input className="input" id="email" name="email" type="email" autoComplete="username" required />
-          </div>
-          <div className="field">
-            <label htmlFor="password">Password</label>
-            <input className="input" id="password" name="password" type="password" autoComplete="current-password" required />
-          </div>
-        </ActionForm>
+        {!google && !passwords && (
+          <p className="notice error" role="alert">
+            Sign-in isn&apos;t set up yet: password sign-in is off and Google sign-in needs GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.
+          </p>
+        )}
+        {passwords && (
+          <ActionForm action={login} submit="Sign in" pendingLabel="Signing in…">
+            <input type="hidden" name="next" value={typeof next === "string" ? next : "/os"} />
+            <div className="field">
+              <label htmlFor="email">Email</label>
+              <input className="input" id="email" name="email" type="email" autoComplete="username" required />
+            </div>
+            <div className="field">
+              <label htmlFor="password">Password</label>
+              <input className="input" id="password" name="password" type="password" autoComplete="current-password" required />
+            </div>
+          </ActionForm>
+        )}
         <p className="faint" style={{ fontSize: "0.8125rem" }}>
-          Team and client accounts. Clients are taken to their portal.
+          {passwords ? "Team and client accounts. Clients are taken to their portal." : "Only people with a Nirmaan OS account can sign in."}
         </p>
       </div>
     </main>
