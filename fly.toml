@@ -8,6 +8,8 @@ primary_region = "sin"
   dockerfile = "Dockerfile.os"
 
 [env]
+  # Server dates in India time, so daily counts (emails sent today, budgets) reset at midnight IST.
+  TZ = "Asia/Kolkata"
   NIRMAAN_OS_URL = "https://os.nirmaan.online"
   NIRMAAN_INTAKE_ORIGINS = "https://nirmaan.online,https://www.nirmaan.online"
   NIRMAAN_PASSWORD_LOGIN = "off"
