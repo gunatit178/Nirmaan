@@ -12,6 +12,8 @@ const TONES: Record<string, Tone> = {
   PENDING: "warn", OPEN: "warn", ASSESSED: "info", CONVERTED: "good",
   // discovery
   CONFIRMED: "good", ANSWERED: "good",
+  // prospects & outreach
+  AUDITED: "info", DRAFTED: "info", CONTACTED: "warn", REPLIED: "good", DISMISSED: "", DO_NOT_CONTACT: "bad", CANCELLED: "",
   // evidence / deployments
   PASS: "good", FAIL: "bad", SUCCEEDED: "good", FAILED: "bad",
 };

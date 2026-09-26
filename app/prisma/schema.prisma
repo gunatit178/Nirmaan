@@ -271,7 +271,7 @@ model Lead {
   code            String          @unique // LEAD-001
   // NEW|DISCOVERY|QUALIFIED|PROPOSAL|WON|LOST|SPAM
   status          String          @default("NEW")
-  // WEBSITE|MANUAL|REFERRAL
+  // WEBSITE|MANUAL|REFERRAL|OUTBOUND
   source          String          @default("WEBSITE")
   // The customer's own words. Never rewritten; discovery works from it.
   problem         String
@@ -301,6 +301,8 @@ model Lead {
   proposals       Proposal[]
   projects        Project[]
   notes           LeadNote[]
+  // Set when the lead came from outbound prospecting (source OUTBOUND).
+  prospect        Prospect?
   lastActivityAt  DateTime        @default(now())
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -496,6 +498,7 @@ model AiUsage {
   error        String?
   leadId       String?
   projectId    String?
+  prospectId   String?
   createdAt    DateTime @default(now())
 
   @@index([createdAt])
@@ -704,4 +707,116 @@ model SupportRequest {
   updatedAt  DateTime  @updatedAt
 
   @@index([status])
+}
+
+// ---------------------------------------------------------------------
+// Prospecting: finding businesses Nirmaan could help, before they ask.
+// See /docs/product/prospecting.md. Nothing here reaches a business until a
+// person approves the exact message (OutreachMessage.status APPROVED/SENT).
+// ---------------------------------------------------------------------
+
+// One "find me X in Y" run.
+model ProspectSearch {
+  id        String     @id @default(cuid())
+  // What to look for and where, in plain words: "dental clinics", "Ahmedabad"
+  query     String
+  location  String
+  // LOCAL_SERVICE | RETAIL_D2C | SME_OPS (src/lib/db/enums.ts#PROSPECT_SEGMENTS)
+  segment   String
+  // Sources actually used: JSON array of PLACES | WEB
+  sources   String     @default("[]")
+  found     Int        @default(0)
+  added     Int        @default(0)
+  // Anything that went wrong with one source while the other still worked.
+  notes     String?
+  createdBy String
+  prospects Prospect[]
+  createdAt DateTime   @default(now())
+}
+
+model Prospect {
+  id               String            @id @default(cuid())
+  code             String            @unique // PROS-014
+  searchId         String?
+  search           ProspectSearch?   @relation(fields: [searchId], references: [id], onDelete: SetNull)
+  // PLACES | WEB | MANUAL
+  source           String
+  // The same business found twice (by Places id, website domain or name+city) is one prospect.
+  dedupeKey        String            @unique
+  // Also matched when merging, so Places and web results for one business meet:
+  // its own website domain and its name in its city (src/lib/prospecting/basics.ts).
+  domain           String?
+  nameKey          String
+  placeId          String?
+  name             String
+  segment          String
+  category         String?
+  address          String?
+  city             String?
+  website          String?
+  phone            String?
+  email            String?
+  // Where the email came from (their website, web search), so it can be checked.
+  emailSource      String?
+  rating           Float?
+  ratingCount      Int?
+  mapsUrl          String?
+  // What the web search said about them, if found that way.
+  sourceNote       String?
+  // NEW | AUDITED | DRAFTED | CONTACTED | REPLIED | CONVERTED | DISMISSED | DO_NOT_CONTACT
+  status           String            @default("NEW")
+  // Website check (JSON of src/lib/prospecting/siteSignals.ts#SiteSignals) and when it ran
+  siteSignals      String?
+  auditedAt        DateTime?
+  // Claude's fit assessment against the ICP and the packages
+  fitScore         Int?
+  suggestedPackage String?
+  problem          String?
+  evidence         String            @default("[]") // JSON array of strings
+  dismissedReason  String?
+  leadId           String?           @unique
+  lead             Lead?             @relation(fields: [leadId], references: [id])
+  messages         OutreachMessage[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([status])
+  @@index([fitScore])
+  @@index([domain])
+  @@index([nameKey])
+  @@index([placeId])
+}
+
+model OutreachMessage {
+  id         String    @id @default(cuid())
+  prospectId String
+  prospect   Prospect  @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  // EMAIL | WHATSAPP
+  channel    String
+  toAddress  String
+  subject    String?
+  body       String
+  // DRAFT | SENT | FAILED | CANCELLED
+  status     String    @default("DRAFT")
+  // AGENT | USER
+  draftedBy  String
+  // Who approved it, and how it went out: EMAIL (sent by the OS) or MANUAL (sent by a person)
+  approvedBy String?
+  sentVia    String?
+  sentAt     DateTime?
+  sendError  String?
+  providerId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([status, sentAt])
+}
+
+// Do not contact: an email, phone or website domain that must never get outreach.
+model Suppression {
+  id        String   @id @default(cuid())
+  value     String   @unique // lowercased email, digits-only phone, or bare domain
+  reason    String
+  createdBy String
+  createdAt DateTime @default(now())
 }

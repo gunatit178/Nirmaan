@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: Prospecting (find clients before they ask)
+
+- New **Pipeline → Prospects** screen. Search for businesses ("dental clinics"
+  in "Ahmedabad") through Google Places and a web search by Claude (read-only
+  web tools only), for three segments: local services; shops, restaurants
+  and D2C; SMEs on spreadsheets and WhatsApp. One prospect (PROS-###) per
+  real business, merged across searches and sources.
+- **Check:** reads each business's homepage (phones, booking, store, age) and
+  Claude scores the fit 0–100 against the ideal customer, with a suggested
+  package and the evidence behind it.
+- **Outreach:** Claude drafts a short first email or WhatsApp message; a
+  person edits and approves the exact words. The founder or CTO sends email
+  from the OS (SMTP or Resend); WhatsApp opens pre-filled on your phone.
+  A reply becomes a LEAD-### (new source OUTBOUND).
+- Guard rails in code: a do-not-contact list, an opt-out line on every
+  message, one message per business per week, a daily email cap, only
+  published emails, and a site fetcher that refuses private addresses.
+- New permissions `prospect:read`, `prospect:run` and `outreach:send`.
+  Setup and policy: `docs/product/prospecting.md`.
+
 ## 2026-09-26: Website: hero keeps only the studio line
 
 - The line explaining the two meanings of the name (निर्माण "to build",
