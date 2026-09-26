@@ -27,7 +27,7 @@ npm run dev                # http://localhost:3000 → sign in
 Checks (all must pass before merging):
 
 ```bash
-npm test                   # 196 tests, ~3 s
+npm test                   # 200 tests, ~3 s
 npm run typecheck
 npx eslint src scripts prisma
 npx next build
@@ -43,6 +43,8 @@ Environment variables:
 | `AGENTS_ROOT` | Where agent specs live (default `../agents`) |
 | `GOOGLE_PLACES_API_KEY` | Prospecting: Google Places search (optional; without it searches use the web only) |
 | `OUTREACH_FROM`, `SMTP_URL` or `RESEND_API_KEY`, `IMAP_URL` | Prospecting: send approved outreach from our mailbox and read replies. Also `OUTREACH_SENDER_NAME`, `OUTREACH_WHATSAPP_NUMBER`, `OUTREACH_DAILY_LIMIT` (default 400) and more; see `docs/product/prospecting.md` |
+
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | "Sign in with Google" for existing users (see `docs/engineering/deployment.md`) |
 
 Campaign worker: `npm run campaigns:worker` (a tick every minute) or `npm run campaigns:tick` (once, for cron).
 

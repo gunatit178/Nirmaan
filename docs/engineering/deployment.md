@@ -29,6 +29,29 @@ Recommended first deployment (see `procurement.md`):
    `https://os.nirmaan.online/api/intake` and redeploy the site.
 6. Nightly database backup off the machine, and a restore drill once.
 
+## Sign in with Google · IMPLEMENTED (needs a Google OAuth client)
+
+Only people who already have an OS account can sign in, and only with the Google
+account whose email matches it.
+
+1. In Google Cloud Console (the same project as the Places key), open
+   **APIs & Services → OAuth consent screen** ("Google Auth Platform"):
+   - User type **External**, app name **Nirmaan OS**, your support email.
+   - Scopes: only `openid` and `email`. Leave it in **Testing** and add
+     `nirmaansoftware@gmail.com` (and any other owner) as a test user.
+2. **Credentials → Create credentials → OAuth client ID**, type **Web application**,
+   name `Nirmaan OS`. Under **Authorized redirect URIs** add
+   `http://localhost:3000/api/auth/google/callback`, and later the live one,
+   `https://os.nirmaan.online/api/auth/google/callback`.
+3. Put the client ID and secret in `app/.env.local` (never in git):
+   `GOOGLE_CLIENT_ID=…` and `GOOGLE_CLIENT_SECRET=…`. Online, also set
+   `NIRMAAN_OS_URL=https://os.nirmaan.online`.
+4. Make sure the owner has an OS account with the same email:
+   `NIRMAAN_PASSWORD='a long password' npm run user:create -- nirmaansoftware@gmail.com "Sahaj Patel" FOUNDER`.
+   The password stays as a fallback.
+
+The login page then shows **Sign in with Google**.
+
 ## Standard pipeline for client projects · PLANNED (Phase 2 automates it)
 
 ```text
