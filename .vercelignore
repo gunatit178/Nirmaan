@@ -6,3 +6,8 @@ agents/
 docs/
 projects/
 scripts/
+
+# The OS deploy (Fly.io) is not part of the website.
+Dockerfile.os
+fly.toml
+.dockerignore

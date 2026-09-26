@@ -7,7 +7,40 @@ Vercel from `main`; static output of Eleventy (`npm run build` at the root).
 the site deploy. `vercel.json` holds redirects (for example `/agency-os.html` →
 `/process.html#honest`) and baseline headers.
 
-## Nirmaan OS · PLANNED (not deployed yet; runs locally)
+## Nirmaan OS on Fly.io · IMPLEMENTED (os.nirmaan.online)
+
+One machine in Mumbai (`bom`) runs the web app and the campaign worker side by side
+(`app/scripts/start.sh`). The database (`/data/nirmaan.db`) and project files
+(`/data/projects`) live on a persistent volume. Config: `fly.toml` and `Dockerfile.os`
+at the repo root; the image holds only `app/` and `agents/`.
+
+First setup (once):
+
+```text
+brew install flyctl && fly auth login
+fly apps create nirmaan-os
+fly volumes create nirmaan_data --region bom --size 1
+claude setup-token                      # prints a long-lived token for the server
+fly secrets set CLAUDE_CODE_OAUTH_TOKEN=… GOOGLE_CLIENT_ID=… GOOGLE_CLIENT_SECRET=… \
+  GOOGLE_PLACES_API_KEY=… OUTREACH_FROM=… SMTP_URL=… IMAP_URL=… \
+  OUTREACH_SENDER_NAME=… OUTREACH_WHATSAPP_NUMBER=…
+fly deploy
+fly ssh console -C 'npm run user:create -- you@example.com "Your Name" FOUNDER'
+fly certs add os.nirmaan.online          # then add the DNS record it asks for
+```
+
+Also add `https://os.nirmaan.online/api/auth/google/callback` to the Google OAuth
+client's redirect URIs.
+
+Later deploys: `fly deploy` from the repo root. Logs: `fly logs`. The worker's
+ticks appear there once a minute.
+
+Backups: `fly ssh sftp get /data/nirmaan.db` downloads the database; Fly also keeps
+daily volume snapshots for 5 days.
+
+## Nirmaan OS: other hosts
+
+The notes below were written before the Fly setup and still apply to any host.
 
 Recommended first deployment (see `procurement.md`):
 

@@ -20,7 +20,9 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  // Locally file:./dev.db (app/.env, relative to this folder); on the server
+  // a file on the persistent disk, e.g. file:/data/nirmaan.db.
+  url      = env("DATABASE_URL")
 }
 
 model Client {

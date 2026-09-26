@@ -1,5 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 
+// Scripts and tests started without app/.env still find the local database.
+process.env.DATABASE_URL ??= "file:./dev.db";
+
 // Standard Next.js dev-mode pattern: hot-reload re-executes this module on
 // every edit, which would otherwise open a fresh SQLite connection each
 // time. Stash the client on globalThis so it survives reloads.
