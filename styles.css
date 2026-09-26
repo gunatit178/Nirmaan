@@ -1363,14 +1363,20 @@
   .swipe-dots { display: none; }
   @media (max-width: 40rem) {
     [data-swipe] {
-      display: flex; gap: 0.75rem; overflow-x: auto; overscroll-behavior-x: contain;
+      /* overflow-y: hidden, not the auto that overflow-x: auto implies, so a
+         vertical swipe that starts on a card always scrolls the page. */
+      display: flex; gap: 0.75rem; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory; scrollbar-width: none;
       margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
       scroll-padding-inline: var(--gutter);
       background: none; border: 0;
     }
     [data-swipe]::-webkit-scrollbar { display: none; }
-    [data-swipe] > * { flex: 0 0 84%; scroll-snap-align: start; border: 1px solid var(--line-2); }
+    /* position: relative keeps anything absolutely positioned inside a card
+       (screen-reader text, badges) inside the row. Without it, once a card's
+       reveal transform is gone, that text is placed against the page at the
+       card's sideways offset and widens the page, so phones zoom out. */
+    [data-swipe] > * { position: relative; flex: 0 0 84%; scroll-snap-align: start; border: 1px solid var(--line-2); }
     [data-swipe] > .price-card--featured, [data-swipe] > .package--featured { border-color: var(--ink); }
     .principles[data-swipe] > li { border: 1px solid var(--line-2); }
     .care-grid[data-swipe] > .care-card--featured { border: 2px solid var(--blue); margin-top: 0.75rem; }
@@ -1437,6 +1443,20 @@
   @media (max-width: 26rem) {
     .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer__grid > .footer__col:last-child { grid-column: 1 / -1; }
+  }
+
+  /* Small phones (320–360px). Anything wider than the screen makes phones
+     zoom the whole page out, so: headline sizes that fit a long word
+     ("accountable.", "conversation."), a last-resort break for any word that
+     still can't fit, the system map's pair stacked, and a dock that fits. */
+  @media (max-width: 22.5rem) {
+    .section__title, .case__title { font-size: 2rem; }
+    .cta-band__title { font-size: 2.1rem; }
+    .display, .display .line > span { overflow-wrap: break-word; max-width: 100%; }
+    .arch { padding: var(--s3); }
+    .arch__pair { grid-template-columns: minmax(0, 1fr); }
+    .dock__cta { min-width: 0; padding-inline: 0.9rem; }
+    .dock__link { padding: 0 0.8rem; }
   }
 }
 

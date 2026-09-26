@@ -9,7 +9,7 @@ permalink: "/pricing/{{ p.id }}.html"
 nav: "pricing"
 eleventyComputed:
   title: "{{ p.name }}: from {{ p.from | inr }} — Nirmaan pricing"
-  description: "{{ p.for }} What the {{ p.name }} package includes, what it doesn't, how the {{ p.weeks }} weeks run, and how payments work. From {{ p.from | inr }}, fixed quote before we start."
+  description: "{{ p.for }} From {{ p.from | inr }}, {{ p.weeks }} weeks: what the {{ p.name }} package includes, what it doesn't and how payments work."
 ---
 {%- set care = pricing | care(p.care) %}
 {%- set other = pricing | plan(p.notFit.plan) %}
@@ -32,7 +32,7 @@ eleventyComputed:
 <section class="section section--tight" aria-label="{{ p.name }} at a glance">
   <div class="wrap">
     <dl class="facts facts--plan" data-reveal>
-      <div><dt class="mono">From</dt><dd><span class="facts__big" data-count="{{ p.from }}">{{ p.from | inr }}</span></dd></div>
+      <div><dt class="mono">From</dt><dd><span class="facts__big">{{ p.from | inr }}</span></dd></div>
       <div><dt class="mono">Timeline</dt><dd><span class="facts__big">{{ p.weeks }}</span> weeks</dd></div>
       <div><dt class="mono">Payments</dt><dd>{% for s in pricing.schedule %}{{ s.percent }}{% if not loop.last %} / {% endif %}{% endfor %}, as it progresses</dd></div>
       <div><dt class="mono">Typical for</dt><dd>{{ p.examples }}</dd></div>
@@ -126,7 +126,7 @@ eleventyComputed:
         <li style="--w: {{ s.percent }}">
           <span class="paybar__fill" aria-hidden="true"></span>
           <span class="mono">{{ s.percent }}% · {{ s.when }}</span>
-          <b class="paybar__amount" data-count="{{ p.from | share(s.percent) }}">{{ p.from | share(s.percent) | inr }}</b>
+          <b class="paybar__amount">{{ p.from | share(s.percent) | inr }}</b>
           <span class="paybar__text">{{ s.text }}</span>
         </li>
         {%- endfor %}
@@ -197,7 +197,7 @@ eleventyComputed:
       </details>
       {%- endfor %}
       <details>
-        <summary>Why is it a "from" price?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <summary>Why is it a “from” price?<span class="faq__icon" aria-hidden="true"></span></summary>
         <p class="faq__answer">{{ (pricing.faq | first).a }}</p>
       </details>
     </div>

@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-09-26: Website: phones no longer zoom out at the pricing section, plus a review pass
+
+- Fixed: on phones, scrolling to the homepage pricing section zoomed the whole
+  page out and dropped you near the end. Hidden screen-reader text in the
+  package buttons escaped the swipe row once the cards revealed, widening the
+  page. Swipe-row cards now contain their own positioned content, rows never
+  capture vertical swipes, and cards off to the side reveal with the first.
+- Small phones (320–360px): process and case-study pages no longer zoom out
+  (headline sizes, the system map and the dock now fit the screen).
+- Search: canonical, link-preview and sitemap URLs now use
+  www.nirmaan.online, the address the site is actually served from; the
+  homepage describes the studio to search engines (structured data); page
+  descriptions trimmed to fit search results.
+- Copy: service names keep their acronyms mid-sentence ("AI systems", not
+  "ai systems"); the closing headlines read correctly to search engines and
+  screen readers ("Step one is a conversation."); one reply-time promise
+  (24 hours) everywhere; project timelines on the process page match the
+  pricing; "fixed quote" instead of "cost estimate"; curly quotes throughout.
+- Care plans: the middle plan is now "Plus" (it shared the name "Growth" with
+  a build package); /pricing/care/growth.html redirects to plus.html. Replies
+  are faster than a new enquiry's 24 hours on every plan: Essential within
+  1 business day, Plus the same business day, Priority within 4 business hours.
+- Prices no longer count up when they scroll into view, so a visitor never
+  sees a figure that isn't the real price.
+- Accessibility: text-only swipe rows can be scrolled from the keyboard.
+- OS: the CI evidence endpoint no longer returns internal error details; bad
+  payloads get 400/422, unexpected failures a plain 500.
+
 ## 2026-09-25: Website: contact details, and the services rail on phones
 
 - Contact email is now nirmaansoftware@gmail.com; X (@Nirmaansoftware) added

@@ -8,7 +8,7 @@
   <div class="wrap cta-band__inner">
     <p class="eyebrow eyebrow--inverse">{{ cta.eyebrow }}</p>
     <h2 class="cta-band__title display" id="cta-title">
-      {%- for line in cta.lines %}<span class="line"><span>{{ line | safe }}</span></span>{% endfor -%}
+      {%- for line in cta.lines %}{% if not loop.first %} {% endif %}<span class="line"><span>{{ line | safe }}</span></span>{% endfor -%}
     </h2>
     <p class="cta-band__text">{{ cta.text }}</p>
     <div class="actions">

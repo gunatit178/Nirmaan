@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 title: "Nirmaan — You bring the problem. We build the system."
-description: "From websites and apps to automation, AI systems and custom business software, Nirmaan turns real-world business problems into reliable software. Tell us the problem; we'll work out the system you actually need."
+description: "Websites, apps, automation, AI and custom business software. Tell Nirmaan the problem; we'll work out and build the system you actually need."
 ogDescription: "You bring the problem. We build the system. Websites, apps, automation, AI systems and custom software for real businesses."
 permalink: "/"
 scripts: ["hero.js"]
@@ -9,7 +9,7 @@ nav: "home"
 cta:
   eyebrow: "No spec needed"
   lines: ["Tell us the problem.", "We'll work out the system."]
-  text: "You don't need to know whether you need a website, an app or an automation. Describe what's going wrong, and we'll come back within a day with honest thoughts on approach, timeline and budget."
+  text: "You don't need to know whether you need a website, an app or an automation. Describe what's going wrong, and we'll reply within 24 hours with honest thoughts on approach, timeline and budget."
   primary: { label: "Tell us your problem", href: "/contact.html" }
   secondary: { label: "See pricing", href: "/pricing.html" }
 layers:
@@ -280,7 +280,7 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         <div>
           <h3 class="package__name"><a href="/pricing/{{ p.id }}.html" data-morph="plan-{{ p.id }}">{{ p.name }}</a></h3>
           <p class="package__for">{{ p.for }}</p>
-          <p class="package__price"><span>from</span><b data-count="{{ p.from }}">{{ p.from | inr }}</b></p>
+          <p class="package__price"><span>from</span><b>{{ p.from | inr }}</b></p>
         </div>
         <ul class="ticks" role="list">
           {%- for f in p.features | batch(3) | first %}<li>{{ f }}</li>{% endfor %}

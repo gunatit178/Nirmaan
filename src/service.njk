@@ -9,7 +9,7 @@ permalink: "/services/{{ s.id }}.html"
 nav: "services"
 eleventyComputed:
   title: "{{ s.title }} — Nirmaan"
-  description: "{{ s.text }} What's included, when you need it, what it usually costs and how the build runs."
+  description: "{{ s.text }} What's included, typical cost and timeline."
 ---
 {%- set head = {
   eyebrow: s.group.label,
@@ -51,7 +51,7 @@ eleventyComputed:
         <p class="eyebrow">What you get</p>
         <h2 class="section__title display" id="gets-title">Built properly, end to&nbsp;end.</h2>
       </div>
-      <p class="section__text">What's part of {{ s.title | lower }} as standard, plus what comes with every Nirmaan build.</p>
+      <p class="section__text">What's part of {{ s.title | inSentence }} as standard, plus what comes with every Nirmaan build.</p>
     </div>
     <div class="gets">
       <ul class="gets__list" role="list">
@@ -78,7 +78,7 @@ eleventyComputed:
       {%- else %}
       {%- set pl = pricing | plan(s.plan) %}
       <h2 class="section__title display" id="cost-title">Usually starts at {{ pl.name }}.</h2>
-      <p class="section__text">Most {{ s.title | lower }} projects fit the {{ pl.name }} package. Yours might be smaller or bigger; you get one fixed quote after we understand the problem.</p>
+      <p class="section__text">Most {{ s.title | inSentence }} projects fit the {{ pl.name }} package. Yours might be smaller or bigger; you get one fixed quote after we understand the problem.</p>
       {%- endif %}
     </div>
     {%- if s.plan == "care" %}
@@ -119,7 +119,7 @@ eleventyComputed:
     <div class="timeline" data-scene="line">
       <span class="timeline__bar" aria-hidden="true"></span>
       <ol class="timeline__list" role="list">
-        <li data-reveal style="--d: 0"><span class="mono">Step 1</span><h3>Discover</h3><p>The problem, the people it affects, and what "solved" looks like.</p></li>
+        <li data-reveal style="--d: 0"><span class="mono">Step 1</span><h3>Discover</h3><p>The problem, the people it affects, and what “solved” looks like.</p></li>
         <li data-reveal style="--d: 1"><span class="mono">Step 2</span><h3>Plan</h3><p>Scope, architecture and a fixed price, approved by you.</p></li>
         <li data-reveal style="--d: 2"><span class="mono">Step 3</span><h3>Design</h3><p>Screens and flows you can click through before we build.</p></li>
         <li data-reveal style="--d: 3"><span class="mono">Step 4</span><h3>Build</h3><p>Built in working slices, properly tested.</p></li>
@@ -159,7 +159,7 @@ eleventyComputed:
 {%- set cta = {
   eyebrow: "No spec needed",
   lines: ["Tell us the problem.", "We'll build the system."],
-  text: "Describe what's going wrong in your own words. We'll come back within a day with honest thoughts on approach, timeline and budget, including whether " + (s.title | lower) + " is the right answer.",
+  text: "Describe what's going wrong in your own words. We'll reply within 24 hours with honest thoughts on approach, timeline and budget, including whether this is the right service for the job.",
   primary: { label: "Tell us your problem", href: "/contact.html?service=" + s.id + "#enquiry" },
   secondary: { label: "See pricing", href: "/pricing.html" }
 } %}

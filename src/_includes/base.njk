@@ -32,6 +32,37 @@
   <meta name="theme-color" content="#0E0E0F" media="(prefers-color-scheme: dark)" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  {%- if nav == 'home' %}
+  {#- Who we are, for search engines: name, logo, contact and profiles. #}
+  {%- set sameAs = [] %}
+  {%- for url in [site.social.linkedin, site.social.github, site.social.x] %}{% if url %}{% set sameAs = (sameAs.push(url), sameAs) %}{% endif %}{% endfor %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#organization",
+        "name": {{ site.name | dump | safe }},
+        "description": {{ description | dump | safe }},
+        "url": "{{ site.url }}/",
+        "logo": "{{ site.url }}/apple-touch-icon.png"
+        {%- if site.email %},
+        "email": {{ site.email | dump | safe }}{% endif %}
+        {%- if sameAs.length %},
+        "sameAs": {{ sameAs | dump | safe }}{% endif %}
+      },
+      {
+        "@type": "WebSite",
+        "@id": "{{ site.url }}/#website",
+        "name": {{ site.name | dump | safe }},
+        "url": "{{ site.url }}/",
+        "publisher": { "@id": "{{ site.url }}/#organization" }
+      }
+    ]
+  }
+  </script>
+  {%- endif %}
 
   {#- Runs before first paint: applies a saved theme choice, and marks the page as
       able to animate. Content is only ever hidden for a reveal when .motion is

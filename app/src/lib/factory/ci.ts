@@ -44,10 +44,10 @@ export async function ingestCiResults(token: string | undefined, payload: CiPayl
   if (!project) throw new CiAuthError();
 
   const runId = typeof payload.run?.id === "string" || typeof payload.run?.id === "number" ? String(payload.run.id).slice(0, 100) : "";
-  if (!runId) throw new Error('"run.id" is required, so re-posting the same run doesn\'t double-count.');
+  if (!runId) throw new CiPayloadError('"run.id" is required, so re-posting the same run doesn\'t double-count.');
   const runUrl = typeof payload.run?.url === "string" && /^https?:\/\//.test(payload.run.url) ? payload.run.url.slice(0, 500) : null;
-  if (!Array.isArray(payload.results) || !payload.results.length) throw new Error('"results" must be a non-empty list.');
-  if (payload.results.length > MAX_RESULTS) throw new Error(`At most ${MAX_RESULTS} results per post.`);
+  if (!Array.isArray(payload.results) || !payload.results.length) throw new CiPayloadError('"results" must be a non-empty list.');
+  if (payload.results.length > MAX_RESULTS) throw new CiPayloadError(`At most ${MAX_RESULTS} results per post.`);
 
   const tests = await prisma.testCase.findMany({ where: { projectId: project.id }, select: { id: true, code: true } });
   const byCode = new Map(tests.map((t) => [t.code, t.id]));
@@ -96,5 +96,13 @@ export class CiAuthError extends Error {
   constructor() {
     super("Invalid or missing CI token.");
     this.name = "CiAuthError";
+  }
+}
+
+/** A payload the caller can fix; its message is safe to send back. */
+export class CiPayloadError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CiPayloadError";
   }
 }
