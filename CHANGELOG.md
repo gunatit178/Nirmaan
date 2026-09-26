@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-26: Website: WhatsApp
+
+- Our WhatsApp Business number (+91 94938 33697) on the contact page and in
+  every page's footer.
+
 ## 2026-09-26: Nirmaan OS: Campaigns (prospecting on autopilot, people still approve)
 
 - **Campaigns** (`/os/campaigns`): describe a goal in plain words; Claude plans the
