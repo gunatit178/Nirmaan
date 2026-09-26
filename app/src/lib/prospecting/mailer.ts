@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import nodemailer from "nodemailer";
 
 /**
@@ -14,6 +15,15 @@ export interface OutgoingEmail {
   to: string;
   subject: string;
   text: string;
+  /** Follow-ups: the first email's Message-ID, so mail apps show one conversation. */
+  inReplyTo?: string;
+  references?: string[];
+}
+
+/** Our own Message-ID, so threading works the same with SMTP or Resend. */
+function newMessageId(from: string): string {
+  const domain = /@([^>\s]+)/.exec(from)?.[1] ?? "nirmaan.online";
+  return `<${randomUUID()}@${domain}>`;
 }
 
 export interface Mailer {
@@ -31,8 +41,9 @@ export function mailerFromEnv(env: NodeJS.ProcessEnv = process.env): Mailer | nu
     return {
       name: "SMTP",
       async send(mail) {
-        const info = await transport.sendMail({ from, replyTo, to: mail.to, subject: mail.subject, text: mail.text });
-        return { id: info.messageId };
+        const messageId = newMessageId(from);
+        await transport.sendMail({ from, replyTo, to: mail.to, subject: mail.subject, text: mail.text, messageId, inReplyTo: mail.inReplyTo, references: mail.references });
+        return { id: messageId };
       },
     };
   }
@@ -41,15 +52,23 @@ export function mailerFromEnv(env: NodeJS.ProcessEnv = process.env): Mailer | nu
     return {
       name: "Resend",
       async send(mail) {
+        const messageId = newMessageId(from);
         const res = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ from, to: [mail.to], subject: mail.subject, text: mail.text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+          body: JSON.stringify({
+            from,
+            to: [mail.to],
+            subject: mail.subject,
+            text: mail.text,
+            ...(replyTo ? { reply_to: replyTo } : {}),
+            headers: { "Message-ID": messageId, ...(mail.inReplyTo ? { "In-Reply-To": mail.inReplyTo, References: (mail.references ?? [mail.inReplyTo]).join(" ") } : {}) },
+          }),
           signal: AbortSignal.timeout(20_000),
         });
         const body = (await res.json().catch(() => ({}))) as { id?: string; message?: string };
         if (!res.ok) throw new Error(`Resend said no (${res.status}): ${body.message ?? res.statusText}`);
-        return { id: body.id };
+        return { id: messageId };
       },
     };
   }
@@ -60,8 +79,13 @@ export function sendingConfigured(): boolean {
   return mailerFromEnv() !== null;
 }
 
-/** Most outreach emails the OS will send in one day (OUTREACH_DAILY_LIMIT, default 20). */
+/**
+ * Most outreach emails the OS sends in one day (OUTREACH_DAILY_LIMIT).
+ * Default 400: a Gmail account is cut off for a day at about 500 messages
+ * in 24 hours (Google Workspace: 2,000), so this keeps a margin under the
+ * mailbox's own ceiling. Raise it only on a Workspace or sending domain.
+ */
 export function dailyLimit(env: NodeJS.ProcessEnv = process.env): number {
   const n = Number(env.OUTREACH_DAILY_LIMIT);
-  return Number.isInteger(n) && n > 0 && n <= 200 ? n : 20;
+  return Number.isInteger(n) && n > 0 && n <= 2000 ? n : 400;
 }

@@ -23,7 +23,8 @@ export function providerFor(config: ModelConfig): ModelProvider {
 export function webResearchProvider(config: ModelConfig): ModelProvider {
   switch (config.provider) {
     case "claude-code-cli":
-      return new ClaudeCodeCliProvider(undefined, 300_000, undefined, 1.5, { webTools: true });
+      // A real web search takes 3–4 minutes and about $1 of usage for 5 businesses (measured 2026-09-26).
+      return new ClaudeCodeCliProvider(undefined, 600_000, undefined, 3, { webTools: true });
     case "anthropic":
       return new AnthropicProvider(undefined, { webTools: true });
     default:

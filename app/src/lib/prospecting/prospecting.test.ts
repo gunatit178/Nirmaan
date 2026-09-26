@@ -241,7 +241,7 @@ test("outreach: drafted by Claude, sent only by someone allowed to, with every g
   await assert.rejects(() => approveAndSendEmail(FOUNDER, draft.id, { mailer }), /already been handled/);
   const followUp = await draftOutreach(FOUNDER, p.id, "WHATSAPP", { provider: new MockProvider(DRAFT_REPLY) });
   assert.equal(followUp.subject, null);
-  await assert.rejects(() => markSentManually(FOUNDER, followUp.id), /last 7 days/);
+  await assert.rejects(() => markSentManually(FOUNDER, followUp.id), /at least 2 days apart/);
 
   const link = whatsappLink("098250 11111", "Hello there, a short note.")!;
   assert.match(link, /^https:\/\/wa\.me\/919825011111\?text=/);

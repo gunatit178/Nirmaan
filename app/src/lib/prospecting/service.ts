@@ -23,6 +23,8 @@ export interface SearchInput {
   segment: string;
   sources: SearchSource[];
   max?: number;
+  /** Set when a campaign runs the search; its prospects belong to that campaign. */
+  campaignId?: string;
 }
 
 /** Swappable finders, so tests (and a future source) don't need the network. */
@@ -76,12 +78,12 @@ export async function runProspectSearch(actor: Actor, input: SearchInput, finder
   if (!used.length) throw new Error(notes.join(" ") || "Nothing to search with.");
 
   const search = await prisma.prospectSearch.create({
-    data: { query: q.query, location: q.location, segment: q.segment, sources: encodeStringList(used), createdBy: actor.label, found: found.length },
+    data: { query: q.query, location: q.location, segment: q.segment, sources: encodeStringList(used), createdBy: actor.label, found: found.length, campaignId: input.campaignId ?? null },
   });
   let added = 0;
   let skipped = 0;
   for (const business of found) {
-    const r = await upsertProspect(business, q.segment, search.id);
+    const r = await upsertProspect(business, q.segment, search.id, input.campaignId ?? null);
     if (r === "added") added++;
     if (r === "suppressed") skipped++;
   }
@@ -92,7 +94,7 @@ export async function runProspectSearch(actor: Actor, input: SearchInput, finder
 }
 
 /** Adds a business, or fills gaps on the prospect it already is. Never changes a prospect's status. */
-export async function upsertProspect(b: FoundBusiness, segment: ProspectSegment, searchId: string | null): Promise<"added" | "merged" | "suppressed"> {
+export async function upsertProspect(b: FoundBusiness, segment: ProspectSegment, searchId: string | null, campaignId: string | null = null): Promise<"added" | "merged" | "suppressed"> {
   const website = normalUrl(b.website);
   const email = normalEmail(b.email);
   if (await isSuppressed({ email, phone: b.phone, website })) return "suppressed";
@@ -120,13 +122,13 @@ export async function upsertProspect(b: FoundBusiness, segment: ProspectSegment,
   };
   if (existing) {
     // Keep what we had; only fill what was missing.
-    const gaps = Object.fromEntries(Object.entries({ ...fields, domain }).filter(([k, v]) => v !== null && (existing as Record<string, unknown>)[k] == null));
+    const gaps = Object.fromEntries(Object.entries({ ...fields, domain, campaignId }).filter(([k, v]) => v !== null && (existing as Record<string, unknown>)[k] == null));
     if (Object.keys(gaps).length) await prisma.prospect.update({ where: { id: existing.id }, data: gaps });
     return "merged";
   }
   await prisma.$transaction(async (tx) => {
     const code = await nextCode("PROS", tx);
-    await tx.prospect.create({ data: { ...fields, code, dedupeKey, domain, nameKey, name: b.name, segment, source: b.source, searchId } });
+    await tx.prospect.create({ data: { ...fields, code, dedupeKey, domain, nameKey, name: b.name, segment, source: b.source, searchId, campaignId } });
   });
   return "added";
 }
@@ -146,7 +148,7 @@ export async function addSuppression(actor: Actor, raw: string, reason: string) 
   await prisma.suppression.upsert({ where: { value }, create: { value, reason: why, createdBy: actor.label }, update: {} });
   // Anything matching it stops here too.
   const matching = await prisma.prospect.findMany({ where: { status: { notIn: ["CONVERTED", "DO_NOT_CONTACT"] } } });
-  for (const p of matching.filter((p) => suppressionKeys(p).includes(value))) await stopProspect(p.id);
+  for (const p of matching.filter((p) => suppressionKeys(p).includes(value))) await stopProspect(p.id, why, actor.label);
   await audit(actor, "prospect.suppressed", "Suppression", value, why);
   return value;
 }
@@ -162,15 +164,21 @@ export async function doNotContact(actor: Actor, prospectId: string, reason: str
   assertCan(actor.role, "prospect:run");
   const p = await prisma.prospect.findUniqueOrThrow({ where: { id: prospectId } });
   const why = reason.trim().slice(0, 300) || "Asked not to be contacted";
-  for (const value of suppressionKeys(p)) {
-    await prisma.suppression.upsert({ where: { value }, create: { value, reason: `${p.code}: ${why}`, createdBy: actor.label }, update: {} });
-  }
-  await stopProspect(p.id);
+  await stopProspect(p.id, `${p.code}: ${why}`, actor.label);
   await audit(actor, "prospect.do_not_contact", "Prospect", p.id, `${p.code}: ${why}`);
 }
 
-async function stopProspect(id: string) {
-  await prisma.outreachMessage.updateMany({ where: { prospectId: id, status: "DRAFT" }, data: { status: "CANCELLED" } });
+/**
+ * No more outreach to this business, ever: its email, phone and domain go on
+ * the do-not-contact list and anything waiting (drafts, queued emails) is
+ * cancelled. Used by the button, the list, and the inbox check on "stop".
+ */
+export async function stopProspect(id: string, reason: string, createdBy: string) {
+  const p = await prisma.prospect.findUniqueOrThrow({ where: { id } });
+  for (const value of suppressionKeys(p)) {
+    await prisma.suppression.upsert({ where: { value }, create: { value, reason: reason.slice(0, 300), createdBy }, update: {} });
+  }
+  await prisma.outreachMessage.updateMany({ where: { prospectId: id, status: { in: ["DRAFT", "APPROVED"] } }, data: { status: "CANCELLED", scheduledFor: null } });
   await prisma.prospect.update({ where: { id }, data: { status: "DO_NOT_CONTACT" } });
 }
 
@@ -204,8 +212,15 @@ export async function setProspectStatus(actor: Actor, prospectId: string, to: st
   if (!MANUAL[to]?.includes(p.status)) throw new Error(`A prospect can't move from ${p.status.toLowerCase()} to ${to.toLowerCase()} by hand.`);
   if (to === "DISMISSED" && !reason?.trim()) throw new Error("Say why it's not a fit. It sharpens future searches.");
   const reopened = to === "NEW" ? (p.auditedAt ? "AUDITED" : "NEW") : to;
+  if (to === "REPLIED") {
+    // Stops every waiting follow-up, the same as a reply found in the inbox.
+    const { markReplied } = await import("./outreach");
+    await markReplied(p.id);
+    await audit(actor, "prospect.status_changed", "Prospect", p.id, `${p.status} → REPLIED`);
+    return;
+  }
   await prisma.prospect.update({ where: { id: p.id }, data: { status: reopened, dismissedReason: to === "DISMISSED" ? reason!.trim().slice(0, 300) : p.dismissedReason } });
-  if (to === "DISMISSED") await prisma.outreachMessage.updateMany({ where: { prospectId: p.id, status: "DRAFT" }, data: { status: "CANCELLED" } });
+  if (to === "DISMISSED") await prisma.outreachMessage.updateMany({ where: { prospectId: p.id, status: { in: ["DRAFT", "APPROVED"] } }, data: { status: "CANCELLED", scheduledFor: null } });
   await audit(actor, "prospect.status_changed", "Prospect", p.id, `${p.status} → ${reopened}${reason ? `: ${reason}` : ""}`);
 }
 

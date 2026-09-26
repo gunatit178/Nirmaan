@@ -245,5 +245,9 @@ export const OPEN_PROSPECT_STATUSES: readonly ProspectStatus[] = ["NEW", "AUDITE
 
 export const OUTREACH_CHANNELS = ["EMAIL", "WHATSAPP"] as const;
 export type OutreachChannel = (typeof OUTREACH_CHANNELS)[number];
-export const OUTREACH_STATUSES = ["DRAFT", "SENT", "FAILED", "CANCELLED"] as const;
+// APPROVED: an email a person approved, waiting for its paced send slot (src/lib/prospecting/worker.ts).
+export const OUTREACH_STATUSES = ["DRAFT", "APPROVED", "SENT", "FAILED", "CANCELLED"] as const;
 export type OutreachStatus = (typeof OUTREACH_STATUSES)[number];
+
+export const CAMPAIGN_STATUSES = ["DRAFT", "ACTIVE", "PAUSED", "DONE"] as const;
+export type CampaignStatus = (typeof CAMPAIGN_STATUSES)[number];
