@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: ready for Fly.io
+
+- `fly.toml` + `Dockerfile.os`: the OS and its campaign worker on one always-on
+  machine in Mumbai, with the database on a persistent volume, at os.nirmaan.online.
+- The database location comes from `DATABASE_URL` (locally still `app/prisma/dev.db`).
+
 ## 2026-09-26: Nirmaan OS: Google sign-in only
 
 - `NIRMAAN_PASSWORD_LOGIN=off` turns password sign-in off: the server refuses it,
