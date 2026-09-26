@@ -83,7 +83,12 @@ export async function fetchSite(
     await assertPublic(url, resolve);
     const res = await doFetch(url, {
       redirect: "manual",
-      headers: { "User-Agent": "NirmaanSiteCheck/1.0 (+https://www.nirmaan.online)", Accept: "text/html,*/*;q=0.5" },
+      // A normal browser's headers, so we see the page a visitor sees (many sites refuse unknown clients).
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml,*/*;q=0.8",
+        "Accept-Language": "en-IN,en;q=0.9",
+      },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     const location = res.headers.get("location");

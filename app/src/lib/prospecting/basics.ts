@@ -44,6 +44,22 @@ export function normalPhone(value: string | null | undefined): string | null {
   return digits.length === 10 ? `91${digits}` : digits;
 }
 
+/**
+ * WhatsApp needs a mobile. Indian mobiles are 10 digits starting 6–9, written
+ * "98250 12345" or "9825012345". Landlines are written with their area code
+ * as its own group ("079 2656 0004", "+91 79 2656 0004"), and Ahmedabad's 79
+ * would otherwise pass for a mobile prefix.
+ */
+export function isWhatsappable(phone: string | null | undefined): boolean {
+  const d = normalPhone(phone);
+  if (!d) return false;
+  if (!d.startsWith("91")) return d.length >= 10;
+  if (!/^91[6-9]\d{9}$/.test(d)) return false;
+  const rest = (phone ?? "").trim().replace(/^(\+?91[\s-]*|0)/, "");
+  const firstGroup = /^(\d+)[\s-]/.exec(rest)?.[1];
+  return !(firstGroup && firstGroup.length >= 2 && firstGroup.length <= 4);
+}
+
 /** "https://www.Example.com/contact" → "example.com". Null for anything that isn't a web address. */
 export function domainOf(url: string | null | undefined): string | null {
   if (!url) return null;

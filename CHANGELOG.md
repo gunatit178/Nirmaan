@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: Campaigns (prospecting on autopilot, people still approve)
+
+- **Campaigns** (`/os/campaigns`): describe a goal in plain words; Claude plans the
+  searches (terms × places, segment, angle). A background worker
+  (`npm run campaigns:worker`) then searches, checks, drafts first messages split
+  between email and WhatsApp (default 50/50), and drafts follow-ups on schedule.
+- **Outreach queue** (`/os/outreach`): approve emails one by one or all at once;
+  send WhatsApp messages one tap at a time from our own number.
+- **Human by design:** messages in Sahaj Patel's voice with a real signature and our
+  WhatsApp number; follow-ups as replies in the same thread; emails sent from our
+  own mailbox one at a time in Indian working hours with random gaps; replies,
+  "stop"s and bounces read from our inbox (IMAP) stop everything at once.
+- **Higher limits:** 400 emails a day by default (Gmail's own ceiling is about 500),
+  up to 3 messages per business per channel without a reply (configurable to 5),
+  at least 2 days apart. The one-per-week rule is gone.
+- Fixes from the first real search: bot-protection pages are no longer read as
+  broken sites, unreadable sites are "unknown" rather than evidence, the site check
+  outranks the web note, landlines never get WhatsApp, web searches get more time.
+
 ## 2026-09-26: Nirmaan OS: Prospecting (find clients before they ask)
 
 - New **Pipeline → Prospects** screen. Search for businesses ("dental clinics"

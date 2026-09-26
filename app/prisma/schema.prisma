@@ -717,21 +717,26 @@ model SupportRequest {
 
 // One "find me X in Y" run.
 model ProspectSearch {
-  id        String     @id @default(cuid())
+  id         String     @id @default(cuid())
   // What to look for and where, in plain words: "dental clinics", "Ahmedabad"
-  query     String
-  location  String
+  query      String
+  location   String
   // LOCAL_SERVICE | RETAIL_D2C | SME_OPS (src/lib/db/enums.ts#PROSPECT_SEGMENTS)
-  segment   String
+  segment    String
   // Sources actually used: JSON array of PLACES | WEB
-  sources   String     @default("[]")
-  found     Int        @default(0)
-  added     Int        @default(0)
+  sources    String     @default("[]")
+  found      Int        @default(0)
+  added      Int        @default(0)
   // Anything that went wrong with one source while the other still worked.
-  notes     String?
-  createdBy String
-  prospects Prospect[]
-  createdAt DateTime   @default(now())
+  notes      String?
+  createdBy  String
+  // Set when a campaign ran this search on its own.
+  campaignId String?
+  campaign   Campaign?  @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  prospects  Prospect[]
+  createdAt  DateTime   @default(now())
+
+  @@index([campaignId, createdAt])
 }
 
 model Prospect {
@@ -739,6 +744,10 @@ model Prospect {
   code             String            @unique // PROS-014
   searchId         String?
   search           ProspectSearch?   @relation(fields: [searchId], references: [id], onDelete: SetNull)
+  // The campaign that found it first; its drafts and follow-ups follow that campaign\'s settings.
+  campaignId       String?
+  campaign         Campaign?         @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  repliedAt        DateTime?
   // PLACES | WEB | MANUAL
   source           String
   // The same business found twice (by Places id, website domain or name+city) is one prospect.
@@ -782,34 +791,45 @@ model Prospect {
 
   @@index([status])
   @@index([fitScore])
+  @@index([campaignId, status])
   @@index([domain])
   @@index([nameKey])
   @@index([placeId])
 }
 
 model OutreachMessage {
-  id         String    @id @default(cuid())
-  prospectId String
-  prospect   Prospect  @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  id           String    @id @default(cuid())
+  prospectId   String
+  prospect     Prospect  @relation(fields: [prospectId], references: [id], onDelete: Cascade)
   // EMAIL | WHATSAPP
-  channel    String
-  toAddress  String
-  subject    String?
-  body       String
-  // DRAFT | SENT | FAILED | CANCELLED
-  status     String    @default("DRAFT")
+  channel      String
+  toAddress    String
+  subject      String?
+  body         String
+  // DRAFT → APPROVED (email queued for paced sending) → SENT; or FAILED | CANCELLED
+  status       String    @default("DRAFT")
+  // 0 = first message, 1+ = follow-ups in the same thread
+  step         Int       @default(0)
+  campaignId   String?
+  // Approved emails wait until this time, so sending is spread out like a person\'s.
+  scheduledFor DateTime?
+  // Email threading: our Message-ID once sent, and the first message\'s, which follow-ups reply to.
+  messageRef   String?
+  threadRef    String?
   // AGENT | USER
-  draftedBy  String
+  draftedBy    String
   // Who approved it, and how it went out: EMAIL (sent by the OS) or MANUAL (sent by a person)
-  approvedBy String?
-  sentVia    String?
-  sentAt     DateTime?
-  sendError  String?
-  providerId String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  approvedBy   String?
+  sentVia      String?
+  sentAt       DateTime?
+  sendError    String?
+  providerId   String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   @@index([status, sentAt])
+  @@index([status, scheduledFor])
+  @@index([campaignId, channel, createdAt])
 }
 
 // Do not contact: an email, phone or website domain that must never get outreach.
@@ -819,4 +839,51 @@ model Suppression {
   reason    String
   createdBy String
   createdAt DateTime @default(now())
+}
+
+// A standing goal ("dental clinics in Gujarat's big cities that book only by
+// phone") that the OS works on every day: searching, checking, drafting and
+// following up within daily budgets. A person still approves every message.
+model Campaign {
+  id                   String           @id @default(cuid())
+  code                 String           @unique // CAMP-003
+  name                 String
+  // The goal in plain words, as the founder wrote it.
+  goal                 String
+  segment              String
+  // DRAFT | ACTIVE | PAUSED | DONE
+  status               String           @default("DRAFT")
+  // Search plan (JSON arrays of strings), made by Claude from the goal and editable.
+  queries              String           @default("[]")
+  locations            String           @default("[]")
+  // What every first message should lead with, in one sentence.
+  angle                String?
+  // Next query × location pair to search (walks the plan, then wraps around).
+  searchCursor         Int              @default(0)
+  // Daily budgets. Places searches are cheap; web searches use the Claude subscription heavily.
+  placesSearchesPerDay Int              @default(6)
+  webSearchesPerDay    Int              @default(1)
+  checksPerDay         Int              @default(60)
+  newContactsPerDay    Int              @default(100)
+  // Percent of new contacts by email; the rest by WhatsApp.
+  emailShare           Int              @default(50)
+  minFit               Int              @default(55)
+  // Days after the previous message that each follow-up is drafted (JSON array), e.g. [3, 7]
+  followUpDays         String           @default("[3,7]")
+  createdBy            String
+  lastRunAt            DateTime?
+  searches             ProspectSearch[]
+  prospects            Prospect[]
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  @@index([status])
+}
+
+// Background job bookkeeping: a lock so two runs never overlap, and a checkpoint.
+model JobState {
+  name        String    @id // e.g. "campaign-tick", "inbox-check"
+  lockedUntil DateTime?
+  lastRunAt   DateTime?
+  data        String    @default("{}")
 }

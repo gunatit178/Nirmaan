@@ -7,7 +7,8 @@ import { errorState, type ActionState } from "@/lib/web/actionState";
 import { str } from "@/lib/web/form";
 import { addSuppression, convertToLead, doNotContact, removeSuppression, runProspectSearch, setProspectStatus, updateProspectContact, type SearchSource } from "@/lib/prospecting/service";
 import { auditNext, auditProspect } from "@/lib/prospecting/audit";
-import { approveAndSendEmail, cancelDraft, draftOutreach, markSentManually, updateDraft } from "@/lib/prospecting/outreach";
+import { approveEmail, cancelDraft, draftFollowUp, draftOutreach, markSentManually, sendEmail, updateDraft } from "@/lib/prospecting/outreach";
+import { prisma } from "@/lib/db/client";
 
 const LIST = "/os/prospects";
 const one = (id: string) => `/os/prospects/${id}`;
@@ -79,6 +80,7 @@ export async function updateDraftAction(_: ActionState, form: FormData): Promise
   try {
     await updateDraft(actor, str(form, "messageId"), { subject: str(form, "subject"), body: str(form, "body"), toAddress: str(form, "toAddress") });
     revalidatePath(one(str(form, "prospectId")));
+    revalidatePath(QUEUE);
     return { ok: "Draft saved." };
   } catch (err) {
     return errorState(err);
@@ -88,9 +90,55 @@ export async function updateDraftAction(_: ActionState, form: FormData): Promise
 export async function sendEmailAction(_: ActionState, form: FormData): Promise<ActionState> {
   const actor = await requireActor();
   try {
-    await approveAndSendEmail(actor, str(form, "messageId"));
+    await sendEmail(actor, str(form, "messageId"));
     revalidatePath(one(str(form, "prospectId")));
+    revalidatePath(QUEUE);
     return { ok: "Sent." };
+  } catch (err) {
+    return errorState(err);
+  }
+}
+
+const QUEUE = "/os/outreach";
+
+export async function approveEmailAction(_: ActionState, form: FormData): Promise<ActionState> {
+  const actor = await requireActor();
+  try {
+    await approveEmail(actor, str(form, "messageId"));
+    revalidatePath(one(str(form, "prospectId")));
+    revalidatePath(QUEUE);
+    return { ok: "Approved. It goes out at the next paced slot in sending hours." };
+  } catch (err) {
+    return errorState(err);
+  }
+}
+
+/** Approves every email draft listed on the queue page (ids posted with the form), skipping any that no longer qualify. */
+export async function approveAllAction(_: ActionState, form: FormData): Promise<ActionState> {
+  const actor = await requireActor();
+  const ids = form.getAll("messageId").filter((v): v is string => typeof v === "string").slice(0, 500);
+  let ok = 0;
+  const skipped: string[] = [];
+  for (const id of ids) {
+    try {
+      await approveEmail(actor, id);
+      ok++;
+    } catch (err) {
+      const code = (await prisma.outreachMessage.findUnique({ where: { id }, include: { prospect: { select: { code: true } } } }))?.prospect.code ?? id;
+      skipped.push(`${code}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  revalidatePath(QUEUE);
+  return skipped.length ? { error: `Approved ${ok}. Skipped ${skipped.length}: ${skipped.slice(0, 5).join(" · ")}` } : { ok: `Approved ${ok}. They go out one at a time, spaced through sending hours.` };
+}
+
+export async function draftFollowUpAction(_: ActionState, form: FormData): Promise<ActionState> {
+  const actor = await requireActor();
+  const id = str(form, "prospectId");
+  try {
+    await draftFollowUp(actor, id, str(form, "channel"));
+    revalidatePath(one(id));
+    return { ok: "Follow-up drafted below." };
   } catch (err) {
     return errorState(err);
   }
@@ -101,6 +149,7 @@ export async function markSentAction(_: ActionState, form: FormData): Promise<Ac
   try {
     await markSentManually(actor, str(form, "messageId"));
     revalidatePath(one(str(form, "prospectId")));
+    revalidatePath(QUEUE);
     return { ok: "Marked as sent." };
   } catch (err) {
     return errorState(err);
@@ -112,6 +161,7 @@ export async function cancelDraftAction(_: ActionState, form: FormData): Promise
   try {
     await cancelDraft(actor, str(form, "messageId"));
     revalidatePath(one(str(form, "prospectId")));
+    revalidatePath(QUEUE);
     return { ok: "Draft discarded." };
   } catch (err) {
     return errorState(err);

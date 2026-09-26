@@ -27,7 +27,7 @@ npm run dev                # http://localhost:3000 → sign in
 Checks (all must pass before merging):
 
 ```bash
-npm test                   # 185 tests, ~3 s
+npm test                   # 192 tests, ~3 s
 npm run typecheck
 npx eslint src scripts prisma
 npx next build
@@ -42,7 +42,9 @@ Environment variables:
 | `AGENCY_OS_MODEL_<TYPE>_PROVIDER` / `_ID` | Model routing overrides, e.g. `AGENCY_OS_MODEL_REQUIREMENTS_PROVIDER=mock` to run discovery without a model |
 | `AGENTS_ROOT` | Where agent specs live (default `../agents`) |
 | `GOOGLE_PLACES_API_KEY` | Prospecting: Google Places search (optional; without it searches use the web only) |
-| `OUTREACH_FROM`, `SMTP_URL` or `RESEND_API_KEY` | Prospecting: lets the OS send approved outreach emails. Also `OUTREACH_REPLY_TO`, `OUTREACH_DAILY_LIMIT` (default 20), `OUTREACH_SENDER_NAME`. See `docs/product/prospecting.md` |
+| `OUTREACH_FROM`, `SMTP_URL` or `RESEND_API_KEY`, `IMAP_URL` | Prospecting: send approved outreach from our mailbox and read replies. Also `OUTREACH_SENDER_NAME`, `OUTREACH_WHATSAPP_NUMBER`, `OUTREACH_DAILY_LIMIT` (default 400) and more; see `docs/product/prospecting.md` |
+
+Campaign worker: `npm run campaigns:worker` (a tick every minute) or `npm run campaigns:tick` (once, for cron).
 
 ## Phase 1: Business OS (2026-09-24)
 

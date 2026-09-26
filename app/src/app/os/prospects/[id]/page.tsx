@@ -20,6 +20,8 @@ import {
   draftAction,
   markSentAction,
   sendEmailAction,
+  approveEmailAction,
+  draftFollowUpAction,
   setProspectStatusAction,
   updateContactAction,
   updateDraftAction,
@@ -56,7 +58,8 @@ export default async function ProspectPage({ params }: PageProps<"/os/prospects/
   const evidence = decodeStringList(p.evidence);
   const sending = sendingConfigured();
   const lastSent = p.messages.find((m) => m.status === "SENT");
-  const openDraft = (channel: string) => p.messages.some((m) => m.channel === channel && m.status === "DRAFT");
+  const openDraft = (channel: string) => p.messages.some((m) => m.channel === channel && (m.status === "DRAFT" || m.status === "APPROVED"));
+  const sentOn = (channel: string) => p.messages.some((m) => m.channel === channel && m.status === "SENT");
 
   return (
     <>
@@ -120,18 +123,26 @@ export default async function ProspectPage({ params }: PageProps<"/os/prospects/
             </div>
             {canRun && !closed && (
               <div className="row">
-                {p.email && !openDraft("EMAIL") && (
-                  <ActionForm action={draftAction} submit="Draft an email" pendingLabel="Writing… (under a minute)" variant="ghost" className="">
-                    <input type="hidden" name="prospectId" value={p.id} />
-                    <input type="hidden" name="channel" value="EMAIL" />
-                  </ActionForm>
-                )}
-                {p.phone && !openDraft("WHATSAPP") && (
-                  <ActionForm action={draftAction} submit="Draft a WhatsApp message" pendingLabel="Writing… (under a minute)" variant="ghost" className="">
-                    <input type="hidden" name="prospectId" value={p.id} />
-                    <input type="hidden" name="channel" value="WHATSAPP" />
-                  </ActionForm>
-                )}
+                {(["EMAIL", "WHATSAPP"] as const).map((channel) => {
+                  const has = channel === "EMAIL" ? p.email : p.phone;
+                  if (!has || openDraft(channel)) return null;
+                  const label = channel === "EMAIL" ? "email" : "WhatsApp message";
+                  const followUp = sentOn(channel);
+                  if (followUp && p.status !== "CONTACTED") return null;
+                  return (
+                    <ActionForm
+                      key={channel}
+                      action={followUp ? draftFollowUpAction : draftAction}
+                      submit={followUp ? `Draft a follow-up ${label}` : `Draft ${channel === "EMAIL" ? "an" : "a"} ${label}`}
+                      pendingLabel="Writing… (under a minute)"
+                      variant="ghost"
+                      className=""
+                    >
+                      <input type="hidden" name="prospectId" value={p.id} />
+                      <input type="hidden" name="channel" value={channel} />
+                    </ActionForm>
+                  );
+                })}
                 {!p.email && !p.phone && <p className="empty">No email or phone yet. Add one under Contact details.</p>}
               </div>
             )}
@@ -145,6 +156,7 @@ export default async function ProspectPage({ params }: PageProps<"/os/prospects/
                     <li key={m.id}>
                       <div className="item-head">
                         <span>
+                          {m.step > 0 ? `Follow-up ${m.step} · ` : ""}
                           {m.channel === "EMAIL" ? "Email" : "WhatsApp"} to <span className="mono">{m.channel === "EMAIL" ? m.toAddress : `+${m.toAddress}`}</span>
                         </span>
                         <span className="row">
@@ -187,8 +199,14 @@ export default async function ProspectPage({ params }: PageProps<"/os/prospects/
                       {m.sendError && m.status === "DRAFT" && <p className="notice error">Last attempt failed: {m.sendError}</p>}
                       {m.status === "DRAFT" && (
                         <div className="row">
+                          {canSend && m.channel === "EMAIL" && (
+                            <ActionForm action={approveEmailAction} submit="Approve" className="">
+                              <input type="hidden" name="messageId" value={m.id} />
+                              <input type="hidden" name="prospectId" value={p.id} />
+                            </ActionForm>
+                          )}
                           {canSend && m.channel === "EMAIL" && sending && (
-                            <ActionForm action={sendEmailAction} submit="Approve and send" pendingLabel="Sending…" confirm="I've read this message and approve it going out in Nirmaan's name." className="">
+                            <ActionForm action={sendEmailAction} submit="Send now" pendingLabel="Sending…" variant="ghost" className="">
                               <input type="hidden" name="messageId" value={m.id} />
                               <input type="hidden" name="prospectId" value={p.id} />
                             </ActionForm>
@@ -206,6 +224,17 @@ export default async function ProspectPage({ params }: PageProps<"/os/prospects/
                           )}
                           {canRun && (
                             <ActionForm action={cancelDraftAction} submit="Discard" variant="danger sm" className="">
+                              <input type="hidden" name="messageId" value={m.id} />
+                              <input type="hidden" name="prospectId" value={p.id} />
+                            </ActionForm>
+                          )}
+                        </div>
+                      )}
+                      {m.status === "APPROVED" && (
+                        <div className="row">
+                          <span className="faint">Approved by {m.approvedBy}; goes out at the next paced slot in sending hours.</span>
+                          {canRun && (
+                            <ActionForm action={cancelDraftAction} submit="Cancel" variant="ghost sm" className="">
                               <input type="hidden" name="messageId" value={m.id} />
                               <input type="hidden" name="prospectId" value={p.id} />
                             </ActionForm>

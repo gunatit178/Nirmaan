@@ -8,8 +8,10 @@ import type { FetchedSite } from "./safeFetch";
  */
 export interface SiteSignals {
   hasWebsite: boolean;
-  /** Set when a website was listed but couldn't be read. */
+  /** Set when a website was listed but couldn't be read. Unknown, not a problem: it may work fine for visitors. */
   unreachable?: string;
+  /** The site answered with a bot-protection check instead of its page. It exists; its content is unknown. */
+  blocked?: boolean;
   url?: string;
   https?: boolean;
   status?: number;
@@ -43,6 +45,21 @@ const PLATFORMS: [string, RegExp][] = [
 ];
 
 const JUNK_EMAIL = /(example\.|sentry|wixpress|@2x|\.(png|jpe?g|gif|svg|webp)$|u003e|your-?email|email@domain|name@)/i;
+
+/**
+ * Bot-protection and "checking your browser" pages (Cloudflare, SiteGround,
+ * Sucuri, hosting captchas). Real visitors pass them; our check can't, so
+ * the page says nothing about the site. Seen on a real clinic's site on
+ * 2026-09-26, which an earlier version wrongly reported as "broken".
+ */
+export function isBotWall(site: Pick<FetchedSite, "html" | "status">): boolean {
+  const head = site.html.slice(0, 20_000);
+  return (
+    /cf-browser-verification|challenge-platform|cf_chl_|__cf_bm|sgcaptcha|sucuri_cloudproxy|captcha-delivery|ddos-guard|perimeterx|px-captcha/i.test(head) ||
+    (/just a moment|one moment,? please|checking (if the site connection is secure|your browser)|verify(ing)? you are (a )?human|attention required/i.test(head) && head.length < 60_000) ||
+    ((site.status === 403 || site.status === 429 || site.status === 503) && /captcha|challenge|firewall|access denied/i.test(head))
+  );
+}
 
 export function extractSignals(site: FetchedSite): SiteSignals {
   const html = site.html;
@@ -89,7 +106,11 @@ export function extractSignals(site: FetchedSite): SiteSignals {
 
 /** The signals as short lines for a prompt or a person. */
 export function describeSignals(s: SiteSignals): string[] {
-  if (!s.hasWebsite) return [s.unreachable ? `Website listed but couldn't be read: ${s.unreachable}` : "No website found"];
+  if (s.blocked) return [`Website exists (${s.url}) but it blocks automated checks, so its content is UNKNOWN. It likely works for visitors; draw no conclusions about it.`];
+  if (!s.hasWebsite && s.unreachable && !/no own website/.test(s.unreachable)) {
+    return [`Website listed but our check couldn't read it (${s.unreachable}). Its content is UNKNOWN; it may work fine for visitors.`];
+  }
+  if (!s.hasWebsite) return [s.unreachable ? `No website of its own: ${s.unreachable}` : "No website found"];
   const lines = [
     `Website: ${s.url} (HTTP ${s.status}${s.https ? "" : ", not HTTPS"})`,
     `Homepage: ${s.pageKb} KB, fetched in ${((s.loadMs ?? 0) / 1000).toFixed(1)} s`,
