@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     NextResponse.json(body, { status, headers: { ...headers, ...extra } });
 
   // Browsers always send Origin on cross-site POSTs; refuse ones we don't serve.
-  if (origin && !allowedOrigins().includes(origin) && origin !== request.nextUrl.origin) {
+  if (origin && !allowedOrigins().includes(origin) && origin !== request.nextUrl.origin && origin !== process.env.NIRMAAN_OS_URL?.replace(/\/+$/, "")) {
     return reply(403, { errors: [{ message: "This form can only be submitted from nirmaan.online." }] });
   }
 

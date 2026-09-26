@@ -25,8 +25,22 @@ export function googleConfigured(env: NodeJS.ProcessEnv = process.env): boolean 
   return !!(env.GOOGLE_CLIENT_ID?.trim() && env.GOOGLE_CLIENT_SECRET?.trim());
 }
 
+/**
+ * The address people use to reach the OS. Behind a proxy (Fly.io) the app
+ * only sees its internal one (https://localhost:3000), so every redirect and
+ * callback address comes from NIRMAAN_OS_URL when it's set.
+ */
+export function publicOrigin(requestOrigin: string, env: NodeJS.ProcessEnv = process.env): string {
+  return (env.NIRMAAN_OS_URL?.trim() || requestOrigin).replace(/\/+$/, "");
+}
+
+/** An absolute URL on the OS's public address, e.g. for a redirect after sign-in. */
+export function publicUrl(path: string, requestOrigin: string, env: NodeJS.ProcessEnv = process.env): URL {
+  return new URL(path, `${publicOrigin(requestOrigin, env)}/`);
+}
+
 export function redirectUri(origin: string, env: NodeJS.ProcessEnv = process.env): string {
-  return `${(env.NIRMAAN_OS_URL?.trim() || origin).replace(/\/$/, "")}/api/auth/google/callback`;
+  return `${publicOrigin(origin, env)}/api/auth/google/callback`;
 }
 
 /** A fresh state and PKCE pair, and the Google URL to send the browser to. */
@@ -102,5 +116,6 @@ export async function finishSignIn(
 /** The OS user this Google account may sign in as: active, and with exactly this email. */
 export async function userForGoogleEmail(email: string) {
   const user = await prisma.user.findUnique({ where: { email } });
-  return user && user.active ? user : null;
+  if (!user || !user.active) return null;
+  return prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
 }

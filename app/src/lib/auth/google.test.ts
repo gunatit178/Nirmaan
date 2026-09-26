@@ -2,7 +2,7 @@ import { test, after } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { prisma } from "../db/client";
-import { decodeIdToken, finishSignIn, redirectUri, startSignIn, userForGoogleEmail, verifiedEmail } from "./google";
+import { decodeIdToken, finishSignIn, publicUrl, redirectUri, startSignIn, userForGoogleEmail, verifiedEmail } from "./google";
 
 const env = { GOOGLE_CLIENT_ID: "client-123.apps.googleusercontent.com", GOOGLE_CLIENT_SECRET: "secret" } as unknown as NodeJS.ProcessEnv;
 const run = `${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
@@ -56,4 +56,11 @@ test("who may sign in: only an active user with that exact email", async () => {
   assert.equal(await userForGoogleEmail(`stranger-${run}@example.test`), null);
   await prisma.user.update({ where: { email }, data: { active: false } });
   assert.equal(await userForGoogleEmail(email), null);
+});
+
+test("behind a proxy, redirects use the public address, never the internal one", () => {
+  const live = { NIRMAAN_OS_URL: "https://os.nirmaan.online" } as unknown as NodeJS.ProcessEnv;
+  assert.equal(publicUrl("/os", "https://localhost:3000", live).toString(), "https://os.nirmaan.online/os");
+  assert.equal(publicUrl("/login?error=google-expired", "https://localhost:3000", live).toString(), "https://os.nirmaan.online/login?error=google-expired");
+  assert.equal(publicUrl("/os", "http://localhost:3000", {} as unknown as NodeJS.ProcessEnv).toString(), "http://localhost:3000/os", "locally, the request's own address");
 });
