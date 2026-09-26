@@ -27,7 +27,7 @@ npm run dev                # http://localhost:3000 → sign in
 Checks (all must pass before merging):
 
 ```bash
-npm test                   # 192 tests, ~3 s
+npm test                   # 196 tests, ~3 s
 npm run typecheck
 npx eslint src scripts prisma
 npx next build

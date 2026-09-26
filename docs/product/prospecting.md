@@ -67,6 +67,50 @@ npm run campaigns:tick      # one tick (for cron), e.g. */2 * * * * cd …/app &
 Or press "Run one tick now" on the Campaigns page. It only works while the machine is
 on; on a server, run it as a service next to the OS.
 
+## Autopilot · IMPLEMENTED
+
+**Growth → Autopilot.** Prospecting without creating campaigns. Switch it on, set one
+daily volume (default 100 new businesses) and the cities (default Gujarat's big
+cities: Ahmedabad, Surat, Vadodara, Rajkot, Gandhinagar, Bhavnagar). The OS keeps one
+standing campaign per segment, each with its own Google Maps searches:
+
+- **Local services:** dental, skin and physiotherapy clinics, eye hospitals,
+  diagnostic centres, coaching classes, chartered accountants, interior designers,
+  salons, gyms.
+- **Shops, restaurants, D2C:** restaurants, bakeries, boutiques, furniture,
+  jewellery and sweet shops, electronics stores, cloud kitchens, organic and gift
+  shops.
+- **SMEs:** manufacturers, wholesale distributors, textile traders, transport,
+  packaging, pharma distributors, engineering works, chemical suppliers, printing
+  presses, couriers.
+
+Every week it reviews the last 30 days and re-balances, in plain arithmetic (no model
+call). It writes up what it changed on the Growth page:
+
+- **Segments:** new contacts shift toward the segments that reply; each keeps at least
+  15%, so nothing stops being tested.
+- **Channel split:** moves 10 points toward the channel with the better reply rate,
+  once both have 30+ contacts; it stays between 30% and 70%.
+- **Cities:** the best-replying cities are searched first.
+
+Messages are still approved by a person, in batches.
+
+## Growth dashboard (owners only) · IMPLEMENTED
+
+**Growth** (`/os/growth`), visible only with `growth:read` (the founder role; not even
+the CTO):
+
+- **Needs you now:** emails to approve, WhatsApp messages to send, replies to answer.
+- **Outbound funnel** for today, the last 7 days and all time: found → checked →
+  contacted → replied → leads → won, with the ₹ value won.
+- **What's working:** reply rates by channel, segment and city.
+- **Campaigns:** each one's email and WhatsApp results and leads.
+- **Replies:** who answered, what they said, and whether they're a lead yet.
+- **Leads from outreach:** where each came from and how far it got.
+- **Every message** (`/os/growth/messages`): every email and WhatsApp message, to whom,
+  when, with the exact text and who approved it. Searchable and filterable; "Download
+  for Excel" exports the same view as CSV.
+
 ### Messages that read like a person
 
 - Written for each business by Claude in the sender's voice (`OUTREACH_SENDER_NAME`),

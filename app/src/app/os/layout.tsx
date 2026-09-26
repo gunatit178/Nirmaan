@@ -23,6 +23,7 @@ export default async function OsLayout({ children }: LayoutProps<"/os">) {
 
   const items: NavItem[] = [
     can(role, "dashboard:read") && { href: "/os", label: "Today" },
+    can(role, "growth:read") && { href: "/os/growth", label: "Growth" },
     can(role, "prospect:read") && { href: "/os/campaigns", label: "Campaigns", group: "Pipeline" },
     can(role, "prospect:read") && { href: "/os/outreach", label: "Outreach", count: toReview, group: "Pipeline" },
     can(role, "prospect:read") && { href: "/os/prospects", label: "Prospects", count: replied, group: "Pipeline" },

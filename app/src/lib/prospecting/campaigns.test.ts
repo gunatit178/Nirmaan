@@ -49,9 +49,9 @@ async function resetJobs() {
 }
 
 before(async () => {
+  // Ticks here are scoped to this file's own campaigns (onlyCampaigns), so a
+  // developer's real campaigns in dev.db are never touched.
   await resetJobs();
-  // Other ACTIVE campaigns (from a developer's own use of dev.db) would take the tick's attention.
-  await prisma.campaign.updateMany({ where: { status: "ACTIVE", NOT: { name: { contains: run } } }, data: { status: "PAUSED" } });
 });
 
 after(async () => {
@@ -133,7 +133,7 @@ test("campaign end to end: plan → search → check → split drafts → paced 
   ];
   const finders = { places: async () => found, web: async () => [], placesReady: () => true };
   const mailer = new FakeMailer();
-  const deps = { now: MONDAY_11_IST, provider, fetcher: async () => site(), finders, mailer, reader: null, random: () => 0 };
+  const deps = { onlyCampaigns: campaigns, now: MONDAY_11_IST, provider, fetcher: async () => site(), finders, mailer, reader: null, random: () => 0 };
 
   // Tick 1 searches; tick 2 checks three; tick 3 drafts for them and checks the fourth; tick 4 drafts the rest.
   for (let i = 0; i < 4; i++) {
@@ -201,7 +201,7 @@ test("inbox: a 'stop' puts them on do-not-contact; a bounce retires the address"
   await resetJobs();
   const provider = new RoutingProvider();
   const mailer = new FakeMailer();
-  const deps = { now: MONDAY_11_IST, provider, fetcher: async () => site(), finders: { places: async () => found, placesReady: () => true }, mailer, reader: null, random: () => 0 };
+  const deps = { onlyCampaigns: campaigns, now: MONDAY_11_IST, provider, fetcher: async () => site(), finders: { places: async () => found, placesReady: () => true }, mailer, reader: null, random: () => 0 };
   await updateCampaign(FOUNDER, campaign.id, { emailShare: 100, minFit: 10 });
   for (let i = 0; i < 3; i++) await runTick(deps);
   const msgs = await prisma.outreachMessage.findMany({ where: { campaignId: campaign.id } });
@@ -232,9 +232,9 @@ test("inbox: a 'stop' puts them on do-not-contact; a bounce retires the address"
 test("worker: one tick at a time; nothing is sent outside hours or without approval", async () => {
   await resetJobs();
   await prisma.jobState.create({ data: { name: "campaign-tick", lockedUntil: new Date(Date.now() + 60_000) } });
-  const skipped = await runTick({ mailer: new FakeMailer(), reader: null });
+  const skipped = await runTick({ mailer: new FakeMailer(), reader: null, onlyCampaigns: [] });
   assert.equal(skipped.ran, false);
   await resetJobs();
-  const r = await runTick({ now: new Date("2026-09-27T05:30:00Z"), mailer: new FakeMailer(), reader: null, finders: { placesReady: () => false, web: async () => [] } });
+  const r = await runTick({ now: new Date("2026-09-27T05:30:00Z"), mailer: new FakeMailer(), reader: null, finders: { placesReady: () => false, web: async () => [] }, onlyCampaigns: [] });
   assert.equal(r.sent, 0);
 });
