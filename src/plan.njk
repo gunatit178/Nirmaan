@@ -32,7 +32,7 @@ eleventyComputed:
 <section class="section section--tight" aria-label="{{ p.name }} at a glance">
   <div class="wrap">
     <dl class="facts facts--plan" data-reveal>
-      <div><dt class="mono">From</dt><dd><span class="facts__big" data-count="{{ p.from }}">{{ p.from | inr }}</span></dd></div>
+      <div><dt class="mono">From</dt><dd><span class="facts__big">{{ p.from | inr }}</span></dd></div>
       <div><dt class="mono">Timeline</dt><dd><span class="facts__big">{{ p.weeks }}</span> weeks</dd></div>
       <div><dt class="mono">Payments</dt><dd>{% for s in pricing.schedule %}{{ s.percent }}{% if not loop.last %} / {% endif %}{% endfor %}, as it progresses</dd></div>
       <div><dt class="mono">Typical for</dt><dd>{{ p.examples }}</dd></div>
@@ -126,7 +126,7 @@ eleventyComputed:
         <li style="--w: {{ s.percent }}">
           <span class="paybar__fill" aria-hidden="true"></span>
           <span class="mono">{{ s.percent }}% · {{ s.when }}</span>
-          <b class="paybar__amount" data-count="{{ p.from | share(s.percent) }}">{{ p.from | share(s.percent) | inr }}</b>
+          <b class="paybar__amount">{{ p.from | share(s.percent) | inr }}</b>
           <span class="paybar__text">{{ s.text }}</span>
         </li>
         {%- endfor %}

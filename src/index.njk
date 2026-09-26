@@ -280,7 +280,7 @@ tools: ["HTML5", "Modern CSS", "JavaScript", "React", "Next.js", "Node.js", "Pyt
         <div>
           <h3 class="package__name"><a href="/pricing/{{ p.id }}.html" data-morph="plan-{{ p.id }}">{{ p.name }}</a></h3>
           <p class="package__for">{{ p.for }}</p>
-          <p class="package__price"><span>from</span><b data-count="{{ p.from }}">{{ p.from | inr }}</b></p>
+          <p class="package__price"><span>from</span><b>{{ p.from | inr }}</b></p>
         </div>
         <ul class="ticks" role="list">
           {%- for f in p.features | batch(3) | first %}<li>{{ f }}</li>{% endfor %}

@@ -42,7 +42,7 @@ cta:
         </div>
         <p class="price-card__price">
           <span class="price-card__from">from</span>
-          <span class="price-card__amount" data-count="{{ p.from }}">{{ p.from | inr }}</span>
+          <span class="price-card__amount">{{ p.from | inr }}</span>
         </p>
         <p class="price-card__meta mono">{{ p.weeks }} weeks · {{ p.examples }}</p>
         <ul class="ticks" role="list">
@@ -94,7 +94,7 @@ cta:
       <li class="care-card{% if c.highlight %} care-card--featured{% endif %}" data-reveal style="--d: {{ loop.index0 }}">
         <h3 class="care-card__name"><a href="/pricing/care/{{ c.id }}.html" data-morph="care-{{ c.id }}">{{ c.name }}</a></h3>
         <p class="care-card__for">{{ c.for }}</p>
-        <p class="care-card__price"><span class="price-card__amount" data-count="{{ c.monthly }}">{{ c.monthly | inr }}</span><span class="care-card__per">/ month</span></p>
+        <p class="care-card__price"><span class="price-card__amount">{{ c.monthly | inr }}</span><span class="care-card__per">/ month</span></p>
         <ul class="ticks" role="list">
           {%- for f in c.features %}<li>{{ f }}</li>{% endfor %}
         </ul>

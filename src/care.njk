@@ -30,7 +30,7 @@ eleventyComputed:
 <section class="section section--tight" aria-label="{{ c.name }} care at a glance">
   <div class="wrap">
     <dl class="facts facts--plan" data-reveal>
-      <div><dt class="mono">Price</dt><dd><span class="facts__big" data-count="{{ c.monthly }}">{{ c.monthly | inr }}</span> / month</dd></div>
+      <div><dt class="mono">Price</dt><dd><span class="facts__big">{{ c.monthly | inr }}</span> / month</dd></div>
       <div><dt class="mono">Changes included</dt><dd><span class="facts__big">{{ c.hours }}</span> hours / month</dd></div>
       <div><dt class="mono">We reply within</dt><dd>{{ c.response }}</dd></div>
       <div><dt class="mono">Commitment</dt><dd>None. Month to month, cancel any time</dd></div>

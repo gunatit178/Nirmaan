@@ -171,7 +171,7 @@
           "text": "Real test orders and payments, your team trained, then launch."
         }
       ],
-      "care": "Growth",
+      "care": "Plus",
       "extras": [
         "Delivery and shipping integrations",
         "Discount codes and offers",
@@ -272,7 +272,7 @@
           "text": "Tested against the agreed scenarios, your team trained, data moved over, launched."
         }
       ],
-      "care": "Growth",
+      "care": "Plus",
       "extras": [
         "A customer-facing portal",
         "Integration with Tally, Zoho or your CRM",
@@ -443,11 +443,11 @@
         "Daily backups with tested restores",
         "Security and dependency updates",
         "Uptime monitoring and alerts",
-        "Response within 2 business days"
+        "Response within 1 business day"
       ],
       "id": "essential",
       "intro": "The basics a live system needs, handled: it stays online, it's backed up, and it's patched when security updates come out. For sites and systems that don't change much.",
-      "response": "2 business days",
+      "response": "1 business day",
       "hours": 0,
       "goodFor": [
         "Websites that rarely change",
@@ -474,18 +474,18 @@
           "title": "Support",
           "items": [
             "Fixes when something we built breaks",
-            "A reply within 2 business days"
+            "A reply within 1 business day"
           ]
         }
       ],
       "notCovered": [
-        "Changes and new features (quoted individually, or choose Growth)",
+        "Changes and new features (quoted individually, or choose Plus)",
         "Domain renewal fees",
         "Problems caused by third-party services outside our control"
       ]
     },
     {
-      "name": "Growth",
+      "name": "Plus",
       "monthly": 6000,
       "for": "Keep improving it every month.",
       "features": [
@@ -493,12 +493,12 @@
         "4 hours of changes each month",
         "Monthly performance and usage report",
         "Search and speed tuning",
-        "Response within 1 business day"
+        "Same-business-day response"
       ],
       "highlight": true,
-      "id": "growth",
+      "id": "plus",
       "intro": "For businesses that keep improving their system every month. Everything in Essential, plus a monthly block of hours for changes and a report on how it's performing.",
-      "response": "1 business day",
+      "response": "Same business day",
       "hours": 4,
       "goodFor": [
         "Stores and booking sites that change often",
@@ -524,7 +524,7 @@
         {
           "title": "Support",
           "items": [
-            "A reply within 1 business day",
+            "A same-business-day reply",
             "Priority over one-off requests"
           ]
         }
@@ -540,15 +540,15 @@
       "monthly": 15000,
       "for": "For systems the business runs on.",
       "features": [
-        "Everything in Growth",
+        "Everything in Plus",
         "12 hours of changes each month",
-        "Same-business-day response",
+        "A reply within 4 business hours",
         "AI and API usage monitoring",
         "Quarterly roadmap session"
       ],
       "id": "priority",
-      "intro": "For systems the business can't run without. More hours, same-day responses, monitoring of AI and API usage, and a quarterly session to plan what comes next.",
-      "response": "Same business day",
+      "intro": "For systems the business can't run without. More hours, replies within 4 business hours, monitoring of AI and API usage, and a quarterly session to plan what comes next.",
+      "response": "4 business hours",
       "hours": 12,
       "goodFor": [
         "Operations that stop when the system stops",
@@ -557,7 +557,7 @@
       ],
       "covers": [
         {
-          "title": "Everything in Growth",
+          "title": "Everything in Plus",
           "items": [
             "Hosting, backups, security and monitoring",
             "Monthly report"
@@ -573,7 +573,7 @@
         {
           "title": "Partnership",
           "items": [
-            "Same-business-day response",
+            "A reply within 4 business hours",
             "A quarterly roadmap session"
           ]
         }

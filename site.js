@@ -5,8 +5,8 @@
     2. Theme toggle: system → light → dark, remembered per browser
     3. Mobile menu: focus management, Escape, scroll lock
     4. Scroll reveal: [data-reveal] elements rise in once; section rules draw
-       across as each section arrives; [data-count] figures count up to their
-       value the first time they're seen; cards get a pointer spotlight
+       across as each section arrives; cards get a pointer spotlight.
+       Prices never animate: the figure a visitor sees is always the real one.
     5. Scroll scenes, all driven from one rAF-throttled scroll loop:
          [data-scene="stack"]     layer tower builds as you scroll (pinned); on
                                   narrower screens the layer you're reading lights up
@@ -135,33 +135,6 @@
       });
     }, { rootMargin: '0px 0px -12% 0px' });
     $$('.section + .section').forEach(function (el) { ruleObserver.observe(el); });
-
-    // Count-ups: rupee figures run up to their value once. The markup always
-    // holds the real figure, so without this (or mid-count) nothing is wrong.
-    var rupees = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
-    var easeOut = function (t) { return 1 - Math.pow(1 - t, 4); };
-    function countUp(el) {
-      var to = Number(el.getAttribute('data-count'));
-      if (!(to > 0)) return;
-      var final = el.textContent;
-      el.style.minWidth = el.getBoundingClientRect().width + 'px'; // no reflow while digits change
-      var start = null, DURATION = 1100;
-      function tick(now) {
-        if (start === null) start = now;
-        var t = Math.min(1, (now - start) / DURATION);
-        el.textContent = t < 1 ? rupees.format(Math.round((to * easeOut(t)) / 100) * 100) : final;
-        if (t < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }
-    var countObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        countObserver.unobserve(entry.target);
-        countUp(entry.target);
-      });
-    }, { threshold: 0.8 });
-    $$('[data-count]').forEach(function (el) { countObserver.observe(el); });
   }
 
   /* Pointer spotlight: a soft light follows the pointer across cards. */

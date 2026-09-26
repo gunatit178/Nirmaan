@@ -18,6 +18,12 @@
   screen readers ("Step one is a conversation."); one reply-time promise
   (24 hours) everywhere; project timelines on the process page match the
   pricing; "fixed quote" instead of "cost estimate"; curly quotes throughout.
+- Care plans: the middle plan is now "Plus" (it shared the name "Growth" with
+  a build package); /pricing/care/growth.html redirects to plus.html. Replies
+  are faster than a new enquiry's 24 hours on every plan: Essential within
+  1 business day, Plus the same business day, Priority within 4 business hours.
+- Prices no longer count up when they scroll into view, so a visitor never
+  sees a figure that isn't the real price.
 - Accessibility: text-only swipe rows can be scrolled from the keyboard.
 - OS: the CI evidence endpoint no longer returns internal error details; bad
   payloads get 400/422, unexpected failures a plain 500.
