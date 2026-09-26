@@ -39,8 +39,10 @@ for `nirmaan-os` only; renew yearly with `fly tokens create deploy -a nirmaan-os
 By hand, `fly deploy` from the repo root still works. Logs: `fly logs`. The worker's
 ticks appear there once a minute.
 
-Backups: `fly ssh sftp get /data/nirmaan.db` downloads the database; Fly also keeps
-daily volume snapshots for 5 days.
+Backups: every night after 02:00 India time the worker emails a gzipped copy of the
+whole database to our own mailbox ("Nirmaan OS backup <date>", `src/lib/backup.ts`;
+`BACKUP_EMAIL` to send it elsewhere). Fly also keeps daily volume snapshots for 5 days,
+and `fly ssh sftp get /data/nirmaan.db` downloads the live file.
 
 ## Nirmaan OS: other hosts
 
