@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: Autopilot and the Growth dashboard
+
+- **Autopilot:** no campaigns to create. Switch it on, set a daily volume and the
+  cities (default Gujarat's big cities), and it runs one standing campaign per
+  segment. Each week it re-balances from what got replies: more contacts to the
+  segments and the channel that answer, best cities first. People still approve
+  every message, in batches.
+- **Growth** (owners only): the outbound funnel today, this week and all time, with
+  the ₹ value won; reply rates by channel, segment, city and campaign; replies and
+  what they said; leads from outreach; and every message ever sent, searchable and
+  exportable to Excel.
+- New capability `growth:read`, for the founder only.
+
 ## 2026-09-26: Website: WhatsApp
 
 - Our WhatsApp Business number (+91 94938 33697) on the contact page and in

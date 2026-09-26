@@ -847,6 +847,8 @@ model Suppression {
 model Campaign {
   id                   String           @id @default(cuid())
   code                 String           @unique // CAMP-003
+  // Created and steered by autopilot (src/lib/prospecting/autopilot.ts), not by a person.
+  autopilot            Boolean          @default(false)
   name                 String
   // The goal in plain words, as the founder wrote it.
   goal                 String
@@ -886,4 +888,31 @@ model JobState {
   lockedUntil DateTime?
   lastRunAt   DateTime?
   data        String    @default("{}")
+}
+
+// Autopilot: the OS picks whom to look for next on its own, across all
+// segments and the chosen cities, within one daily volume, and re-balances
+// every week from what got replies. One row.
+model Autopilot {
+  id                String    @id @default("autopilot")
+  on                Boolean   @default(false)
+  newContactsPerDay Int       @default(100)
+  // Percent of new contacts by email; the rest by WhatsApp. Moved by the weekly review.
+  emailShare        Int       @default(50)
+  // JSON array of places, best first
+  cities            String    @default("[\"Ahmedabad\",\"Surat\",\"Vadodara\",\"Rajkot\",\"Gandhinagar\",\"Bhavnagar\"]")
+  // JSON {segment: share 0..1} of new contacts; empty = equal
+  weights           String    @default("{}")
+  lastReviewAt      DateTime?
+  updatedBy         String?
+  updatedAt         DateTime  @updatedAt
+}
+
+// What the weekly review saw and changed, in plain words, for the Growth dashboard.
+model AutopilotReview {
+  id        String   @id @default(cuid())
+  summary   String
+  // JSON: the numbers behind it (per segment, channel, city)
+  stats     String   @default("{}")
+  createdAt DateTime @default(now())
 }

@@ -12,6 +12,7 @@ import { draftFollowUp, draftOutreach, maxMessages, sendQueuedEmail } from "./ou
 import { placesConfigured } from "./places";
 import type { SiteFetcher } from "./safeFetch";
 import { isSuppressed, runProspectSearch, type Finders } from "./service";
+import { getAutopilot, reviewAutopilot, syncCampaigns } from "./autopilot";
 
 /**
  * The campaign worker: one "tick" of background work, run every minute by
@@ -41,6 +42,8 @@ export interface TickDeps {
   random?: () => number;
   /** Stop starting new slow work (searches, checks, drafts) after this long. */
   budgetMs?: number;
+  /** Tests: work only on these campaigns, and leave autopilot alone. */
+  onlyCampaigns?: string[];
 }
 
 export interface TickReport {
@@ -49,6 +52,7 @@ export interface TickReport {
   sent: number;
   sendNote?: string;
   campaigns: { code: string; searched: number; checked: number; firstDrafts: number; followUps: number; notes: string[] }[];
+  autopilotReview?: string;
   errors: string[];
 }
 
@@ -125,8 +129,20 @@ export async function runTick(deps: TickDeps = {}): Promise<TickReport> {
       note("send", err);
     }
 
-    // 3. Campaign work, oldest-run first, within the time budget.
-    const campaigns = await prisma.campaign.findMany({ where: { status: "ACTIVE" }, orderBy: [{ lastRunAt: { sort: "asc", nulls: "first" } }] });
+    // 3. Autopilot keeps its standing campaigns in step, and re-balances once a week.
+    try {
+      const auto = await getAutopilot();
+      if (auto.on && !deps.onlyCampaigns) {
+        await syncCampaigns(auto);
+        const review = await reviewAutopilot(now);
+        if (review) report.autopilotReview = review.summary;
+      }
+    } catch (err) {
+      note("autopilot", err);
+    }
+
+    // 4. Campaign work, oldest-run first, within the time budget.
+    const campaigns = await prisma.campaign.findMany({ where: { status: "ACTIVE", ...(deps.onlyCampaigns ? { id: { in: deps.onlyCampaigns } } : {}) }, orderBy: [{ lastRunAt: { sort: "asc", nulls: "first" } }] });
     for (const c of campaigns) {
       if (Date.now() - started > budgetMs) break;
       const line = { code: c.code, searched: 0, checked: 0, firstDrafts: 0, followUps: 0, notes: [] as string[] };

@@ -18,6 +18,7 @@ export const CAPABILITIES = [
   "prospect:read",
   "prospect:run", // finds and audits businesses: spends AI and Google Places budget
   "outreach:send", // contacts a business in the company's name
+  "growth:read", // owners only: the Growth dashboard (every outreach message, reply and lead) and autopilot settings
   "requirement:write",
   "proposal:read",
   "proposal:write",
@@ -60,7 +61,7 @@ const ALL_INTERNAL: Capability[] = CAPABILITIES.filter((c) => !c.startsWith("cli
 
 export const ROLE_CAPABILITIES: Record<Role, readonly Capability[]> = {
   FOUNDER: ALL_INTERNAL,
-  CTO: ALL_INTERNAL.filter((c) => c !== "user:manage"),
+  CTO: ALL_INTERNAL.filter((c) => c !== "user:manage" && c !== "growth:read"),
   PROJECT_MANAGER: [
     "lead:read",
     "lead:write",
