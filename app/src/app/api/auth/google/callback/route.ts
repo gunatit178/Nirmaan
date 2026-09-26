@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "node:crypto";
-import { GOOGLE_COOKIE, finishSignIn, googleConfigured, userForGoogleEmail } from "@/lib/auth/google";
+import { GOOGLE_COOKIE, finishSignIn, googleConfigured, publicUrl, userForGoogleEmail } from "@/lib/auth/google";
 import { startSession } from "@/lib/web/session";
 import { audit } from "@/lib/audit";
 import { userActor, PUBLIC_ACTOR } from "@/lib/auth/actor";
@@ -24,7 +24,7 @@ function sameString(a: string, b: string): boolean {
 /** GET /api/auth/google/callback?code=…&state=… : back from Google. */
 export async function GET(request: NextRequest) {
   const fail = (reason: string) => {
-    const res = NextResponse.redirect(new URL(`/login?error=${reason}`, request.url));
+    const res = NextResponse.redirect(publicUrl(`/login?error=${reason}`, request.nextUrl.origin));
     res.cookies.delete({ name: GOOGLE_COOKIE, path: "/api/auth/google" });
     return res;
   };
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
 
   await startSession(user.id);
   await audit(userActor(user), "auth.login", "User", user.id, "Signed in with Google");
-  const res = NextResponse.redirect(new URL(safeNext(saved.next ?? "", isClientRole(user.role) ? "/portal" : "/os"), request.url));
+  const res = NextResponse.redirect(publicUrl(safeNext(saved.next ?? "", isClientRole(user.role) ? "/portal" : "/os"), request.nextUrl.origin));
   res.cookies.delete({ name: GOOGLE_COOKIE, path: "/api/auth/google" });
   return res;
 }
