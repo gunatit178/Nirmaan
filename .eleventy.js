@@ -96,6 +96,12 @@ module.exports = function (eleventyConfig) {
     };
   });
 
+  // {{ "Backend & API Development" | inSentence }} → "backend & API development":
+  // a title lowercased to sit mid-sentence, keeping acronyms (AI, API, CRM) intact.
+  eleventyConfig.addFilter('inSentence', (title) =>
+    String(title).split(' ').map((word) => (/^[A-Z]{2,}$/.test(word) ? word : word.toLowerCase())).join(' ')
+  );
+
   // {{ services | serviceCount }}: how many services the catalogue offers.
   eleventyConfig.addFilter('serviceCount', (services) =>
     services.groups.reduce((n, group) => n + group.items.length, 0)

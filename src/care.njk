@@ -9,7 +9,7 @@ permalink: "/pricing/care/{{ c.id }}.html"
 nav: "pricing"
 eleventyComputed:
   title: "{{ c.name }} care plan: {{ c.monthly | inr }} a month — Nirmaan"
-  description: "{{ c.for }} What the {{ c.name }} care plan covers, response times, monthly hours and what isn't included. {{ c.monthly | inr }} a month, cancel any time."
+  description: "{{ c.for }} {{ c.monthly | inr }} a month, cancel any time: what the {{ c.name }} care plan covers, response times and monthly hours."
 ---
 {%- set head = {
   eyebrow: "Care plan · month to month",

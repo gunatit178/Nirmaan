@@ -381,7 +381,7 @@
       "faq": [
         {
           "q": "Is ₹80,000 really enough for a platform?",
-          "a": "For the simplest real version, yes, which is what the \"from\" price means. Most platforms cost more; the fixed quote after discovery tells you exactly how much, and why."
+          "a": "For the simplest real version, yes, which is what the “from” price means. Most platforms cost more; the fixed quote after discovery tells you exactly how much, and why."
         },
         {
           "q": "Can we launch in phases?",
@@ -592,7 +592,7 @@
     },
     {
       "title": "One fixed price",
-      "text": "A written proposal with what's in scope, what isn't, the timeline and the price. No hourly meter running."
+      "text": "A written proposal with what's in scope, what isn't, the timeline and the price, fixed before any work starts."
     },
     {
       "title": "Pay as it progresses",
@@ -605,8 +605,8 @@
   ],
   "faq": [
     {
-      "q": "Why \"from\" prices?",
-      "a": "Because the problem sets the price, not the page count. The \"from\" price is what the simplest version of that kind of project costs. You get a fixed quote after we understand what you need, before you commit to anything."
+      "q": "Why “from” prices?",
+      "a": "Because the problem sets the price, not the page count. The “from” price is what the simplest version of that kind of project costs. You get a fixed quote after we understand what you need, before you commit to anything."
     },
     {
       "q": "Do prices include GST?",

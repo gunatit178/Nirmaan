@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nirmaan.online/sitemap.xml
+Sitemap: https://www.nirmaan.online/sitemap.xml

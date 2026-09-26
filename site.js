@@ -113,8 +113,15 @@
     var revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        revealObserver.unobserve(entry.target);
+        // In a swipe row the cards still off to the side never intersect, and
+        // left lowered they'd give the row vertical overflow that swallows the
+        // page's scroll on phones. They rise together with the first one.
+        var row = entry.target.parentElement && entry.target.parentElement.closest('[data-swipe]');
+        var group = row ? $$('[data-reveal]', row) : [entry.target];
+        group.forEach(function (el) {
+          el.classList.add('is-in');
+          revealObserver.unobserve(el);
+        });
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
     $$('[data-reveal]').forEach(function (el) { revealObserver.observe(el); });
@@ -199,6 +206,18 @@
     bar.appendChild(track);
     bar.appendChild(count);
     list.insertAdjacentElement('afterend', bar);
+
+    // A row of plain text cards has nothing to tab to, so keyboard users
+    // couldn't scroll it; make the row itself focusable where it scrolls.
+    if (!list.querySelector('a[href], button, input, select, textarea, [tabindex]')) {
+      var phoneRow = window.matchMedia('(max-width: 40rem)');
+      var syncTab = function () {
+        if (phoneRow.matches) list.setAttribute('tabindex', '0');
+        else list.removeAttribute('tabindex');
+      };
+      phoneRow.addEventListener('change', syncTab);
+      syncTab();
+    }
 
     var current = -1;
     function sync() {

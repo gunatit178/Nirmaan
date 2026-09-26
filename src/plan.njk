@@ -9,7 +9,7 @@ permalink: "/pricing/{{ p.id }}.html"
 nav: "pricing"
 eleventyComputed:
   title: "{{ p.name }}: from {{ p.from | inr }} — Nirmaan pricing"
-  description: "{{ p.for }} What the {{ p.name }} package includes, what it doesn't, how the {{ p.weeks }} weeks run, and how payments work. From {{ p.from | inr }}, fixed quote before we start."
+  description: "{{ p.for }} From {{ p.from | inr }}, {{ p.weeks }} weeks: what the {{ p.name }} package includes, what it doesn't and how payments work."
 ---
 {%- set care = pricing | care(p.care) %}
 {%- set other = pricing | plan(p.notFit.plan) %}
@@ -197,7 +197,7 @@ eleventyComputed:
       </details>
       {%- endfor %}
       <details>
-        <summary>Why is it a "from" price?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <summary>Why is it a “from” price?<span class="faq__icon" aria-hidden="true"></span></summary>
         <p class="faq__answer">{{ (pricing.faq | first).a }}</p>
       </details>
     </div>

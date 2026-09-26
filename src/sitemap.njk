@@ -14,7 +14,7 @@ priorities:
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for p in collections.all | sort(attribute='url') %}
   <url>
-    <loc>https://nirmaan.online{{ p.url }}</loc>
+    <loc>{{ site.url }}{{ p.url }}</loc>
     <lastmod>{{ p.date.toISOString().slice(0, 10) }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>{{ priorities[p.url] or "0.7" }}</priority>
