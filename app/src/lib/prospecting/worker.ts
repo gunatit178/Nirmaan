@@ -13,6 +13,7 @@ import { placesConfigured } from "./places";
 import type { SiteFetcher } from "./safeFetch";
 import { isSuppressed, runProspectSearch, type Finders } from "./service";
 import { getAutopilot, reviewAutopilot, syncCampaigns } from "./autopilot";
+import { runBackupIfDue } from "../backup";
 
 /**
  * The campaign worker: one "tick" of background work, run every minute by
@@ -53,6 +54,7 @@ export interface TickReport {
   sendNote?: string;
   campaigns: { code: string; searched: number; checked: number; firstDrafts: number; followUps: number; notes: string[] }[];
   autopilotReview?: string;
+  backup?: string;
   errors: string[];
 }
 
@@ -127,6 +129,15 @@ export async function runTick(deps: TickDeps = {}): Promise<TickReport> {
       report.sendNote = r.note;
     } catch (err) {
       note("send", err);
+    }
+
+    // Nightly backup, emailed to our own mailbox (once a day, after 02:00 India time).
+    if (!deps.onlyCampaigns) {
+      try {
+        report.backup = (await runBackupIfDue({ now, mailer: deps.mailer })) ?? undefined;
+      } catch (err) {
+        note("backup", err);
+      }
     }
 
     // 3. Autopilot keeps its standing campaigns in step, and re-balances once a week.
