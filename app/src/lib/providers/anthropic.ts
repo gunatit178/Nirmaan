@@ -1,10 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { CompletionRequest, CompletionResult, ModelProvider } from "./types";
 
+/**
+ * `webTools: true` gives the model Anthropic's server-side web search (read
+ * only). Only prospecting's web search asks for it; see claudeCodeCli.ts.
+ */
 export class AnthropicProvider implements ModelProvider {
   private client: Anthropic;
 
-  constructor(apiKey?: string) {
+  constructor(apiKey?: string, private options: { webTools?: boolean } = {}) {
     const key = apiKey ?? process.env.ANTHROPIC_API_KEY;
     if (!key) {
       throw new Error(
@@ -20,6 +24,7 @@ export class AnthropicProvider implements ModelProvider {
       max_tokens: req.maxTokens,
       system: req.systemPrompt,
       messages: [{ role: "user", content: req.userPrompt }],
+      ...(this.options.webTools ? { tools: [{ type: "web_search_20250305" as const, name: "web_search" as const, max_uses: 8 }] } : {}),
     });
 
     const text = response.content

@@ -107,7 +107,8 @@ export type LeadStatus = (typeof LEAD_STATUSES)[number];
 /** Statuses a lead is still being worked in. */
 export const OPEN_LEAD_STATUSES: readonly LeadStatus[] = ["NEW", "DISCOVERY", "QUALIFIED", "PROPOSAL"];
 
-export const LEAD_SOURCES = ["WEBSITE", "MANUAL", "REFERRAL"] as const;
+// OUTBOUND: converted from a prospect Nirmaan reached out to (src/lib/prospecting).
+export const LEAD_SOURCES = ["WEBSITE", "MANUAL", "REFERRAL", "OUTBOUND"] as const;
 export type LeadSource = (typeof LEAD_SOURCES)[number];
 
 export const DISCOVERY_KINDS = ["FACT", "ASSUMPTION", "QUESTION", "RECOMMENDATION"] as const;
@@ -224,3 +225,25 @@ export type SupportPriority = (typeof SUPPORT_PRIORITIES)[number];
 export function isClientRole(role: string | null | undefined): boolean {
   return role === "CLIENT_ADMIN" || role === "CLIENT_USER";
 }
+
+// Prospecting (src/lib/prospecting, /docs/product/prospecting.md)
+export const PROSPECT_SEGMENTS = ["LOCAL_SERVICE", "RETAIL_D2C", "SME_OPS"] as const;
+export type ProspectSegment = (typeof PROSPECT_SEGMENTS)[number];
+export const PROSPECT_SEGMENT_LABELS: Record<ProspectSegment, string> = {
+  LOCAL_SERVICE: "Local service businesses",
+  RETAIL_D2C: "Shops, restaurants, D2C",
+  SME_OPS: "SMEs on spreadsheets / WhatsApp",
+};
+
+export const PROSPECT_SOURCES = ["PLACES", "WEB", "MANUAL"] as const;
+export type ProspectSource = (typeof PROSPECT_SOURCES)[number];
+
+export const PROSPECT_STATUSES = ["NEW", "AUDITED", "DRAFTED", "CONTACTED", "REPLIED", "CONVERTED", "DISMISSED", "DO_NOT_CONTACT"] as const;
+export type ProspectStatus = (typeof PROSPECT_STATUSES)[number];
+/** Still worth working: shown by default on the prospects list. */
+export const OPEN_PROSPECT_STATUSES: readonly ProspectStatus[] = ["NEW", "AUDITED", "DRAFTED", "CONTACTED", "REPLIED"];
+
+export const OUTREACH_CHANNELS = ["EMAIL", "WHATSAPP"] as const;
+export type OutreachChannel = (typeof OUTREACH_CHANNELS)[number];
+export const OUTREACH_STATUSES = ["DRAFT", "SENT", "FAILED", "CANCELLED"] as const;
+export type OutreachStatus = (typeof OUTREACH_STATUSES)[number];

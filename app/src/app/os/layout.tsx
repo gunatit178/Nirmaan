@@ -11,14 +11,17 @@ import { logout } from "../login/actions";
 export default async function OsLayout({ children }: LayoutProps<"/os">) {
   const user = await requireUser();
   const role = user.role as Role;
-  const [pendingApprovals, newLeads, openSupport] = await Promise.all([
+  const [pendingApprovals, newLeads, openSupport, replied] = await Promise.all([
     can(role, "approval:decide") ? prisma.approval.count({ where: { status: "PENDING" } }) : Promise.resolve(0),
     can(role, "lead:read") ? prisma.lead.count({ where: { status: "NEW" } }) : Promise.resolve(0),
     can(role, "support:write") ? prisma.supportRequest.count({ where: { status: "OPEN" } }) : Promise.resolve(0),
+    // Prospects who replied and are waiting to become leads.
+    can(role, "prospect:read") ? prisma.prospect.count({ where: { status: "REPLIED" } }) : Promise.resolve(0),
   ]);
 
   const items: NavItem[] = [
     can(role, "dashboard:read") && { href: "/os", label: "Today" },
+    can(role, "prospect:read") && { href: "/os/prospects", label: "Prospects", count: replied, group: "Pipeline" },
     can(role, "lead:read") && { href: "/os/leads", label: "Leads", count: newLeads, group: "Pipeline" },
     can(role, "proposal:read") && { href: "/os/proposals", label: "Proposals", group: "Pipeline" },
     can(role, "project:read") && { href: "/os/projects", label: "Projects", group: "Delivery" },

@@ -27,7 +27,7 @@ npm run dev                # http://localhost:3000 → sign in
 Checks (all must pass before merging):
 
 ```bash
-npm test                   # 173 tests, ~3 s
+npm test                   # 185 tests, ~3 s
 npm run typecheck
 npx eslint src scripts prisma
 npx next build
@@ -41,6 +41,8 @@ Environment variables:
 | `NIRMAAN_INTAKE_ORIGINS` | Comma-separated origins allowed to post to `/api/intake` (default: nirmaan.online) |
 | `AGENCY_OS_MODEL_<TYPE>_PROVIDER` / `_ID` | Model routing overrides, e.g. `AGENCY_OS_MODEL_REQUIREMENTS_PROVIDER=mock` to run discovery without a model |
 | `AGENTS_ROOT` | Where agent specs live (default `../agents`) |
+| `GOOGLE_PLACES_API_KEY` | Prospecting: Google Places search (optional; without it searches use the web only) |
+| `OUTREACH_FROM`, `SMTP_URL` or `RESEND_API_KEY` | Prospecting: lets the OS send approved outreach emails. Also `OUTREACH_REPLY_TO`, `OUTREACH_DAILY_LIMIT` (default 20), `OUTREACH_SENDER_NAME`. See `docs/product/prospecting.md` |
 
 ## Phase 1: Business OS (2026-09-24)
 

@@ -104,3 +104,15 @@ test("complete() leaves usage/costUsd undefined (not a fabricated number) when t
   assert.equal(result.usage, undefined);
   assert.equal(result.costUsd, undefined);
 });
+
+test("webTools: true allows exactly WebSearch and WebFetch, nothing that touches files or runs commands", async () => {
+  let capturedArgs: string[] = [];
+  const runner = async (cmd: string, args: string[]): Promise<RunCommandResult> => {
+    capturedArgs = args;
+    return { exitCode: 0, stdout: SUCCESS_JSON, stderr: "", timedOut: false, truncated: false };
+  };
+  const provider = new ClaudeCodeCliProvider("claude", 60_000, runner, 1.0, { webTools: true });
+  await provider.complete({ systemPrompt: "sys", userPrompt: "user", model: "claude-sonnet-5", maxTokens: 100 });
+  const allowed = capturedArgs[capturedArgs.indexOf("--allowedTools") + 1];
+  assert.deepEqual(allowed.split(","), ["WebSearch", "WebFetch"]);
+});

@@ -23,6 +23,7 @@ export interface CallModelInput {
   userPrompt: string;
   leadId?: string;
   projectId?: string;
+  prospectId?: string;
   /** Tests inject a provider; production uses the model router's choice. */
   provider?: ModelProvider;
   modelOverrides?: Partial<ModelConfig>;
@@ -60,6 +61,7 @@ export async function callModel(input: CallModelInput): Promise<CallModelResult>
         success: true,
         leadId: input.leadId,
         projectId: input.projectId,
+        prospectId: input.prospectId,
       },
     });
     return { completion, usageId: row.id };
@@ -76,6 +78,7 @@ export async function callModel(input: CallModelInput): Promise<CallModelResult>
         error: redactSecrets(err instanceof Error ? err.message : String(err)).slice(0, 1000),
         leadId: input.leadId,
         projectId: input.projectId,
+        prospectId: input.prospectId,
       },
     });
     throw err;

@@ -18,6 +18,9 @@ Recommended first deployment (see `procurement.md`):
 2. Environment: `NODE_ENV=production`, `NIRMAAN_OS_URL=https://os.nirmaan.online`,
    `NIRMAAN_INTAKE_ORIGINS=https://nirmaan.online,https://www.nirmaan.online`,
    and the `claude` CLI logged in, or `ANTHROPIC_API_KEY` plus a routing override.
+   For prospecting, optionally `GOOGLE_PLACES_API_KEY`, and `OUTREACH_FROM` with
+   `SMTP_URL` (or `RESEND_API_KEY`) to send approved emails
+   (see `../product/prospecting.md`).
 3. Ship `/agents` alongside the app (the runtime reads specs from `../agents`,
    or set `AGENTS_ROOT`).
 4. `npx prisma migrate deploy`, then create the founder:

@@ -15,6 +15,9 @@ export const CAPABILITIES = [
   "lead:read",
   "lead:write",
   "discovery:run", // spends AI budget
+  "prospect:read",
+  "prospect:run", // finds and audits businesses: spends AI and Google Places budget
+  "outreach:send", // contacts a business in the company's name
   "requirement:write",
   "proposal:read",
   "proposal:write",
@@ -62,6 +65,8 @@ export const ROLE_CAPABILITIES: Record<Role, readonly Capability[]> = {
     "lead:read",
     "lead:write",
     "discovery:run",
+    "prospect:read",
+    "prospect:run",
     "requirement:write",
     "proposal:read",
     "proposal:write",

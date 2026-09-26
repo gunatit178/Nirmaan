@@ -21,7 +21,14 @@ import type { CompletionRequest, CompletionResult, ModelProvider } from "./types
  * tool access here would let every agent silently bypass that whole
  * permission model — this provider's only job is turning a system prompt
  * + user prompt into text, the same contract AnthropicProvider has.
+ *
+ * One narrow exception, opted into by name: `webTools: true` allows exactly
+ * WebSearch and WebFetch (read-only access to the public web) and nothing
+ * else. Only prospecting's web search uses it (src/lib/prospecting/webSearch.ts),
+ * through webResearchProvider() in src/lib/ai/providers.ts. No filesystem,
+ * shell or edit tool is ever allowed.
  */
+export const WEB_TOOLS = ["WebSearch", "WebFetch"] as const;
 
 interface ClaudeCliJsonResult {
   result: string;
@@ -41,7 +48,8 @@ export class ClaudeCodeCliProvider implements ModelProvider {
     /** Injected in tests to avoid actually shelling out. Defaults to the real runner. */
     private runner: (cmd: string, args: string[], opts: { cwd: string; timeoutMs: number }) => Promise<RunCommandResult> = runCommand,
     /** Hard per-call cost cap (the CLI's own --max-budget-usd), independent of any application-level budget logic — a second, cheap line of defense against one runaway call, per Section 35's cost-control principle. */
-    private maxBudgetUsd: number = 1.0
+    private maxBudgetUsd: number = 1.0,
+    private options: { webTools?: boolean } = {}
   ) {}
 
   async complete(req: CompletionRequest): Promise<CompletionResult> {
@@ -52,7 +60,7 @@ export class ClaudeCodeCliProvider implements ModelProvider {
       "--model",
       req.model,
       "--allowedTools",
-      "",
+      this.options.webTools ? WEB_TOOLS.join(",") : "",
       "--max-budget-usd",
       String(this.maxBudgetUsd),
       "--system-prompt",
