@@ -531,20 +531,10 @@
   .hero__lede { max-width: 38ch; }
   .hero__lede strong { color: var(--ink); font-weight: 600; }
 
-  /* The name's two meanings: निर्माण "to build", निर्मान "without ego" */
+  /* The studio line above the headline */
   .hero__meaning {
-    display: grid; gap: 0.55rem; justify-items: start;
     font-family: var(--mono); font-size: clamp(0.8125rem, 0.75rem + 0.25vw, 0.9375rem);
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2);
-  }
-  .hero__meaning-pair { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
-  .hero__meaning-item { white-space: nowrap; }
-  .hero__meaning-item [lang="hi"] { letter-spacing: 0; text-transform: none; color: var(--ink); }
-  .hero__meaning-sep { width: 0.45rem; height: 0.45rem; background: var(--blue); flex: none; }
-  /* Where the two meanings can't share a line, they stack; a separator never dangles. */
-  @media (max-width: 80rem) {
-    .hero__meaning-pair { flex-direction: column; align-items: start; gap: 0.4rem; }
-    .hero__meaning-sep { display: none; }
   }
 
   .hero__side { min-width: 0; align-self: stretch; display: grid; }

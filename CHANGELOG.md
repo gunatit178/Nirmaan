@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-26: Website: hero keeps only the studio line
+
+- The line explaining the two meanings of the name (निर्माण "to build",
+  निर्मान "without ego") is gone from the homepage hero; "Software studio"
+  stays above the headline.
+
 ## 2026-09-26: Website: phones no longer zoom out at the pricing section, plus a review pass
 
 - Fixed: on phones, scrolling to the homepage pricing section zoomed the whole
