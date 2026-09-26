@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db/client";
 import { can, ROLE_LABELS, ROLE_CAPABILITIES } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/web/session";
 import { CLIENT_ROLES, INTERNAL_ROLES } from "@/lib/db/enums";
-import { MIN_PASSWORD_LENGTH } from "@/lib/auth/password";
+import { MIN_PASSWORD_LENGTH, passwordLoginEnabled } from "@/lib/auth/password";
 import { ActionForm } from "../../_components/ActionForm";
 import { Badge, NoAccess, PageHead, when } from "../../_components/ui";
 import { createUserAction, setActiveAction, setRoleAction } from "../actions/team";
@@ -90,11 +90,15 @@ export default async function TeamPage() {
                   ))}
                 </select>
               </label>
-              <label className="field">
-                <span className="label-text">Temporary password</span>
-                <input className="input" name="password" type="password" minLength={MIN_PASSWORD_LENGTH} autoComplete="new-password" required />
-                <span className="hint">At least {MIN_PASSWORD_LENGTH} characters. Share it over a different channel from the email address.</span>
-              </label>
+              {passwordLoginEnabled() ? (
+                <label className="field">
+                  <span className="label-text">Temporary password (optional)</span>
+                  <input className="input" name="password" type="password" minLength={MIN_PASSWORD_LENGTH} autoComplete="new-password" />
+                  <span className="hint">Leave empty for a Google-only account. Otherwise at least {MIN_PASSWORD_LENGTH} characters, shared over a different channel.</span>
+                </label>
+              ) : (
+                <p className="hint">They sign in with “Sign in with Google” using this email. Password sign-in is off.</p>
+              )}
             </ActionForm>
           </section>
           {clients.length > 0 && (
@@ -126,7 +130,9 @@ export default async function TeamPage() {
                       </option>
                     ))}
                   </select>
-                  <input className="input" name="password" type="password" minLength={MIN_PASSWORD_LENGTH} placeholder="Temporary password" aria-label="Temporary password" autoComplete="new-password" required />
+                  {passwordLoginEnabled() && (
+                    <input className="input" name="password" type="password" minLength={MIN_PASSWORD_LENGTH} placeholder="Temporary password (optional)" aria-label="Temporary password (optional)" autoComplete="new-password" />
+                  )}
                 </div>
               </ActionForm>
             </section>

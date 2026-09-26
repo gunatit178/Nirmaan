@@ -2,13 +2,17 @@ import { prisma } from "../db/client";
 import { audit } from "../audit";
 import { assertCan } from "../auth/permissions";
 import type { Actor } from "../auth/actor";
-import { hashPassword, passwordProblem } from "../auth/password";
+import { hashPassword, NO_PASSWORD, passwordProblem } from "../auth/password";
 import { CLIENT_ROLES, INTERNAL_ROLES, isOneOf } from "../db/enums";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** Creates an internal account. Used by the Team screen and by scripts/create-user.ts (as SYSTEM, for the first founder). */
-export async function createUser(actor: Actor | null, input: { email: string; name: string; role: string; password: string; clientId?: string }) {
+/**
+ * Creates an account. Used by the Team screen and by scripts/create-user.ts
+ * (as SYSTEM, for the first founder). With no password it's a Google-only
+ * account: it can sign in only with "Sign in with Google" as this email.
+ */
+export async function createUser(actor: Actor | null, input: { email: string; name: string; role: string; password?: string; clientId?: string }) {
   if (actor) assertCan(actor.role, "user:manage");
   const email = input.email.trim().toLowerCase();
   const name = input.name.trim();
@@ -19,14 +23,15 @@ export async function createUser(actor: Actor | null, input: { email: string; na
   if (clientRole && !input.clientId) throw new Error("A client account must belong to a client.");
   if (!clientRole && input.clientId) throw new Error("Team accounts can't belong to a client.");
   if (clientRole && !(await prisma.client.findUnique({ where: { id: input.clientId! } }))) throw new Error("That client doesn't exist.");
-  const problem = passwordProblem(input.password);
+  const password = input.password ?? "";
+  const problem = password ? passwordProblem(password) : null;
   if (problem) throw new Error(problem);
   if (await prisma.user.findUnique({ where: { email } })) throw new Error("Someone already has an account with that email.");
 
   const user = await prisma.user.create({
-    data: { email, name, role: input.role, clientId: clientRole ? input.clientId : null, passwordHash: await hashPassword(input.password) },
+    data: { email, name, role: input.role, clientId: clientRole ? input.clientId : null, passwordHash: password ? await hashPassword(password) : NO_PASSWORD },
   });
-  await audit(actor ?? { type: "SYSTEM", id: null, label: "Setup script" }, "user.created", "User", user.id, `${email} as ${input.role}`);
+  await audit(actor ?? { type: "SYSTEM", id: null, label: "Setup script" }, "user.created", "User", user.id, `${email} as ${input.role}${password ? "" : ", Google sign-in only"}`);
   return user;
 }
 
