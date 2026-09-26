@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-26: Nirmaan OS: Sign in with Google
+
+- "Sign in with Google" on the login page, for people who already have an OS
+  account with the same (verified) email. Nobody gets an account by signing
+  in, and the owners-only Growth dashboard stays behind `growth:read`.
+- Setup in `docs/engineering/deployment.md` (a Google OAuth client, two env vars).
+
 ## 2026-09-26: Nirmaan OS: Autopilot and the Growth dashboard
 
 - **Autopilot:** no campaigns to create. Switch it on, set a daily volume and the

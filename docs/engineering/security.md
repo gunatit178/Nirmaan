@@ -7,6 +7,8 @@
 | Authentication | Email + password; scrypt (N=2^15, per-hash salt and parameters); constant-time comparison; the same work is done for unknown emails (no account enumeration by timing) |
 | Sessions | 256-bit random token in an `httpOnly`, `SameSite=Lax` cookie (`Secure` in production); only its SHA-256 is stored; 14-day expiry; deleted on logout, deactivation and role change |
 | Brute force | Login limited to 10 attempts per 15 minutes per IP + email |
+| Google sign-in | OpenID Connect code flow with PKCE (S256) and a random state, both in a 10-minute `httpOnly` cookie scoped to `/api/auth/google`; the ID token's issuer, audience, expiry and `email_verified` are checked. It signs in only an **existing, active** user with that exact email: nobody gets an account by signing in. Refusals are audited. (`src/lib/auth/google.ts`) |
+| Owners only | The Growth dashboard (every outreach message, reply and lead) and autopilot settings need `growth:read`, which only the founder role has |
 | Authorization | Capability-based RBAC (`src/lib/auth/permissions.ts`), checked in **every** service function and page. The UI only hides what the server already refuses. |
 | Least privilege | e.g. engineers can't see economics or send proposals; PMs can't decide gates or accept change-request costs; clients have no internal capabilities |
 | Client access | Capability links scoped to one object and one action, 256-bit, stored hashed, shown once, revocable, invalidated on use or re-send; pages send `no-referrer` |
